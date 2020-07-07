@@ -4,12 +4,12 @@
 ##SBATCH --nodelist=compute-0-7
 #SBATCH -t 0
 export PYTHONPATH="$(pwd)"
-export TRAIN_FILE=/home/ascalercio/nlp/language-transfer-style-portuguese/data/shakespeare/cleaned_train_1.txt
-export TEST_FILE=/home/ascalercio/nlp/language-transfer-style-portuguese/data/shakespeare/cleaned_dev_1.txt
+export TRAIN_FILE=/home/ascalercio/nlp/language-transfer-style-portuguese/data/shakespeare/cleaned_train_0.txt
+export TEST_FILE=/home/ascalercio/nlp/language-transfer-style-portuguese/data/shakespeare/cleaned_dev_0.txt
 export CUDA_VISIBLE_DEVICES=4,5,6,7
 
 python src/run_finetune_albert.py \
-    --output_dir=models/lm1-large1 \
+    --output_dir=models/lm0-large \
     --model_type=albert \
     --model_name_or_path=albert-large-v2 \
     --do_train \
