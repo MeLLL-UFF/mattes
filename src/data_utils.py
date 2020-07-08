@@ -218,7 +218,7 @@ class DataUtil(object):
     src_lens = []
     src_unk_id = self.hparams.unk_id
     for src_line, trg_line in zip(src_lines, trg_lines):
-      src_tokens = src_line.split()
+      src_tokens = self.tokenizer.tokenize(src_line)
       trg_tokens = trg_line.split()
       if is_train and not src_tokens or not trg_tokens:
         skip_line_count += 1
@@ -229,17 +229,7 @@ class DataUtil(object):
 
       src_lens.append(len(src_tokens))
       src_indices, trg_indices = [self.hparams.bos_id], []
-      src_w2i = self.src_w2i
-      for src_tok in src_tokens:
-        #print(src_tok)
-        if src_tok not in src_w2i:
-          src_indices.append(src_unk_id)
-          src_unk_count += 1
-          #print("unk {}".format(src_unk_count))
-        else:
-          src_indices.append(src_w2i[src_tok])
-          #print("src id {}".format(src_w2i[src_tok]))
-        # calculate char ngram emb for src_tok
+      src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
 
       trg_w2i = self.trg_w2i
       for trg_tok in trg_tokens:

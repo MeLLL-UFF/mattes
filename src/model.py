@@ -8,8 +8,9 @@ import torch.nn.functional as F
 import gc
 import numpy as np
 from utils import *
-from lm_lstm import *
+#from lm_lstm import *
 from noise import NoiseLayer
+from transformers import AlbertModel
 
 class MlpAttn(nn.Module):
   def __init__(self, hparams):
@@ -194,8 +195,8 @@ class Seq2Seq(nn.Module):
         hparams.word_shuffle, hparams.pad_id, hparams.unk_id, hparams.eos_id)
 
     if hparams.lm:
-      self.LM0 = torch.load(hparams.lm_style0)
-      self.LM1 = torch.load(hparams.lm_style1)
+      self.LM0 = AlbertModel.from_pretrained(self.hparams.lm_style0)
+      self.LM1 = AlbertModel.from_pretrained(self.hparams.lm_style1)
 
       for param in self.LM0.parameters():
           param.requires_grad = False
@@ -212,8 +213,8 @@ class Seq2Seq(nn.Module):
 
   def set_lm(self):
     if self.hparams.lm:
-      self.LM0 = torch.load(self.hparams.lm_style0)
-      self.LM1 = torch.load(self.hparams.lm_style1)
+      self.LM0 = AlbertModel.from_pretrained(self.hparams.lm_style0)
+      self.LM1 = AlbertModel.from_pretrained(self.hparams.lm_style1)
 
       for param in self.LM0.parameters():
           param.requires_grad = False
@@ -274,7 +275,7 @@ class Seq2Seq(nn.Module):
       lm_length = sum(x_trans_len_lm)
       y_sampled_reorder = torch.index_select(y_sampled, 0, org_index_lm)
       # E_{x ~ q(z|x, y)}[log p(z|y)]
-      log_prior = self.log_prior(x_trans_lm, x_trans_mask_lm, x_trans_len_lm, y_sampled_reorder)
+      log_prior = self.log_prior(x_trans_lm, x_trans_mask_lm, y_sampled_reorder)
 
       # KL = E_{x ~ q(z|x, y)}[log q(z|x, y) - log p(z|y)]
       if self.hparams.dual:
@@ -336,15 +337,29 @@ class Seq2Seq(nn.Module):
 
     return noise_logits
 
-  def log_prior(self, x, x_mask, x_len, y_sampled):
+  def mask_tokens(self, inputs: torch.Tensor):
+    labels = inputs.clone()
+    special_tokens_mask = [
+            self.tokenizer.get_special_tokens_mask(val, already_has_special_tokens=True) for val in labels.tolist()
+        ]
+    labels.masked_fill_(torch.tensor(special_tokens_mask, dtype=torch.bool), value=-100)
+    padding_mask = labels.eq(self.tokenizer.pad_token_id)
+    labels.masked_fill_(padding_mask, value=-100)
+    return labels
+
+  def log_prior(self, x, x_mask, y_sampled):
+    print(x)
     x_mask = x_mask.float()
     y_sampled = y_sampled.squeeze(-1).float()
 
     # remove start symbol
     tgt = x[:, 1:]
 
-    logits_0 = self.LM[0].compute_gumbel_logits(x, x_len)
-    logits_1 = self.LM[1].compute_gumbel_logits(x, x_len)
+    #labels = self.mask_tokens(x)
+    logits_0 = self.LM[0](input_ids = x)
+    logits_1 = self.LM[1](input_ids = x)
+    logits_0 = logits_0[0][:, 1:]
+    logits_1 = logits_1[1][:, 1:]
 
     x_mask = x_mask[:, 1:]
 
@@ -377,7 +392,7 @@ class Seq2Seq(nn.Module):
     return x_trans, x_mask, x_len, reverse_index
 
   def get_soft_translations(self, x_train, x_mask, x_len,
-                            y_sampled, y_sampled_mask, y_sampled_len, max_len=20):
+                            y_sampled, y_sampled_mask, y_sampled_len, max_len=64):
     batch_size = x_train.size(0)
 
     # x_enc: (batch, seq_len, 2 * d_model)

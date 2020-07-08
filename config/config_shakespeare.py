@@ -8,9 +8,9 @@ params0={
   "batch_size": 32,
   "dropout_in": 0.5,
   "dropout_out": 0.5,
-  "train_src_file": "data/shakespeare/train_0.txt",
+  "train_src_file": "data/shakespeare/cleaned_train_0.txt",
   "train_trg_file": "data/shakespeare/train_0.attr",
-  "dev_src_file": "data/shakespeare/dev_0.txt",
+  "dev_src_file": "data/shakespeare/cleaned_dev_0.txt",
   "dev_trg_file": "data/shakespeare/dev_0.attr",
   "src_vocab": "data/shakespeare/text.vocab",
   "trg_vocab": "data/shakespeare/attr.vocab"
@@ -25,9 +25,9 @@ params1={
   "batch_size": 32,
   "dropout_in": 0.5,
   "dropout_out": 0.5,
-  "train_src_file": "data/shakespeare/train_1.txt",
+  "train_src_file": "data/shakespeare/cleaned_train_1.txt",
   "train_trg_file": "data/shakespeare/train_1.attr",
-  "dev_src_file": "data/shakespeare/dev_1.txt",
+  "dev_src_file": "data/shakespeare/cleaned_dev_1.txt",
   "dev_trg_file": "data/shakespeare/dev_1.attr",
   "src_vocab": "data/shakespeare/text.vocab",
   "trg_vocab": "data/shakespeare/attr.vocab"
@@ -35,7 +35,7 @@ params1={
 
 
 params_main={
-  "lm_style0":"pretrained_lm/shakespeare_style0/model.pt",
-  "lm_style1":"pretrained_lm/shakespeare_style1/model.pt",
+  "lm_style0":"models/lm0-large/",
+  "lm_style1":"models/lm1-large1/",
   "eval_cls": True
 }
