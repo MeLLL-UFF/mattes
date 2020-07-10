@@ -10,7 +10,7 @@ import numpy as np
 from utils import *
 #from lm_lstm import *
 from noise import NoiseLayer
-from transformers import AlbertModel
+from transformers import AlbertForMaskedLM
 
 class MlpAttn(nn.Module):
   def __init__(self, hparams):
@@ -195,8 +195,8 @@ class Seq2Seq(nn.Module):
         hparams.word_shuffle, hparams.pad_id, hparams.unk_id, hparams.eos_id)
 
     if hparams.lm:
-      self.LM0 = AlbertModel.from_pretrained(self.hparams.lm_style0)
-      self.LM1 = AlbertModel.from_pretrained(self.hparams.lm_style1)
+      self.LM0 = AlbertForMaskedLM.from_pretrained(self.hparams.lm_style0)
+      self.LM1 = AlbertForMaskedLM.from_pretrained(self.hparams.lm_style1)
 
       for param in self.LM0.parameters():
           param.requires_grad = False
@@ -213,8 +213,8 @@ class Seq2Seq(nn.Module):
 
   def set_lm(self):
     if self.hparams.lm:
-      self.LM0 = AlbertModel.from_pretrained(self.hparams.lm_style0)
-      self.LM1 = AlbertModel.from_pretrained(self.hparams.lm_style1)
+      self.LM0 = AlbertForMaskedLM.from_pretrained(self.hparams.lm_style0)
+      self.LM1 = AlbertForMaskedLM.from_pretrained(self.hparams.lm_style1)
 
       for param in self.LM0.parameters():
           param.requires_grad = False
@@ -348,18 +348,23 @@ class Seq2Seq(nn.Module):
     return labels
 
   def log_prior(self, x, x_mask, y_sampled):
-    print(x)
+    # remove start symbol
+    tgt = x[:, 1:].clone()
+    batch_size, max_len, _ = x.size()
+    aux = torch.tensor(
+      [[[i for i in range(len(self.data.tokenizer))] for _ in range(max_len)] for _ in range(batch_size)],
+      dtype = torch.float, device=self.hparams.device)
+    x = (x * aux).sum(dim=2).long()
+
     x_mask = x_mask.float()
     y_sampled = y_sampled.squeeze(-1).float()
 
-    # remove start symbol
-    tgt = x[:, 1:]
-
+    
     #labels = self.mask_tokens(x)
     logits_0 = self.LM[0](input_ids = x)
     logits_1 = self.LM[1](input_ids = x)
     logits_0 = logits_0[0][:, 1:]
-    logits_1 = logits_1[1][:, 1:]
+    logits_1 = logits_1[0][:, 1:]
 
     x_mask = x_mask[:, 1:]
 

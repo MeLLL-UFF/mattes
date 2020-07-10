@@ -418,6 +418,8 @@ def eval(model, classifier, data, crit, step, hparams, eval_bleu=False,
       if end_of_epoch:
         break
     for h in hyps:
+      line = data.tokenizer.decode(h, skip_special_tokens = True)
+      '''
       h_best_words = map(lambda wi: data.src_i2w[wi],
                        filter(lambda wi: wi not in [hparams.bos_id, hparams.eos_id], h))
       if hparams.merge_bpe:
@@ -425,6 +427,7 @@ def eval(model, classifier, data, crit, step, hparams, eval_bleu=False,
         line = line.replace('▁', ' ')
       else:
         line = ' '.join(h_best_words)
+      '''
       line = line.strip()
       out_file.write(line + '\n')
       out_file.flush()
