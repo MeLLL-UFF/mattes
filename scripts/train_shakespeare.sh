@@ -15,7 +15,7 @@ python src/main.py \
     --train_trg_file data/shakespeare/train.attr \
     --dev_src_file data/shakespeare/cleaned_dev.txt \
     --dev_trg_file data/shakespeare/dev.attr \
-    --dev_trg_ref data/shakespeare/dev_ref.txt \
+    --dev_trg_ref data/shakespeare/cleaned_dev_ref.txt \
     --trg_vocab  data/shakespeare/attr.vocab \
     --d_word_vec=128 \
     --d_model=512 \

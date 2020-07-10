@@ -12,7 +12,6 @@ params0={
   "train_trg_file": "data/shakespeare/train_0.attr",
   "dev_src_file": "data/shakespeare/cleaned_dev_0.txt",
   "dev_trg_file": "data/shakespeare/dev_0.attr",
-  "src_vocab": "data/shakespeare/text.vocab",
   "trg_vocab": "data/shakespeare/attr.vocab"
 }
 
@@ -29,7 +28,6 @@ params1={
   "train_trg_file": "data/shakespeare/train_1.attr",
   "dev_src_file": "data/shakespeare/cleaned_dev_1.txt",
   "dev_trg_file": "data/shakespeare/dev_1.attr",
-  "src_vocab": "data/shakespeare/text.vocab",
   "trg_vocab": "data/shakespeare/attr.vocab"
 }
 
