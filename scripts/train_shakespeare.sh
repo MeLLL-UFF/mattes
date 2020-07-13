@@ -40,7 +40,7 @@ python src/main.py \
     --temperature 0.01 \
     --max_pool_k_size 1 \
     --bt \
-    --klw 0.05 \
+    --klw 0.1 \
     --bt_stop_grad \
     --lm \
     --avg_len \

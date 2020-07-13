@@ -16,7 +16,6 @@ python src/cnn_classify.py \
   --dev_src_file data/shakespeare/cleaned_dev.txt \
   --dev_trg_file data/shakespeare/dev.attr \
   --dev_trg_ref data/shakespeare/cleaned_dev.txt \
-  --src_vocab  data/shakespeare/text.vocab \
   --trg_vocab  data/shakespeare/attr.vocab \
   --d_word_vec=128 \
   --d_model=512 \
