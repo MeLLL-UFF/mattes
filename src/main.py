@@ -17,7 +17,7 @@ from hparams import *
 from model import *
 from utils import *
 from cnn_classify import test, CNNClassify, BiLSTMClassify
-
+#torch.autograd.set_detect_anomaly(True)
 if __name__ == "__main__":
     from sys import path
     from os.path import dirname as dir

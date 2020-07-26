@@ -275,7 +275,7 @@ class Seq2Seq(nn.Module):
       lm_length = sum(x_trans_len_lm)
       y_sampled_reorder = torch.index_select(y_sampled, 0, org_index_lm)
       # E_{x ~ q(z|x, y)}[log p(z|y)]
-      log_prior = self.log_prior(x_trans_lm, x_trans_mask_lm, y_sampled_reorder)
+      log_prior = self.log_prior(x_trans_lm, x_trans_mask_lm, x_trans_len_lm, y_sampled_reorder)
 
       # KL = E_{x ~ q(z|x, y)}[log q(z|x, y) - log p(z|y)]
       if self.hparams.dual:
@@ -347,25 +347,41 @@ class Seq2Seq(nn.Module):
     labels.masked_fill_(padding_mask, value=-100)
     return labels
 
-  def log_prior(self, x, x_mask, y_sampled):
+  def log_prior(self, x, x_mask, x_len, y_sampled):
     # remove start symbol
-    tgt = x[:, 1:].clone()
+    tgt = x[:, 1:]
     batch_size, max_len, _ = x.size()
-    aux = torch.tensor(
-      [[[i for i in range(len(self.data.tokenizer))] for _ in range(max_len)] for _ in range(batch_size)],
-      dtype = torch.float, device=self.hparams.device)
-    x = (x * aux).sum(dim=2).long()
-
+    x_aux = torch.argmax(x,dim = 2)
+    #aux = torch.range(0, len(self.data.tokenizer)-1).cuda()
+    #aux = aux.repeat([batch_size , max_len , 1])
+    #with torch.no_grad():
+    #  word_emb = x @ self.encoder.word_emb.weight
+    #aux = torch.tensor(
+    #  [[[i for i in range(len(self.data.tokenizer))] for _ in range(max_len)] for _ in range(batch_size)],
+    #  dtype = torch.float, device=self.hparams.device, requires_grad=False)
+    #x = (x * aux).sum(dim=2).long()
     x_mask = x_mask.float()
     y_sampled = y_sampled.squeeze(-1).float()
+    logits_0 = []
+    logits_1 = []
+    attention_mask = torch.zeros(x_aux.size() , device=self.hparams.device)
+    attention_mask[:, 0] = 1
+    #x_clone[:, 1:] = self.data.tokenizer.mask_token_id
+    for i in range(max_len-1):
+      logit_0 = self.LM[0](input_ids = x_aux, attention_mask = attention_mask)
+      logit_1 = self.LM[1](input_ids = x_aux, attention_mask = attention_mask)
+      logit_0 = logit_0[0][:, i+1].unsqueeze(1)
+      logit_1 = logit_1[0][:, i+1].unsqueeze(1)
+      logits_0.append(logit_0)
+      logits_1.append(logit_1)
+      attention_mask[:,i+1] = 1
 
+    logits_0 = torch.cat(logits_0, dim=1)
+    logits_1 = torch.cat(logits_1, dim=1)
+
+    #for i in range(batch_size):
+    #  x_mask[i, x_len[i] - 1 ] = 1.
     
-    #labels = self.mask_tokens(x)
-    logits_0 = self.LM[0](input_ids = x)
-    logits_1 = self.LM[1](input_ids = x)
-    logits_0 = logits_0[0][:, 1:]
-    logits_1 = logits_1[0][:, 1:]
-
     x_mask = x_mask[:, 1:]
 
     log_p0 = F.log_softmax(logits_0, dim=2)
@@ -397,9 +413,8 @@ class Seq2Seq(nn.Module):
     return x_trans, x_mask, x_len, reverse_index
 
   def get_soft_translations(self, x_train, x_mask, x_len,
-                            y_sampled, y_sampled_mask, y_sampled_len, max_len=64):
+                            y_sampled, y_sampled_mask, y_sampled_len, max_len=62):
     batch_size = x_train.size(0)
-
     # x_enc: (batch, seq_len, 2 * d_model)
     x_enc, dec_init = self.encoder(x_train, x_len)
 
@@ -528,6 +543,8 @@ class Seq2Seq(nn.Module):
     if self.hparams.lm:
       stack_logits = torch.cat(stack_logits, dim=1)
       stack_sample = torch.cat(stack_sample, dim=1)
+      #for i in range(batch_size):
+      #  stack_sample[i, trans_len[i]-2] = torch.zeros(self.hparams.src_vocab_size)
       neg_entropy = (F.log_softmax(stack_logits, dim=2) * stack_sample).sum(dim=2).sum(dim=1)
 
     return x_trans, x_mask, x_len, reverse_index, index_t, neg_entropy

@@ -23,9 +23,9 @@ python src/main.py \
     --eval_every=1500 \
     --ppl_thresh=10000 \
     --eval_bleu \
-    --batch_size 16 \
-    --valid_batch_size 128 \
-    --patience 5 \
+    --batch_size 12 \
+    --valid_batch_size 12 \
+    --patience 2 \
     --lr_dec 0.5 \
     --lr 0.001 \
     --dropout 0.3 \
