@@ -364,17 +364,18 @@ class Seq2Seq(nn.Module):
     y_sampled = y_sampled.squeeze(-1).float()
     logits_0 = []
     logits_1 = []
-    attention_mask = torch.zeros(x_aux.size() , device=self.hparams.device)
-    attention_mask[:, 0] = 1
-    #x_clone[:, 1:] = self.data.tokenizer.mask_token_id
+    x_clone = x_aux.clone()
+    #attention_mask = torch.zeros(x_aux.size() , device=self.hparams.device)
+    #attention_mask[:, 0] = 1
+    x_clone[:, 1:] = self.data.tokenizer.mask_token_id
     for i in range(max_len-1):
-      logit_0 = self.LM[0](input_ids = x_aux, attention_mask = attention_mask)
-      logit_1 = self.LM[1](input_ids = x_aux, attention_mask = attention_mask)
+      logit_0 = self.LM[0](input_ids = x_clone)
+      logit_1 = self.LM[1](input_ids = x_clone)
       logit_0 = logit_0[0][:, i+1].unsqueeze(1)
       logit_1 = logit_1[0][:, i+1].unsqueeze(1)
       logits_0.append(logit_0)
       logits_1.append(logit_1)
-      attention_mask[:,i+1] = 1
+      x_clone[:,i+1] = x_aux[:, i+1]
 
     logits_0 = torch.cat(logits_0, dim=1)
     logits_1 = torch.cat(logits_1, dim=1)
