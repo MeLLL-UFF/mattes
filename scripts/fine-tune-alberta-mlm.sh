@@ -9,7 +9,7 @@ export TEST_FILE=/home/ascalercio/nlp/language-transfer-style-portuguese/data/sh
 export CUDA_VISIBLE_DEVICES=4,5,6,7
 
 python src/run_finetune_albert.py \
-    --output_dir=models/lm0-large \
+    --output_dir=masked_lm/lm0-large \
     --model_type=albert \
     --model_name_or_path=albert-large-v2 \
     --do_train \
