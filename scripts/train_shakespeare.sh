@@ -23,8 +23,8 @@ python src/main.py \
     --eval_every=1500 \
     --ppl_thresh=10000 \
     --eval_bleu \
-    --batch_size 12 \
-    --valid_batch_size 12 \
+    --batch_size 3 \
+    --valid_batch_size 3 \
     --patience 2 \
     --lr_dec 0.5 \
     --lr 0.001 \

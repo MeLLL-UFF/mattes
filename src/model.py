@@ -351,31 +351,45 @@ class Seq2Seq(nn.Module):
     # remove start symbol
     tgt = x[:, 1:]
     batch_size, max_len, _ = x.size()
-    x_aux = torch.argmax(x,dim = 2)
+    word_embed_0 = x @ self.LM[0].albert.embeddings.word_embeddings.weight
+    word_embed_1 = x @ self.LM[1].albert.embeddings.word_embeddings.weight
+    #x_aux = torch.argmax(x,dim = 2)
     #aux = torch.range(0, len(self.data.tokenizer)-1).cuda()
     #aux = aux.repeat([batch_size , max_len , 1])
-    #with torch.no_grad():
-    #  word_emb = x @ self.encoder.word_emb.weight
-    #aux = torch.tensor(
-    #  [[[i for i in range(len(self.data.tokenizer))] for _ in range(max_len)] for _ in range(batch_size)],
-    #  dtype = torch.float, device=self.hparams.device, requires_grad=False)
     #x = (x * aux).sum(dim=2).long()
     x_mask = x_mask.float()
     y_sampled = y_sampled.squeeze(-1).float()
     logits_0 = []
     logits_1 = []
-    x_clone = x_aux.clone()
-    #attention_mask = torch.zeros(x_aux.size() , device=self.hparams.device)
-    #attention_mask[:, 0] = 1
-    x_clone[:, 1:] = self.data.tokenizer.mask_token_id
+    #x_clone = x_aux.clone()
+    attention_mask = torch.zeros((batch_size, max_len) , device=self.hparams.device)
+    attention_mask[:, 0] = 1
+    #x_clone[:, 1:] = self.data.tokenizer.mask_token_id
     for i in range(max_len-1):
-      logit_0 = self.LM[0](input_ids = x_clone)
-      logit_1 = self.LM[1](input_ids = x_clone)
+      print('dentro for')
+      print(torch.cuda.memory_allocated()/1024**2)
+      print(torch.cuda.memory_cached()/1024**2)
+      logit_0 = self.LM[0](inputs_embeds = word_embed_0, attention_mask = attention_mask)
+      logit_1 = self.LM[1](inputs_embeds = word_embed_1, attention_mask = attention_mask)
       logit_0 = logit_0[0][:, i+1].unsqueeze(1)
       logit_1 = logit_1[0][:, i+1].unsqueeze(1)
       logits_0.append(logit_0)
       logits_1.append(logit_1)
-      x_clone[:,i+1] = x_aux[:, i+1]
+      attention_mask[:, i+1] = 1
+      print(logit_0.size())
+      print(logit_0.element_size() * logit_0.nelement())
+      print(logit_1.element_size() * logit_1.nelement())
+      print(torch.cuda.memory_allocated()/1024**2)
+      print(torch.cuda.memory_cached()/1024**2)
+      
+      for obj in gc.get_objects():
+        try:
+          if torch.is_tensor(obj) or (hasattr(obj, 'data') and torch.is_tensor(obj.data)):
+            print(type(obj), obj.size())
+        except:
+          pass
+      
+      #x_clone[:,i+1] = x_aux[:, i+1]
 
     logits_0 = torch.cat(logits_0, dim=1)
     logits_1 = torch.cat(logits_1, dim=1)
@@ -414,7 +428,7 @@ class Seq2Seq(nn.Module):
     return x_trans, x_mask, x_len, reverse_index
 
   def get_soft_translations(self, x_train, x_mask, x_len,
-                            y_sampled, y_sampled_mask, y_sampled_len, max_len=62):
+                            y_sampled, y_sampled_mask, y_sampled_len, max_len=25):
     batch_size = x_train.size(0)
     # x_enc: (batch, seq_len, 2 * d_model)
     x_enc, dec_init = self.encoder(x_train, x_len)
@@ -547,7 +561,9 @@ class Seq2Seq(nn.Module):
       #for i in range(batch_size):
       #  stack_sample[i, trans_len[i]-2] = torch.zeros(self.hparams.src_vocab_size)
       neg_entropy = (F.log_softmax(stack_logits, dim=2) * stack_sample).sum(dim=2).sum(dim=1)
-
+    print('\nsoft trans')
+    print(torch.cuda.memory_allocated()/1024**2)
+    print(torch.cuda.memory_cached()/1024**2)
     return x_trans, x_mask, x_len, reverse_index, index_t, neg_entropy
 
   def add_noise(self, x_train, x_mask, x_len):
