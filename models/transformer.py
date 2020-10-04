@@ -6,7 +6,7 @@ from utils import idx2onehot
 
 
 class StyleTransformer(nn.Module):
-    def __init__(self, config, vocab):
+    def __init__(self, config, data):
         super(StyleTransformer, self).__init__()
         num_styles, num_layers = config.num_styles, config.num_layers
         d_model, max_length = config.d_model, config.max_length
@@ -15,18 +15,18 @@ class StyleTransformer(nn.Module):
         load_pretrained_embed = config.load_pretrained_embed
         
         self.max_length = config.max_length
-        self.eos_idx = vocab.stoi['<eos>']
-        self.pad_idx = vocab.stoi['<pad>']
+        self.eos_idx = config.eos_id
+        self.pad_idx = config.pad_id
         self.style_embed = Embedding(num_styles, d_model)
         self.embed = EmbeddingLayer(
-            vocab, d_model, max_length,
+            data, d_model, max_length,
             self.pad_idx,
             learned_pos_embed,
             load_pretrained_embed,
         )
         self.sos_token = nn.Parameter(torch.randn(d_model))
-        self.encoder = Encoder(num_layers, d_model, len(vocab), h, dropout)
-        self.decoder = Decoder(num_layers, d_model, len(vocab), h, dropout)
+        self.encoder = Encoder(num_layers, d_model, config.src_vocab_size, h, dropout)
+        self.decoder = Decoder(num_layers, d_model, config.src_vocab_size, h, dropout)
         
     def forward(self, inp_tokens, gold_tokens, inp_lengths, style,
                 generate=False, differentiable_decode=False, temperature=1.0):
@@ -91,7 +91,7 @@ class StyleTransformer(nn.Module):
         return log_probs
     
 class Discriminator(nn.Module):
-    def __init__(self, config, vocab):
+    def __init__(self, config, data):
         super(Discriminator, self).__init__()
         num_styles, num_layers = config.num_styles, config.num_layers
         d_model, max_length = config.d_model, config.max_length
@@ -100,16 +100,16 @@ class Discriminator(nn.Module):
         load_pretrained_embed = config.load_pretrained_embed
         num_classes = config.num_classes
         
-        self.pad_idx = vocab.stoi['<pad>']
+        self.pad_idx = config.pad_id
         self.style_embed = Embedding(num_styles, d_model)
         self.embed = EmbeddingLayer(
-            vocab, d_model, max_length,
+            data, d_model, max_length,
             self.pad_idx,
             learned_pos_embed,
             load_pretrained_embed
         )
         self.cls_token = nn.Parameter(torch.randn(d_model))
-        self.encoder = Encoder(num_layers, d_model, len(vocab), h, dropout)
+        self.encoder = Encoder(num_layers, d_model, config.src_vocab_size, h, dropout)
         self.classifier = Linear(d_model, num_classes)
     
     def forward(self, inp_tokens, inp_lengths, style=None):
@@ -199,13 +199,13 @@ class Generator(nn.Module):
         return F.log_softmax(self.proj(x) / temperature, dim=-1)
 
 class EmbeddingLayer(nn.Module):
-    def __init__(self, vocab, d_model, max_length, pad_idx, learned_pos_embed, load_pretrained_embed):
+    def __init__(self, data, d_model, max_length, pad_idx, learned_pos_embed, load_pretrained_embed):
         super(EmbeddingLayer, self).__init__()
-        self.token_embed = Embedding(len(vocab), d_model)
+        self.token_embed = Embedding(len(data.tokenizer), d_model)
         self.pos_embed = Embedding(max_length, d_model)
-        self.vocab_size = len(vocab)
+        self.vocab_size = len(data.tokenizer)
         if load_pretrained_embed:
-            self.token_embed = nn.Embedding.from_pretrained(vocab.vectors)
+            #self.token_embed = nn.Embedding.from_pretrained(vocab.vectors)
             print('embed loaded.')
     def forward(self, x, pos):
         if len(x.size()) == 2:

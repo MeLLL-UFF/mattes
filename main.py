@@ -1,11 +1,17 @@
 import torch
 import time
-from data import load_dataset
+from data_utils import DataUtil
 from models import StyleTransformer, Discriminator
 from train import train, auto_eval
 
 
 class Config():
+    train_src_file = 'data/shakespeare/cleaned_train.txt'
+    train_trg_file = 'data/shakespeare/train.attr'
+    dev_src_file = 'data/shakespeare/cleaned_dev.txt'
+    dev_trg_file = 'data/shakespeare/dev.attr'
+    dev_trg_ref = 'data/shakespeare/cleaned_dev_ref.txt'
+    trg_vocab  = 'data/shakespeare/attr.vocab'
     data_path = './data/shakespeare/'
     log_dir = 'runs/exp'
     save_path = './save'
@@ -47,13 +53,13 @@ class Config():
 
 def main():
     config = Config()
-    train_iters, dev_iters, test_iters, vocab = load_dataset(config)
-    print('Vocab size:', len(vocab))
-    model_F = StyleTransformer(config, vocab).to(config.device)
-    model_D = Discriminator(config, vocab).to(config.device)
+    data = DataUtil(config)
+    print('Vocab size:', config.src_vocab_size)
+    model_F = StyleTransformer(config, data).to(config.device)
+    model_D = Discriminator(config, data).to(config.device)
     print(config.discriminator_method)
     
-    train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters)
+    train(config, data, model_F, model_D)
     
 
 if __name__ == '__main__':
