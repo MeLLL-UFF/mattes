@@ -6,9 +6,11 @@ from train import train, auto_eval
 
 
 class Config():
-    train_src_file = 'data/shakespeare/cleaned_train.txt'
+    train_src_file0 = 'data/shakespeare/cleaned_train_0.txt'
+    train_src_file1 = 'data/shakespeare/cleaned_train_1.txt'
     train_trg_file = 'data/shakespeare/train.attr'
-    dev_src_file = 'data/shakespeare/cleaned_dev.txt'
+    dev_src_file0 = 'data/shakespeare/cleaned_dev_0.txt'
+    dev_src_file1 = 'data/shakespeare/cleaned_dev_1.txt'
     dev_trg_file = 'data/shakespeare/dev.attr'
     dev_trg_ref = 'data/shakespeare/cleaned_dev_ref.txt'
     trg_vocab  = 'data/shakespeare/attr.vocab'
@@ -49,6 +51,7 @@ class Config():
     inp_unk_drop_fac = 0
     inp_rand_drop_fac = 0
     inp_drop_prob = 0
+    decode = False
 
 
 def main():

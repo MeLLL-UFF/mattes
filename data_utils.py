@@ -24,33 +24,27 @@ class DataUtil(object):
     print("trg_vocab_size={}".format(self.hparams.trg_vocab_size))
 
     if not self.hparams.decode:
-      self.train_x = []
-      self.train_y = []
 
       self.train_size = 0
       self.n_train_batches = 0
 
-      train_x_lens = []
-      self.train_x, self.train_y, train_x_lens = self._build_parallel(self.hparams.train_src_file, self.hparams.train_trg_file)
-      self.train_size = len(self.train_x)
+      self.train_x0, self.train_y0, _ = self._build_parallel(self.hparams.train_src_file0, self.hparams.train_trg_file)
+      self.train_size = len(self.train_x0)
+      self.train_x1, self.train_y1, _ = self._build_parallel(self.hparams.train_src_file1, self.hparams.train_trg_file)
+      assert self.train_size == len(self.train_x1)
 
-      dev_src_file = self.hparams.dev_src_file
-      dev_trg_file = self.hparams.dev_trg_file
-      self.dev_x, self.dev_y, src_len = self._build_parallel(dev_src_file, dev_trg_file, is_train=False)
-      self.dev_size = len(self.dev_x)
+      self.dev_x0, self.dev_y0, _ = self._build_parallel(self.hparams.dev_src_file0, self.hparams.dev_trg_file, is_train=False)
+      self.dev_x1, self.dev_y1, _ = self._build_parallel(self.hparams.dev_src_file1, self.hparams.dev_trg_file, is_train=False)
+      self.dev_size = len(self.dev_x0)
+      assert self.dev_size == len(self.dev_x1)
       self.dev_index = 0
-      if self.hparams.shuffle_train:
-        print("Heuristic sort based on source lengths")
-        indices = np.argsort(train_x_lens)
-        self.train_x = [self.train_x[idx] for idx in indices]
-        self.train_y = [self.train_y[idx] for idx in indices]
       self.reset_train()
     else:
       #test_src_file = os.path.join(self.hparams.data_path, self.hparams.test_src_file)
       #test_trg_file = os.path.join(self.hparams.data_path, self.hparams.test_trg_file)
       test_src_file = self.hparams.test_src_file
       test_trg_file = self.hparams.test_trg_file
-      self.test_x, self.test_y, src_len = self._build_parallel(test_src_file, test_trg_file, is_train=False)
+      self.test_x, self.test_y, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
       self.test_size = len(self.test_x)
       self.test_index = 0
 
@@ -87,31 +81,21 @@ class DataUtil(object):
     start_index = (self.train_queue[self.train_index] * self.hparams.batch_size)
     end_index = min(start_index + self.hparams.batch_size, self.train_size)
 
-    x_train = self.train_x[start_index:end_index]
-    y_train = self.train_y[start_index:end_index]
-    x_train, y_train, _ = self.sort_by_xlen(x_train, y_train)
+    x_train0 = self.train_x0[start_index:end_index]
+    x_train1 = self.train_x1[start_index:end_index]
 
     self.train_index += 1
-    batch_size = len(x_train)
-    y_count = sum([len(y) for y in y_train])
+    batch_size = len(x_train0)
     # pad
-    x_train, x_mask, x_count, x_len, x_pos_emb_idxs = self._pad(x_train, self.hparams.pad_id)
-    y_train, y_mask, y_count, y_len, y_pos_emb_idxs = self._pad(y_train, self.hparams.trg_pad_id)
-    # sample some y
-    # y_sampled = [self.sample_y() for _ in range(batch_size)]
-    # y_sampled, y_sampled_mask, y_sampled_count, y_sampled_len, y_sampled_pos_emb_idxs = self._pad(y_sampled, self.hparams.trg_pad_id)
-    y_sampled = 1 - y_train
-    y_sampled_mask = y_mask
-    y_sampled_count = y_count
-    y_sampled_len = y_len
-    y_sampled_pos_emb_idxs = y_pos_emb_idxs
+    x_train0, _, _, _, _ = self._pad(x_train0, self.hparams.pad_id)
+    x_train1, _, _, _, _ = self._pad(x_train1, self.hparams.pad_id)
 
     if self.train_index >= self.n_train_batches:
       self.reset_train()
       eop = True
     else:
       eop = False
-    return x_train, x_mask, x_count, x_len, x_pos_emb_idxs, y_train, y_mask, y_count, y_len, y_pos_emb_idxs, y_sampled, y_sampled_mask, y_sampled_count, y_sampled_len, y_sampled_pos_emb_idxs, batch_size, eop
+    return (x_train0, x_train1), batch_size, eop
 
   def sample_y(self):
     # first how many attrs?
@@ -230,7 +214,7 @@ class DataUtil(object):
         continue
 
       src_lens.append(len(src_tokens))
-      src_indices, trg_indices = [self.hparams.bos_id], []
+      src_indices, trg_indices = [], []
       src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
 
       trg_w2i = self.trg_w2i

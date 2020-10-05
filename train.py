@@ -222,7 +222,7 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
 
     return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item()
 
-def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
+def train(config, data, model_F, model_D):
     optimizer_F = optim.Adam(model_F.parameters(), lr=config.lr_F, weight_decay=config.L2)
     optimizer_D = optim.Adam(model_D.parameters(), lr=config.lr_D, weight_decay=config.L2)
 
@@ -242,7 +242,9 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
     print('Save Path:', config.save_folder)
 
     print('Model F pretraining......')
-    for i, batch in enumerate(train_iters):
+    #for i, batch in enumerate(train_iters):
+    while True:
+        batch, x_mask, x_count, x_len, x_pos_emb_idxs, y_train, y_mask, y_count, y_len, y_pos_emb_idxs, y_sampled, y_sampled_mask, y_sampled_count, y_sampled_len, y_pos_emb_idxs, batch_size,  eop = data.next_train()
         print(batch[0], batch[1])
         if i >= config.F_pretrain_iter:
             break
@@ -256,7 +258,7 @@ def train(config, vocab, model_F, model_D, train_iters, dev_iters, test_iters):
             his_f_slf_loss = []
             his_f_cyc_loss = []
             print('[iter: {}] slf_loss:{:.4f}, rec_loss:{:.4f}'.format(i + 1, avrg_f_slf_loss, avrg_f_cyc_loss))
-
+        if eop: break
     
     print('Training start......')
 
