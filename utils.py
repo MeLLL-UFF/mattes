@@ -134,7 +134,7 @@ def word_dropout(x, l, drop_prob, unk_idx):
     
     return x2
 
-def word_drop(x, l, drop_prob, pad_idx):
+def word_drop(x, l, drop_prob):
     if not drop_prob:
         return x
 

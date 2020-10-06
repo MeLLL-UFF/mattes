@@ -22,7 +22,7 @@ class Config():
     discriminator_method = 'Cond' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
-    max_length = 128
+    max_length = 64
     embed_size = 256
     d_model = 256
     h = 4
@@ -52,6 +52,7 @@ class Config():
     inp_rand_drop_fac = 0
     inp_drop_prob = 0
     decode = False
+    max_len = 10000
 
 
 def main():

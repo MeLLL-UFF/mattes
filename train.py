@@ -39,11 +39,11 @@ def batch_preprocess(batch, pad_idx, eos_idx, reverse=False):
     return tokens, lengths, styles
         
 
-def d_step(config, vocab, model_F, model_D, optimizer_D, batch, temperature):
+def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
     model_F.eval()
-    pad_idx = vocab.stoi['<pad>']
-    eos_idx = vocab.stoi['<eos>']
-    vocab_size = len(vocab)
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    vocab_size = len(data.tokenizer)
     loss_fn = nn.NLLLoss(reduction='none')
 
     inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
@@ -123,14 +123,14 @@ def d_step(config, vocab, model_F, model_D, optimizer_D, batch, temperature):
 
     return adv_loss.item()
 
-def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
+def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
            cyc_rec_enable=True):
     model_D.eval()
     
-    pad_idx = vocab.stoi['<pad>']
-    eos_idx = vocab.stoi['<eos>']
-    unk_idx = vocab.stoi['<unk>']
-    vocab_size = len(vocab)
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    unk_idx = config.unk_id
+    vocab_size = len(data.tokenizer)
     loss_fn = nn.NLLLoss(reduction='none')
 
     inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
@@ -145,8 +145,7 @@ def f_step(config, vocab, model_F, model_D, optimizer_F, batch, temperature, dro
     noise_inp_tokens = word_drop(
         inp_tokens,
         inp_lengths, 
-        config.inp_drop_prob * drop_decay,
-        vocab
+        config.inp_drop_prob * drop_decay
     )
     noise_inp_lengths = get_lengths(noise_inp_tokens, eos_idx)
 
@@ -243,12 +242,10 @@ def train(config, data, model_F, model_D):
 
     print('Model F pretraining......')
     #for i, batch in enumerate(train_iters):
-    while True:
-        batch, x_mask, x_count, x_len, x_pos_emb_idxs, y_train, y_mask, y_count, y_len, y_pos_emb_idxs, y_sampled, y_sampled_mask, y_sampled_count, y_sampled_len, y_pos_emb_idxs, batch_size,  eop = data.next_train()
-        print(batch[0], batch[1])
-        if i >= config.F_pretrain_iter:
-            break
-        slf_loss, cyc_loss, _ = f_step(config, vocab, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
+    for i in range(config.F_pretrain_iter):
+        batch, batch_size, eop = data.next_train()
+        #print(batch[0].size(), batch[1].size())
+        slf_loss, cyc_loss, _ = f_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
         his_f_slf_loss.append(slf_loss)
         his_f_cyc_loss.append(cyc_loss)
 
@@ -273,23 +270,23 @@ def train(config, data, model_F, model_D):
                 k = (step - s_a) / (s_b - s_a)
                 temperature = (1 - k) * t_a + k * t_b
                 return temperature
-    batch_iters = iter(train_iters)
+    #batch_iters = iter(train_iters)
     while True:
         drop_decay = calc_temperature(config.drop_rate_config, global_step)
         temperature = calc_temperature(config.temperature_config, global_step)
-        batch = next(batch_iters)
+        #batch = next(batch_iters)
         
         for _ in range(config.iter_D):
-            batch = next(batch_iters)
+            batch, batch_size, eop = data.next_train()
             d_adv_loss = d_step(
-                config, vocab, model_F, model_D, optimizer_D, batch, temperature
+                config, data, model_F, model_D, optimizer_D, batch, temperature
             )
             his_d_adv_loss.append(d_adv_loss)
             
         for _ in range(config.iter_F):
-            batch = next(batch_iters)
+            batch, batch_size, eop = data.next_train()
             f_slf_loss, f_cyc_loss, f_adv_loss = f_step(
-                config, vocab, model_F, model_D, optimizer_F, batch, temperature, drop_decay
+                config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay
             )
             his_f_slf_loss.append(f_slf_loss)
             his_f_cyc_loss.append(f_cyc_loss)

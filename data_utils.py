@@ -110,17 +110,16 @@ class DataUtil(object):
     end_index = min(start_index + dev_batch_size, self.dev_size)
     batch_size = end_index - start_index
 
-    x_dev = self.dev_x[start_index:end_index]
-    y_dev = self.dev_y[start_index:end_index]
+    x_dev0 = self.dev_x0[start_index:end_index]
+    x_dev1 = self.dev_x1[start_index:end_index]
+    y_dev0 = self.dev_y0[start_index:end_index]
+    y_dev1 = self.dev_y1[start_index:end_index]
     if sort:
-      x_dev, y_dev, index = self.sort_by_xlen(x_dev, y_dev)
-    else:
-      index = None
+      x_dev0, y_dev0, _ = self.sort_by_xlen(x_dev0, y_dev0)
+      x_dev1, y_dev1, _ = self.sort_by_xlen(x_dev1, y_dev1)
 
-    x_dev, x_mask, x_count, x_len, x_pos_emb_idxs = self._pad(x_dev, self.hparams.pad_id)
-    y_dev, y_mask, y_count, y_len, y_pos_emb_idxs = self._pad(y_dev, self.hparams.trg_pad_id)
-
-    y_neg = 1 - y_dev
+    x_dev0, _, _, _, _ = self._pad(x_dev0, self.hparams.pad_id)
+    x_dev1, _, _, _, _ = self._pad(x_dev1, self.hparams.pad_id)
 
     if end_index >= self.dev_size:
       eop = True
@@ -129,7 +128,7 @@ class DataUtil(object):
       eop = False
       self.dev_index += batch_size
 
-    return x_dev, x_mask, x_count, x_len, x_pos_emb_idxs, y_dev, y_mask, y_count, y_len, y_pos_emb_idxs, y_neg, batch_size, eop, index
+    return (x_dev0, x_dev1),  batch_size, eop
 
   def reset_test(self, test_src_file, test_trg_file):
     self.test_x, self.test_y, src_len = self._build_parallel(test_src_file, test_trg_file, is_train=False)
@@ -182,7 +181,7 @@ class DataUtil(object):
     mask = torch.ByteTensor(mask)
     pos_emb_indices = [[i+1 for i in range(len(s))] + ([0]*(max_len - len(s))) for s in sentences]
     pos_emb_indices = torch.FloatTensor(pos_emb_indices)
-    if self.hparams.cuda:
+    if torch.cuda.is_available():
       padded_sentences = padded_sentences.cuda()
       pos_emb_indices = pos_emb_indices.cuda()
       mask = mask.cuda()
@@ -216,6 +215,8 @@ class DataUtil(object):
       src_lens.append(len(src_tokens))
       src_indices, trg_indices = [], []
       src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
+      if len(src_indices) >= self.hparams.max_length:
+        src_indices = src_indices[:(self.hparams.max_length - 1)]
 
       trg_w2i = self.trg_w2i
       for trg_tok in trg_tokens:
