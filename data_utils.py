@@ -205,7 +205,7 @@ class DataUtil(object):
     for src_line, trg_line in zip(src_lines, trg_lines):
       src_tokens = self.tokenizer.tokenize(src_line)
       trg_tokens = trg_line.split()
-      if is_train and not src_tokens or not trg_tokens:
+      if not src_tokens or not trg_tokens:
         skip_line_count += 1
         continue
       if is_train and not self.hparams.decode and self.hparams.max_len and (len(src_tokens) > self.hparams.max_len or len(trg_tokens) > self.hparams.max_len):

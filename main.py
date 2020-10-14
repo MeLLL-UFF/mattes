@@ -3,6 +3,7 @@ import time
 from data_utils import DataUtil
 from models import StyleTransformer, Discriminator
 from train import train, auto_eval
+from cnn_classify import test, CNNClassify, BiLSTMClassify
 
 
 class Config():
@@ -12,6 +13,8 @@ class Config():
     dev_src_file0 = 'data/shakespeare/cleaned_dev_0.txt'
     dev_src_file1 = 'data/shakespeare/cleaned_dev_1.txt'
     dev_trg_file = 'data/shakespeare/dev.attr'
+    dev_trg_file0 = 'data/shakespeare/dev_0.attr'
+    dev_trg_file1 = 'data/shakespeare/dev_1.attr'
     dev_trg_ref = 'data/shakespeare/cleaned_dev_ref.txt'
     trg_vocab  = 'data/shakespeare/attr.vocab'
     data_path = './data/shakespeare/'

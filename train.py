@@ -8,6 +8,7 @@ from torch.nn.utils import clip_grad_norm_
 
 from evaluator import Evaluator
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop
+from cnn_classify import test, CNNClassify, BiLSTMClassify
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -34,7 +35,7 @@ def batch_preprocess(batch, pad_idx, eos_idx, reverse=False):
         
     tokens = torch.cat((batch_pos, batch_neg), 0)
     lengths = get_lengths(tokens, eos_idx)
-    styles = torch.cat((pos_styles, neg_styles), 0)
+    styles = torch.cat((neg_styles, pos_styles), 0)
 
     return tokens, lengths, styles
         
@@ -291,7 +292,7 @@ def train(config, data, model_F, model_D):
             his_f_slf_loss.append(f_slf_loss)
             his_f_cyc_loss.append(f_cyc_loss)
             his_f_adv_loss.append(f_adv_loss)
-            
+
         
         global_step += 1
         #writer.add_scalar('rec_loss', rec_loss.item(), global_step)
@@ -321,21 +322,26 @@ def train(config, data, model_F, model_D):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            auto_eval(config, vocab, model_F, test_iters, global_step, temperature)
+            auto_eval(config, data, model_F, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
 
-def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
+def auto_eval(config, data, model_F, global_step, temperature):
     model_F.eval()
-    vocab_size = len(vocab)
-    eos_idx = vocab.stoi['<eos>']
+    vocab_size = len(data.tokenizer)
+    eos_idx = config.eos_id
 
-    def inference(data_iter, raw_style):
+    def inference(data, raw_style):
         gold_text = []
         raw_output = []
         rev_output = []
-        for batch in data_iter:
-            inp_tokens = batch.text
+        while True:
+            batch, batch_size, eop = data.next_dev()
+            if raw_style == 0:
+                inp_tokens = batch[0]
+            else:
+                inp_tokens = batch[1]
+
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
             rev_styles = 1 - raw_styles
@@ -362,28 +368,42 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
                     temperature=temperature,
                 )
                 
-            gold_text += tensor2text(vocab, inp_tokens.cpu())
-            raw_output += tensor2text(vocab, raw_log_probs.argmax(-1).cpu())
-            rev_output += tensor2text(vocab, rev_log_probs.argmax(-1).cpu())
+            gold_text += tensor2text(data, inp_tokens.cpu())
+            raw_output += tensor2text(data, raw_log_probs.argmax(-1).cpu())
+            rev_output += tensor2text(data, rev_log_probs.argmax(-1).cpu())
+            if eop: break
 
         return gold_text, raw_output, rev_output
-
-    pos_iter = test_iters.pos_iter
-    neg_iter = test_iters.neg_iter
     
-    gold_text, raw_output, rev_output = zip(inference(neg_iter, 0), inference(pos_iter, 1))
+    gold_text, raw_output, rev_output = zip(inference(data, 0), inference(data, 1))
+
+    valid_file_0 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_0')
+    valid_file_1 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_1')
+    out_file_0 = open(valid_file_0, 'w', encoding='utf-8')
+    out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
+    for i in range(len(rev_output[0])):
+        line_0 = rev_output[0][i].strip()
+        line_1 = rev_output[1][i].strip()
+        out_file_0.write(line_0 + '\n')
+        out_file_1.write(line_1 + '\n')
+        out_file_0.flush()
+        out_file_1.flush()
+    out_file_0.close()
+    out_file_1.close()
 
 
     evaluator = Evaluator()
     ref_text = evaluator.yelp_ref
 
     
-    acc_neg = evaluator.yelp_acc_0(rev_output[0])
-    acc_pos = evaluator.yelp_acc_1(rev_output[1])
+    #acc_neg = evaluator.yelp_acc_0(rev_output[0])
+    acc_neg, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_pos, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
+    #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_neg = evaluator.yelp_ref_bleu_0(rev_output[0])
     bleu_pos = evaluator.yelp_ref_bleu_1(rev_output[1])
-    ppl_neg = evaluator.yelp_ppl(rev_output[0])
-    ppl_pos = evaluator.yelp_ppl(rev_output[1])
+    ppl_neg = 100 #evaluator.yelp_ppl(rev_output[0])
+    ppl_pos = 100 #evaluator.yelp_ppl(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[0]))
@@ -446,5 +466,5 @@ def auto_eval(config, vocab, model_F, test_iters, global_step, temperature):
             print('[ref ]', ref_text[1][idx], file=fw)
 
         print('*' * 20, '********', '*' * 20, file=fw)
-        
+
     model_F.train()

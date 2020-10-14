@@ -1,24 +1,10 @@
 import torch
 
-def tensor2text(vocab, tensor):
+def tensor2text(data, tensor):
     tensor = tensor.cpu().numpy()
     text = []
-    index2word = vocab.itos
-    eos_idx = vocab.stoi['<eos>']
-    unk_idx = vocab.stoi['<unk>']
-    stop_idxs = [vocab.stoi['!'], vocab.stoi['.'], vocab.stoi['?']]
     for sample in tensor:
-        sample_filtered = []
-        prev_token = None
-        for idx in list(sample):
-            if prev_token in stop_idxs:
-                break
-            if idx == unk_idx or idx == prev_token or idx == eos_idx:
-                continue
-            prev_token = idx
-            sample_filtered.append(index2word[idx])
-            
-        sample = ' '.join(sample_filtered)
+        sample = data.tokenizer.decode(sample, skip_special_tokens = True)
         text.append(sample)
 
     return text
