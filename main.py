@@ -40,20 +40,20 @@ class Config():
     iter_F = 5
     F_pretrain_iter = 500
     log_steps = 5
-    eval_steps = 25
+    eval_steps = 200
     learned_pos_embed = True
     dropout = 0
-    drop_rate_config = [(1, 0)]
-    temperature_config = [(1, 0)]
+    drop_rate_config = [(0.2, 0), (0.2, 230), (0.3, 11500)]
+    temperature_config = [(1, 0), (1, 230), (0.5, 2300), (0.1, 11500)]
 
-    slf_factor = 0.25
-    cyc_factor = 0.5
+    slf_factor = 0.1
+    cyc_factor = 0.2
     adv_factor = 1
 
     inp_shuffle_len = 0
     inp_unk_drop_fac = 0
     inp_rand_drop_fac = 0
-    inp_drop_prob = 0
+    inp_drop_prob = 1
     decode = False
     max_len = 10000
 

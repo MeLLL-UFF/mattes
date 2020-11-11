@@ -201,7 +201,7 @@ class Generator(nn.Module):
 class EmbeddingLayer(nn.Module):
     def __init__(self, data, d_model, max_length, pad_idx, learned_pos_embed, load_pretrained_embed):
         super(EmbeddingLayer, self).__init__()
-        self.token_embed = Embedding(len(data.tokenizer), d_model)
+        self.token_embed = Embedding(len(data.tokenizer), d_model, padding_idx = pad_idx)
         self.pos_embed = Embedding(max_length, d_model)
         self.vocab_size = len(data.tokenizer)
         if load_pretrained_embed:

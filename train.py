@@ -171,7 +171,7 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
     if not cyc_rec_enable:
         optimizer_F.step()
         model_D.train()
-        return slf_rec_loss.item(), 0, 0
+        return slf_rec_loss.item(), 0, 0, inp_lengths.float().mean().item(), 0
     
     gen_log_probs = model_F(
         inp_tokens,
@@ -220,7 +220,7 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
 
     model_D.train()
 
-    return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item()
+    return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item(), inp_lengths.float().mean().item(), gen_lengths.float().mean().item()
 
 def train(config, data, model_F, model_D):
     optimizer_F = optim.Adam(model_F.parameters(), lr=config.lr_F, weight_decay=config.L2)
@@ -230,6 +230,8 @@ def train(config, data, model_F, model_D):
     his_f_slf_loss = []
     his_f_cyc_loss = []
     his_f_adv_loss = []
+    batches_len = []
+    batches_gen_len = []
     
     #writer = SummaryWriter(config.log_dir)
     global_step = 0
@@ -245,18 +247,21 @@ def train(config, data, model_F, model_D):
     #for i, batch in enumerate(train_iters):
     for i in range(config.F_pretrain_iter):
         batch, batch_size, eop = data.next_train()
-        #print(batch[0].size(), batch[1].size())
-        slf_loss, cyc_loss, _ = f_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
+        #print(batch[0], batch[1])
+        slf_loss, cyc_loss, _ , batch_len, _ = f_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
         his_f_slf_loss.append(slf_loss)
         his_f_cyc_loss.append(cyc_loss)
+        batches_len.append(batch_len)
 
         if (i + 1) % 10 == 0:
             avrg_f_slf_loss = np.mean(his_f_slf_loss)
             avrg_f_cyc_loss = np.mean(his_f_cyc_loss)
+            avrg_batches_len = np.mean(batches_len)
             his_f_slf_loss = []
             his_f_cyc_loss = []
-            print('[iter: {}] slf_loss:{:.4f}, rec_loss:{:.4f}'.format(i + 1, avrg_f_slf_loss, avrg_f_cyc_loss))
-        if eop: break
+            batches_len = []
+            print('[iter: {}] slf_loss:{:.4f}, rec_loss:{:.4f}, len_batches:{:.2f}'.format(i + 1, avrg_f_slf_loss, avrg_f_cyc_loss, avrg_batches_len))
+        #if eop: break
     
     print('Training start......')
 
@@ -286,12 +291,15 @@ def train(config, data, model_F, model_D):
             
         for _ in range(config.iter_F):
             batch, batch_size, eop = data.next_train()
-            f_slf_loss, f_cyc_loss, f_adv_loss = f_step(
+            f_slf_loss, f_cyc_loss, f_adv_loss, batch_len , batch_gen_len = f_step(
                 config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay
             )
             his_f_slf_loss.append(f_slf_loss)
             his_f_cyc_loss.append(f_cyc_loss)
             his_f_adv_loss.append(f_adv_loss)
+            batches_len.append(batch_len)
+            batches_gen_len.append(batch_gen_len)
+
 
         
         global_step += 1
@@ -304,6 +312,8 @@ def train(config, data, model_F, model_D):
             avrg_f_slf_loss = np.mean(his_f_slf_loss)
             avrg_f_cyc_loss = np.mean(his_f_cyc_loss)
             avrg_f_adv_loss = np.mean(his_f_adv_loss)
+            avrg_batches_len = np.mean(batches_len)
+            avrg_batches_gen_len = np.mean(batches_gen_len)
             log_str = '[iter {}] d_adv_loss: {:.4f}  ' + \
                       'f_slf_loss: {:.4f}  f_cyc_loss: {:.4f}  ' + \
                       'f_adv_loss: {:.4f}  temp: {:.4f}  drop: {:.4f}'
@@ -312,12 +322,22 @@ def train(config, data, model_F, model_D):
                 avrg_f_slf_loss, avrg_f_cyc_loss, avrg_f_adv_loss,
                 temperature, config.inp_drop_prob * drop_decay
             ))
+            train_log_file = config.save_folder + '/train_log.txt'
+            with open(train_log_file, 'a') as fl:
+                print(('[iter {}] d_adv_loss: {:.4f}  ' + \
+                       'f_slf_loss: {:.4f}  f_cyc_loss: {:.4f}  ' + \
+                       'f_adv_loss: {:.4f}  temp: {:.4f}  drop: {:.4f} ' + \
+                       ' len_batches: {:.2f}  len_gen_batches: {:.2f}\n').format(
+                    global_step, avrg_d_adv_loss, avrg_f_slf_loss, avrg_f_cyc_loss, avrg_f_adv_loss, temperature, config.inp_drop_prob * drop_decay, avrg_batches_len, avrg_batches_gen_len
+                ), file=fl)
                 
         if global_step % config.eval_steps == 0:
             his_d_adv_loss = []
             his_f_slf_loss = []
             his_f_cyc_loss = []
             his_f_adv_loss = []
+            batches_len = []
+            batches_gen_len = []
             
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')

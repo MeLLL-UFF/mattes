@@ -4,7 +4,8 @@ def tensor2text(data, tensor):
     tensor = tensor.cpu().numpy()
     text = []
     for sample in tensor:
-        sample = data.tokenizer.decode(sample, skip_special_tokens = True)
+        sample = data.tokenizer.decode(sample)
+        sample = sample.split('[SEP]')[0]
         text.append(sample)
 
     return text
