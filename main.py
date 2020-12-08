@@ -38,7 +38,7 @@ class Config():
     L2 = 0
     iter_D = 10
     iter_F = 5
-    F_pretrain_iter = 500
+    F_pretrain_iter = 500#57500
     log_steps = 5
     eval_steps = 200
     learned_pos_embed = True
@@ -56,6 +56,11 @@ class Config():
     inp_drop_prob = 1
     decode = False
     max_len = 10000
+    lambda_span = 10000
+    word_mass = 0.5
+    word_mask = 0.8
+    word_keep = 0.1
+    word_rand = 0.1
 
 
 def main():

@@ -15,6 +15,8 @@ class DataUtil(object):
     self.hparams.unk_id = self.tokenizer.unk_token_id
     self.hparams.bos_id = self.tokenizer.cls_token_id
     self.hparams.eos_id = self.tokenizer.sep_token_id
+    self.hparams.mask_id = self.tokenizer.mask_token_id
+    self.hparams.pred_probs = torch.FloatTensor([hparams.word_mask, hparams.word_keep, hparams.word_rand])
 
     self.trg_i2w, self.trg_w2i = self._build_vocab(self.hparams.trg_vocab)
     self.hparams.trg_vocab_size = len(self.trg_i2w)

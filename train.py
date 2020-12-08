@@ -9,6 +9,7 @@ from torch.nn.utils import clip_grad_norm_
 from evaluator import Evaluator
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop
 from cnn_classify import test, CNNClassify, BiLSTMClassify
+import random
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -221,6 +222,194 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
     model_D.train()
 
     return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item(), inp_lengths.float().mean().item(), gen_lengths.float().mean().item()
+
+def mask_word(w, config):
+    _w_real = w
+    _w_rand = np.random.randint(config.src_vocab_size, size=w.shape)
+    _w_mask = np.full(w.shape, config.mask_id)
+    probs = torch.multinomial(config.pred_probs, len(_w_real), replacement=True)
+    _w = _w_mask * (probs == 0).numpy() + _w_real * (probs == 1).numpy() + _w_rand * (probs == 2).numpy()
+    return _w
+
+def unfold_segments(segs):
+    """Unfold the random mask segments, for example:
+       The shuffle segment is [2, 0, 0, 2, 0], 
+       so the masked segment is like:
+       [1, 1, 0, 0, 1, 1, 0]
+       [1, 2, 3, 4, 5, 6, 7] (positions)
+       (1 means this token will be masked, otherwise not)
+       We return the position of the masked tokens like:
+       [1, 2, 5, 6]
+    """
+    pos = []
+    curr = 1   # We do not mask the start token
+    for l in segs:
+        if l >= 1:
+            pos.extend([curr + i for i in range(l)])
+            curr += l
+        else:
+            curr += 1
+    return np.array(pos)
+
+def shuffle_segments(segs, unmasked_tokens):
+    """
+    We control 20% mask segment is at the start of sentences
+               20% mask segment is at the end   of sentences
+               60% mask segment is at random positions,
+    """
+    p = np.random.random()
+    if p >= 0.8:
+        shuf_segs = segs[1:] + unmasked_tokens
+    elif p >= 0.6:
+        shuf_segs = segs[:-1] + unmasked_tokens
+    else:
+        shuf_segs = segs + unmasked_tokens
+    random.shuffle(shuf_segs)
+    
+    if p >= 0.8:
+        shuf_segs = segs[0:1] + shuf_segs
+    elif p >= 0.6:
+        shuf_segs = shuf_segs + segs[-1:]
+    return shuf_segs
+
+def get_segments(mask_len, span_len):
+    segs = []
+    while mask_len >= span_len:
+        segs.append(span_len)
+        mask_len -= span_len
+    if mask_len != 0:
+        segs.append(mask_len)
+    return segs
+
+def restricted_mask_sent(x, l, config):
+    """ Restricted mask sents
+        if span_len is equal to 1, it can be viewed as
+        discrete mask;
+        if span_len -> inf, it can be viewed as 
+        pure sentence mask
+    """
+    x = x.transpose(0, 1)
+    span_len = config.lambda_span
+    if span_len <= 0:
+        span_len = 1
+    max_len = 0
+    positions, inputs, targets, outputs, = [], [], [], []
+    mask_len = round(len(x[:, 0]) * config.word_mass)
+    len2 = [mask_len for i in range(l.size(0))]
+    
+    unmasked_tokens = [0 for i in range(l[0] - mask_len - 1)]
+    segs = get_segments(mask_len, span_len)
+    
+    for i in range(l.size(0)):
+        words = np.array(x[:, i].tolist())
+        shuf_segs = shuffle_segments(segs, unmasked_tokens)
+        pos_i = unfold_segments(shuf_segs)
+        output_i = words[pos_i].copy()
+        target_i = words[pos_i - 1].copy()
+        words[pos_i] = mask_word(words[pos_i], config)
+
+        inputs.append(words)
+        targets.append(target_i)
+        outputs.append(output_i)
+        positions.append(pos_i - 1)
+
+    x1  = torch.LongTensor(max(l) , l.size(0)).fill_(config.pad_id)
+    x2  = torch.LongTensor(mask_len, l.size(0)).fill_(config.pad_id)
+    y   = torch.LongTensor(mask_len, l.size(0)).fill_(config.pad_id)
+    pos = torch.LongTensor(mask_len, l.size(0)).fill_(config.pad_id)
+    l1  = l.clone()
+    l2  = torch.LongTensor(len2)
+    for i in range(l.size(0)):
+        x1[:, i].copy_(torch.LongTensor(inputs[i]))
+        x2[:l2[i], i].copy_(torch.LongTensor(targets[i]))
+        y[:l2[i], i].copy_(torch.LongTensor(outputs[i]))
+        pos[:l2[i], i].copy_(torch.LongTensor(positions[i]))
+    y = torch.cat((x2[:1 , :].clone(), y), 0)
+    pred_mask = y != config.pad_id
+    #y = y.masked_select(pred_mask)
+    return x1, l1, x2, l2, y, pred_mask, pos
+
+def mass_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay):
+    '''assert lambda_coeff >= 0
+    if lambda_coeff == 0:
+        return
+    params = self.params
+    self.encoder.train()
+    self.decoder.train()
+    lang1_id = params.lang2id[lang]
+    lang2_id = params.lang2id[lang]
+    x_, len_ = self.get_batch('mass', lang)'''
+    model_D.eval()
+    
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    unk_idx = config.unk_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    batch_size = inp_tokens.size(0)
+    
+
+
+    (x1, len1, x2, len2, y, pred_mask, positions) = restricted_mask_sent(inp_tokens, inp_lengths, config)
+    x1 = x1.transpose(0, 1).to(inp_tokens.device)
+    x2 = x2.transpose(0, 1).to(inp_tokens.device)
+    y = y.transpose(0, 1).to(inp_tokens.device)
+    positions = positions.transpose(0, 1).to(inp_tokens.device)
+    len1 = len1.to(inp_tokens.device)
+    len2 = len2.to(inp_tokens.device)
+    enc_mask = (x1 == config.mask_id).to(inp_tokens.device)
+    token_mask = (y != pad_idx).float()
+    optimizer_F.zero_grad()
+
+    slf_log_probs = model_F.mass(
+        x1,
+        len1,
+        raw_styles,
+        x2,
+        len2,
+        positions,
+        enc_mask,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature        
+    )
+
+    slf_rec_loss = loss_fn(slf_log_probs.transpose(1, 2), y) * token_mask
+    slf_rec_loss = slf_rec_loss.sum() / batch_size
+    slf_rec_loss *= config.slf_factor
+    
+    slf_rec_loss.backward()
+
+    optimizer_F.step()
+    model_D.train()
+    return slf_rec_loss.item(), 0, 0, token_mask.sum().item()/batch_size, 0
+    '''
+    langs1 = x1.clone().fill_(lang1_id)
+    langs2 = x2.clone().fill_(lang2_id)
+    
+    x1, len1, langs1, x2, len2, langs2, y, positions = to_cuda(x1, len1, langs1, x2, len2, langs2, y, positions)
+    enc1 = self.encoder('fwd', x=x1, lengths=len1, langs=langs1, causal=False)
+    enc1 = enc1.transpose(0, 1)
+        
+    enc_mask = x1.ne(params.mask_index)
+    enc_mask = enc_mask.transpose(0, 1)
+    
+    dec2 = self.decoder('fwd', 
+                        x=x2, lengths=len2, langs=langs2, causal=True, 
+                        src_enc=enc1, src_len=len1, positions=positions, enc_mask=enc_mask)
+    
+    _, loss = self.decoder('predict', tensor=dec2, pred_mask=pred_mask, y=y, get_scores=False)
+    self.stats[('MA-%s' % lang)].append(loss.item())
+    
+    self.optimize(loss, ['encoder', 'decoder'])
+    # number of processed sentences / words
+    self.n_sentences += params.batch_size
+    self.stats['processed_s'] += len2.size(0)
+    self.stats['processed_w'] += (len2 - 1).sum().item()
+    '''
 
 def train(config, data, model_F, model_D):
     optimizer_F = optim.Adam(model_F.parameters(), lr=config.lr_F, weight_decay=config.L2)

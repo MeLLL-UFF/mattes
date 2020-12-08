@@ -89,6 +89,71 @@ class StyleTransformer(nn.Module):
             
             
         return log_probs
+
+    def mass(self, inp_tokens, inp_lengths, style,
+                x2, len2, positions, enc_mask, generate=False, differentiable_decode=False, temperature=1.0):
+        batch_size = inp_tokens.size(0)
+        max_enc_len = inp_tokens.size(1)
+
+        assert max_enc_len <= self.max_length
+
+        pos_idx = torch.arange(self.max_length).unsqueeze(0).expand((batch_size, -1))
+        pos_idx = pos_idx.to(inp_lengths.device)
+
+        src_mask = pos_idx[:, :max_enc_len] >= inp_lengths.unsqueeze(-1)
+        src_mask = torch.cat((torch.zeros_like(src_mask[:, :1]), src_mask), 1)
+        src_mask = src_mask.view(batch_size, 1, 1, max_enc_len + 1)
+
+        enc_mask = torch.cat((torch.zeros_like(enc_mask[:, :1]), enc_mask), 1)
+        enc_mask = enc_mask.view(batch_size, 1, 1, max_enc_len + 1)
+
+        tgt_mask = torch.ones((self.max_length, self.max_length)).to(src_mask.device)
+        tgt_mask = (tgt_mask.tril() == 0).view(1, 1, self.max_length, self.max_length)
+
+        style_emb = self.style_embed(style).unsqueeze(1)
+
+        enc_input = torch.cat((style_emb, self.embed(inp_tokens, pos_idx[:, :max_enc_len])), 1)
+        memory = self.encoder(enc_input, src_mask)
+        
+        sos_token = self.sos_token.view(1, 1, -1).expand(batch_size, -1, -1)
+        
+        if not generate:
+            enc_mask |= src_mask
+            max_dec_len = x2.size(1)
+            dec_input_emb = torch.cat((sos_token, self.embed(x2, positions)), 1)
+            log_probs = self.decoder(
+                dec_input_emb, memory,
+                enc_mask, tgt_mask[:, :, :max_dec_len + 1, :max_dec_len + 1],
+                temperature
+            )
+        else:
+            
+            log_probs = []
+            next_token = sos_token
+            prev_states = None
+            
+            for k in range(self.max_length):
+                log_prob, prev_states = self.decoder.incremental_forward(
+                    next_token, memory,
+                    src_mask, tgt_mask[:, :, k:k+1, :k+1],
+                    temperature,
+                    prev_states
+                )
+
+                log_probs.append(log_prob)
+                
+                if differentiable_decode:
+                    next_token = self.embed(log_prob.exp(), pos_idx[:, k:k+1])
+                else:
+                    next_token = self.embed(log_prob.argmax(-1), pos_idx[:, k:k+1])
+
+                #if (pred_tokens == self.eos_idx).max(-1)[0].min(-1)[0].item() == 1:
+                #    break
+
+            log_probs = torch.cat(log_probs, 1)
+            
+            
+        return log_probs
     
 class Discriminator(nn.Module):
     def __init__(self, config, data):
@@ -164,7 +229,7 @@ class Decoder(nn.Module):
 
     def forward(self, x, memory, src_mask, tgt_mask, temperature):
         y = x
-
+        
         assert y.size(1) == tgt_mask.size(-1)
         
         for layer in self.layers:
