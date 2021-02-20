@@ -4,7 +4,7 @@ import os
 import numpy as np
 
 def init_args():
-  parser = argparse.ArgumentParser(description='Clean up the sequences')
+  parser = argparse.ArgumentParser(description='Script for extract log info')
   parser.add_argument('--seed', type=int, default=77777, metavar='S', help='random seed')
   parser.add_argument('--data_path', type=str, default="", help='data path')
   parser.add_argument("--train", action="store_true", 
