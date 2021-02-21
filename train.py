@@ -7,7 +7,7 @@ from torch import nn, optim
 from torch.nn.utils import clip_grad_norm_
 
 from evaluator import Evaluator
-from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop
+from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop, kd_loss
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 import random
 
@@ -199,6 +199,16 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
 
     cyc_rec_loss = loss_fn(cyc_log_probs.transpose(1, 2), inp_tokens) * token_mask
     cyc_rec_loss = cyc_rec_loss.sum() / batch_size
+
+    if alpha > 0:
+            if isinstance(bert_logits, tuple):
+                bert_logits = tuple(map(self._bottle, bert_logits))
+            else:
+                bert_logits = self._bottle(bert_logits)
+            loss_kd = kd_loss(cyc_log_probs, bert_logits,
+                              temperature, non_pad, self.top_k)
+            cyc_rec_loss = cyc_rec_loss * (1. - alpha) + loss_kd * alpha
+
     cyc_rec_loss *= config.cyc_factor
 
     # style consistency loss

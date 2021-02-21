@@ -141,3 +141,13 @@ def add_noise(words, lengths, shuffle_len, drop_prob, unk_idx):
     words = word_shuffle(words, lengths, shuffle_len)
     words = word_dropout(words, lengths, drop_prob, unk_idx)
     return words 
+
+def kd_loss(log_prob, teacher_outputs, temperature, mask, top_k):
+    """ our own temp scaling """
+    # NOTE: the temperature scaling is kind of non-standard, as we observe
+    #       better empirical performance this way
+    T = temperature
+    topk_prob, topk_idx = teacher_outputs
+    topk_prob = F.softmax(topk_prob/T, dim=-1)
+    loss = -(log_prob.gather(dim=-1, index=topk_idx) * topk_prob)[mask].sum()
+    return loss

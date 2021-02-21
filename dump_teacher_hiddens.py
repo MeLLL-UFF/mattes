@@ -35,18 +35,25 @@ def gather_hiddens(hiddens, masks):
         if mask.sum().item() == 0:
             continue
         mask = mask.unsqueeze(-1).expand_as(hid)
+        mask = mask.to(dtype=torch.bool)
         outputs.append(hid.masked_select(mask))
     output = torch.stack(outputs, dim=0)
     return output
 
 
 class BertSampleDataset(Dataset):
-    def __init__(self, corpus_path, tokenizer, num_samples=7):
+    def __init__(self, corpus_path, tokenizer, style, num_samples=7):
         self.db = shelve.open(corpus_path, 'r')
         self.ids = []
-        for i, ex in self.db.items():
-            if len(ex['src']) + len(ex['tgt']) + 3 <= 512:
-                self.ids.append(i)
+        self.style = style
+        if style == 'classic':
+            for i, ex in self.db.items():
+                if len(ex['src']) <= 10000:
+                    self.ids.append(i)
+        else:
+            for i, ex in self.db.items():
+                if len(ex['tgt']) <= 10000:
+                    self.ids.append(i)
         self.toker = tokenizer
         self.num_samples = num_samples
 
@@ -56,12 +63,15 @@ class BertSampleDataset(Dataset):
     def __getitem__(self, i):
         id_ = self.ids[i]
         example = self.db[id_]
-        features = convert_example(example['src'], example['tgt'],
-                                   self.toker, self.num_samples)
+        if self.style == 'classic':
+            features = convert_example(example['src'], self.toker, self.num_samples)
+        else:
+            features = convert_example(example['tgt'], self.toker, self.num_samples)
+
         return (id_, ) + features
 
 
-def convert_example(src, tgt, toker, num_samples):
+def convert_example(tgt, toker, num_samples):
     #src = [convert_token_to_bert(tok) for tok in src]
     tgt = tgt + ['[SEP]']
 
@@ -79,15 +89,16 @@ def convert_example(src, tgt, toker, num_samples):
                 masks.data[i, j] = 1
     assert (masks.sum(dim=0) != torch.ones(tgt_len).long()).sum().item() == 0
     assert masks.sum().item() == tgt_len
-    masks = torch.cat([torch.zeros(num_samples, len(src)+2).byte(), masks],
+    masks = torch.cat([torch.zeros(num_samples, 1).byte(), masks],
                       dim=1)
+    masks = masks.to(dtype=torch.bool)
 
     # make BERT inputs
-    input_ids = toker.convert_tokens_to_ids(['[CLS]'] + src + ['[SEP]'] + tgt)
+    input_ids = toker.convert_tokens_to_ids(['[CLS]'] + tgt)
     mask_id = toker.convert_tokens_to_ids(['[MASK]'])[0]
     input_ids = torch.tensor([input_ids for _ in range(num_samples)])
     input_ids.data.masked_fill_(masks, mask_id)
-    token_ids = torch.tensor([[0] * (len(src) + 2) + [1] * len(tgt)
+    token_ids = torch.tensor([[0] * (len(tgt) + 1)
                               for _ in range(num_samples)])
     return input_ids, token_ids, masks
 
@@ -132,11 +143,11 @@ def process_batch(batch, bert, toker, num_samples=7):
     return outputs
 
 
-def build_db_batched(corpus, out_db, bert, toker, batch_size=8):
-    dataset = BertSampleDataset(corpus, toker)
+def build_db_batched(corpus, out_db, bert, toker, style, batch_size=8):
+    dataset = BertSampleDataset(corpus, toker, style)
     loader = DataLoader(dataset, batch_size=batch_size,
                         num_workers=4, collate_fn=batch_features)
-    with tqdm(desc='computing BERT features', total=len(dataset)) as pbar:
+    with tqdm(desc='computing ALBERT features', total=len(dataset)) as pbar:
         for ids, *batch in loader:
             outputs = process_batch(batch, bert, toker)
             for id_, output in zip(ids, outputs):
@@ -154,7 +165,7 @@ def main(opts):
     toker = AlbertTokenizer.from_pretrained('albert-large-v2')
 
     # save the final projection layer
-    linear = torch.nn.Linear(albert.config.hidden_size, albert.config.vocab_size)
+    linear = torch.nn.Linear(albert.config.embedding_size, albert.config.vocab_size)
     linear.weight.data = state_dict['predictions.decoder.weight']
     linear.bias.data = state_dict['predictions.bias']
     os.makedirs(opts.output)
@@ -163,11 +174,12 @@ def main(opts):
     # create DB
     with shelve.open(f'{opts.output}/db') as out_db, \
             torch.no_grad():
-        build_db_batched(opts.db, out_db, albert, toker)
+        build_db_batched(opts.db, out_db, albert, toker, opts.style)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
+    parser.add_argument('--style', required=True, choices=['classic', 'modern'])
     parser.add_argument('--ckpt', required=True, help='ALBERT checkpoint')
     parser.add_argument('--db', required=True, help='dataset to compute')
     parser.add_argument('--output', required=True, help='path to dump output')
