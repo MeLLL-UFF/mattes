@@ -1,13 +1,15 @@
+import io
 import random
 import numpy as np
 import os
 from transformers import AlbertTokenizer
 
 import torch
+import shelve
 
 class DataUtil(object):
 
-  def __init__(self, hparams, decode=True):
+  def __init__(self, hparams, k=8):
     self.hparams = hparams
     self.tokenizer = AlbertTokenizer.from_pretrained('albert-large-v2')
     self.hparams.src_vocab_size = len(self.tokenizer)
@@ -17,6 +19,9 @@ class DataUtil(object):
     self.hparams.eos_id = self.tokenizer.sep_token_id
     self.hparams.mask_id = self.tokenizer.mask_token_id
     self.hparams.pred_probs = torch.FloatTensor([hparams.word_mask, hparams.word_keep, hparams.word_rand])
+    self.topk_db0 = shelve.open(f'{hparams.bert_dump0}/topk', 'r')
+    self.topk_db1 = shelve.open(f'{hparams.bert_dump1}/topk', 'r')
+    self.k = k
 
     self.trg_i2w, self.trg_w2i = self._build_vocab(self.hparams.trg_vocab)
     self.hparams.trg_vocab_size = len(self.trg_i2w)
@@ -30,13 +35,13 @@ class DataUtil(object):
       self.train_size = 0
       self.n_train_batches = 0
 
-      self.train_x0, self.train_y0, _ = self._build_parallel(self.hparams.train_src_file0, self.hparams.train_trg_file)
+      self.train_x0, self.train_y0, _ , self.index0 = self._build_parallel(self.hparams.train_src_file0, self.hparams.train_trg_file)
       self.train_size = len(self.train_x0)
-      self.train_x1, self.train_y1, _ = self._build_parallel(self.hparams.train_src_file1, self.hparams.train_trg_file)
+      self.train_x1, self.train_y1, _ , self.index1 = self._build_parallel(self.hparams.train_src_file1, self.hparams.train_trg_file)
       assert self.train_size == len(self.train_x1)
 
-      self.dev_x0, self.dev_y0, _ = self._build_parallel(self.hparams.dev_src_file0, self.hparams.dev_trg_file, is_train=False)
-      self.dev_x1, self.dev_y1, _ = self._build_parallel(self.hparams.dev_src_file1, self.hparams.dev_trg_file, is_train=False)
+      self.dev_x0, self.dev_y0, _ , _ = self._build_parallel(self.hparams.dev_src_file0, self.hparams.dev_trg_file, is_train=False)
+      self.dev_x1, self.dev_y1, _ , _ = self._build_parallel(self.hparams.dev_src_file1, self.hparams.dev_trg_file, is_train=False)
       self.dev_size = len(self.dev_x0)
       assert self.dev_size == len(self.dev_x1)
       self.dev_index = 0
@@ -46,7 +51,7 @@ class DataUtil(object):
       #test_trg_file = os.path.join(self.hparams.data_path, self.hparams.test_trg_file)
       test_src_file = self.hparams.test_src_file
       test_trg_file = self.hparams.test_trg_file
-      self.test_x, self.test_y, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
+      self.test_x, self.test_y, _ , _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
       self.test_size = len(self.test_x)
       self.test_index = 0
 
@@ -97,7 +102,36 @@ class DataUtil(object):
       eop = True
     else:
       eop = False
-    return (x_train0, x_train1), batch_size, eop
+
+    assert x_train0.size(0) == x_train1.size(0)
+
+    batch, len_ = x_train0.size()
+    len1 = x_train1.size(1)
+    topk_logit0 = torch.zeros(batch, len_, self.k)
+    topk_index0 = torch.zeros(batch, len_, self.k , dtype = torch.long)
+    topk_logit1 = torch.zeros(batch, len1, self.k)
+    topk_index1 = torch.zeros(batch, len1, self.k , dtype = torch.long)
+    for i, j in zip(range(start_index, end_index, 1), range(end_index - start_index)):
+      topk_logits0, topk_inds0 = load_topk(self.topk_db0[str(int(self.index0[i]))])
+      topk_logits1, topk_inds1 = load_topk(self.topk_db1[str(int(self.index1[i]))])
+      topk_logits0 = topk_logits0[:, :self.k].float()
+      #print(topk_logits0.size())
+      topk_inds0 = topk_inds0[:, :self.k]
+      topk_logits1 = topk_logits1[:, :self.k].float()
+      topk_inds1 = topk_inds1[:, :self.k]
+      
+      topk_logit0.data[j, :topk_logits0.size(0), :] = topk_logits0.data
+      topk_index0.data[j, :topk_inds0.size(0), :] = topk_inds0.data
+      topk_logit1.data[j, :topk_logits1.size(0), :] = topk_logits1.data
+      topk_index1.data[j, :topk_inds1.size(0), :] = topk_inds1.data
+
+    if torch.cuda.is_available():
+      topk_logit0 = topk_logit0.cuda()
+      topk_logit1 = topk_logit1.cuda()
+      topk_index0 = topk_index0.cuda()
+      topk_index1 = topk_index1.cuda()
+
+    return (x_train0, x_train1, topk_logit0, topk_logit1, topk_index0, topk_index1), batch_size, eop
 
   def sample_y(self):
     # first how many attrs?
@@ -133,7 +167,7 @@ class DataUtil(object):
     return (x_dev0, x_dev1),  batch_size, eop
 
   def reset_test(self, test_src_file, test_trg_file):
-    self.test_x, self.test_y, src_len = self._build_parallel(test_src_file, test_trg_file, is_train=False)
+    self.test_x, self.test_y, src_len, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
     self.test_size = len(self.test_x)
     self.test_index = 0
 
@@ -210,9 +244,9 @@ class DataUtil(object):
       if not src_tokens or not trg_tokens:
         skip_line_count += 1
         continue
-      if is_train and not self.hparams.decode and self.hparams.max_len and (len(src_tokens) > self.hparams.max_len or len(trg_tokens) > self.hparams.max_len):
-        skip_line_count += 1
-        continue
+      #if is_train and not self.hparams.decode and self.hparams.max_len and (len(src_tokens) > self.hparams.max_len or len(trg_tokens) > self.hparams.max_len):
+      #  skip_line_count += 1
+      #  continue
 
       src_lens.append(len(src_tokens))
       src_indices, trg_indices = [], []
@@ -235,12 +269,13 @@ class DataUtil(object):
       line_count += 1
       if line_count % 10000 == 0:
         print("processed {} lines".format(line_count))
+    index = None
     if is_train:
-      src_data, trg_data, _ = self.sort_by_xlen(src_data, trg_data, descend=False)
+      src_data, trg_data, index = self.sort_by_xlen(src_data, trg_data, descend=False)
     print("src_unk={}, trg_unk={}".format(src_unk_count, trg_unk_count))
     assert len(src_data) == len(trg_data)
     print("lines={}, skipped_lines={}".format(len(src_data), skip_line_count))
-    return src_data, trg_data, src_lens
+    return src_data, trg_data, src_lens, index
 
   def _build_vocab(self, vocab_file, max_vocab_size=None):
     i2w = []
@@ -271,5 +306,10 @@ class DataUtil(object):
     #assert w2i['<s>'] == self.hparams.bos_id
     #assert w2i['<\s>'] == self.hparams.eos_id
     return i2w, w2i
+
+def load_topk(dump):
+    with io.BytesIO(dump) as reader:
+        topk = torch.load(reader)
+    return topk
 
 

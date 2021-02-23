@@ -1,4 +1,5 @@
 import torch
+import torch.nn.functional as F
 
 def tensor2text(data, tensor):
     tensor = tensor.cpu().numpy()
@@ -142,12 +143,14 @@ def add_noise(words, lengths, shuffle_len, drop_prob, unk_idx):
     words = word_dropout(words, lengths, drop_prob, unk_idx)
     return words 
 
-def kd_loss(log_prob, teacher_outputs, temperature, mask, top_k):
+def kd_loss(log_prob, teacher_outputs, temperature, mask):
     """ our own temp scaling """
     # NOTE: the temperature scaling is kind of non-standard, as we observe
     #       better empirical performance this way
     T = temperature
     topk_prob, topk_idx = teacher_outputs
+    topk_prob = topk_prob.view(-1,topk_prob.size(2))
+    topk_idx = topk_idx.view(-1,topk_idx.size(2))
     topk_prob = F.softmax(topk_prob/T, dim=-1)
-    loss = -(log_prob.gather(dim=-1, index=topk_idx) * topk_prob)[mask].sum()
+    loss = -(log_prob.gather(dim=-1, index=topk_idx) * topk_prob)[mask.bool()].sum()
     return loss

@@ -19,7 +19,7 @@ from transformers import AlbertTokenizer, AlbertForMaskedLM
 
 #from cmlm.model import BertForSeq2seq
 #from cmlm.data import convert_token_to_bert, CLS, SEP, MASK
-
+MAX_LEN = 64
 
 def tensor_dumps(tensor):
     with io.BytesIO() as writer:
@@ -48,11 +48,11 @@ class BertSampleDataset(Dataset):
         self.style = style
         if style == 'classic':
             for i, ex in self.db.items():
-                if len(ex['src']) <= 10000:
+                if len(ex['src']) > 0:
                     self.ids.append(i)
         else:
             for i, ex in self.db.items():
-                if len(ex['tgt']) <= 10000:
+                if len(ex['tgt']) > 0:
                     self.ids.append(i)
         self.toker = tokenizer
         self.num_samples = num_samples
@@ -72,7 +72,8 @@ class BertSampleDataset(Dataset):
 
 
 def convert_example(tgt, toker, num_samples):
-    #src = [convert_token_to_bert(tok) for tok in src]
+    if len(tgt) >= MAX_LEN:
+        tgt = tgt[:(MAX_LEN-1)]
     tgt = tgt + ['[SEP]']
 
     # build the random masks

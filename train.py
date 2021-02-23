@@ -18,27 +18,37 @@ def get_lengths(tokens, eos_idx):
     return lengths
 
 def batch_preprocess(batch, pad_idx, eos_idx, reverse=False):
-    batch_pos, batch_neg = batch
-    diff = batch_pos.size(1) - batch_neg.size(1)
+    batch_0, batch_1, topk_logit0, topk_logit1, topk_index0, topk_index1 = batch
+    diff = batch_0.size(1) - batch_1.size(1)
     if diff < 0:
-        pad = torch.full_like(batch_neg[:, :-diff], pad_idx)
-        batch_pos = torch.cat((batch_pos, pad), 1)
-    elif diff > 0:
-        pad = torch.full_like(batch_pos[:, :diff], pad_idx)
-        batch_neg = torch.cat((batch_neg, pad), 1)
+        pad = torch.full_like(batch_1[:, :-diff], pad_idx)
+        batch_0 = torch.cat((batch_0, pad), 1)
+        pad_topk = torch.full_like(topk_logit1[:, :-diff], pad_idx)
+        topk_logit0 = torch.cat((topk_logit0, pad_topk), 1)
+        topk_index0 = torch.cat((topk_index0, pad_topk.long()), 1)
 
-    pos_styles = torch.ones_like(batch_pos[:, 0])
-    neg_styles = torch.zeros_like(batch_neg[:, 0])
+    elif diff > 0:
+        pad = torch.full_like(batch_0[:, :diff], pad_idx)
+        batch_1 = torch.cat((batch_1, pad), 1)
+        pad_topk = torch.full_like(topk_logit0[:, :diff], pad_idx)
+        topk_logit1 = torch.cat((topk_logit1, pad_topk), 1)
+        topk_index1 = torch.cat((topk_index1, pad_topk.long()), 1)
+
+    pos_styles = torch.ones_like(batch_0[:, 0])
+    neg_styles = torch.zeros_like(batch_1[:, 0])
 
     if reverse:
-        batch_pos, batch_neg = batch_neg, batch_pos
+        batch_0, batch_1 = batch_1, batch_0
         pos_styles, neg_styles = neg_styles, pos_styles
         
-    tokens = torch.cat((batch_pos, batch_neg), 0)
+    tokens = torch.cat((batch_0, batch_1), 0)
     lengths = get_lengths(tokens, eos_idx)
     styles = torch.cat((neg_styles, pos_styles), 0)
+    topk_logit = torch.cat((topk_logit0, topk_logit1), 0)
+    topk_index = torch.cat((topk_index0, topk_index1), 0)
 
-    return tokens, lengths, styles
+
+    return tokens, lengths, styles, topk_logit, topk_index
         
 
 def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
@@ -48,7 +58,7 @@ def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
     vocab_size = len(data.tokenizer)
     loss_fn = nn.NLLLoss(reduction='none')
 
-    inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
+    inp_tokens, inp_lengths, raw_styles, _ , _ = batch_preprocess(batch, pad_idx, eos_idx)
     rev_styles = 1 - raw_styles
     batch_size = inp_tokens.size(0)
 
@@ -135,7 +145,7 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
     vocab_size = len(data.tokenizer)
     loss_fn = nn.NLLLoss(reduction='none')
 
-    inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
+    inp_tokens, inp_lengths, raw_styles, topk_logit, topk_index = batch_preprocess(batch, pad_idx, eos_idx)
     rev_styles = 1 - raw_styles
     batch_size = inp_tokens.size(0)
     token_mask = (inp_tokens != pad_idx).float()
@@ -199,15 +209,13 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
 
     cyc_rec_loss = loss_fn(cyc_log_probs.transpose(1, 2), inp_tokens) * token_mask
     cyc_rec_loss = cyc_rec_loss.sum() / batch_size
-
-    if alpha > 0:
-            if isinstance(bert_logits, tuple):
-                bert_logits = tuple(map(self._bottle, bert_logits))
-            else:
-                bert_logits = self._bottle(bert_logits)
-            loss_kd = kd_loss(cyc_log_probs, bert_logits,
-                              temperature, non_pad, self.top_k)
-            cyc_rec_loss = cyc_rec_loss * (1. - alpha) + loss_kd * alpha
+    token_mask = token_mask.view(-1)
+    if config.albert_kd and config.kd_alpha > 0:
+            cyc_log_probs = cyc_log_probs.view(-1,cyc_log_probs.size(2))
+            loss_kd = kd_loss(cyc_log_probs, (topk_logit, topk_index),
+                              config.kd_temperature, token_mask)
+            loss_kd /= batch_size
+            cyc_rec_loss = cyc_rec_loss * (1. - config.kd_alpha) + loss_kd * config.kd_alpha
 
     cyc_rec_loss *= config.cyc_factor
 
@@ -357,7 +365,7 @@ def mass_step(config, data, model_F, model_D, optimizer_F, batch, temperature, d
     vocab_size = len(data.tokenizer)
     loss_fn = nn.NLLLoss(reduction='none')
 
-    inp_tokens, inp_lengths, raw_styles = batch_preprocess(batch, pad_idx, eos_idx)
+    inp_tokens, inp_lengths, raw_styles, _ , _ = batch_preprocess(batch, pad_idx, eos_idx)
     rev_styles = 1 - raw_styles
     batch_size = inp_tokens.size(0)
     

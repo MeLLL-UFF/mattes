@@ -44,7 +44,7 @@ class Config():
     learned_pos_embed = True
     dropout = 0
     drop_rate_config = [(0.2, 0), (0.2, 230), (0.3, 11500)]
-    temperature_config = [(1, 0), (1, 230), (0.5, 2300), (0.1, 11500)]
+    temperature_config = [(1, 0), (1, 2300), (0.9, 4600), (0.8, 11500)]
 
     slf_factor = 0.1
     cyc_factor = 0.2
@@ -55,12 +55,17 @@ class Config():
     inp_rand_drop_fac = 0
     inp_drop_prob = 1
     decode = False
-    max_len = 10000
+    #max_len = 10000
     lambda_span = 10000
     word_mass = 0.5
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
+    albert_kd = True
+    kd_alpha = 0.5
+    kd_temperature = 1
+    bert_dump0 = 'data/targets/teacher0'
+    bert_dump1 = 'data/targets/teacher1'
 
 
 def main():
