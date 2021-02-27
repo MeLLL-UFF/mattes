@@ -167,7 +167,7 @@ class DataUtil(object):
     return (x_dev0, x_dev1),  batch_size, eop
 
   def reset_test(self, test_src_file, test_trg_file):
-    self.test_x, self.test_y, src_len, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
+    self.test_x, self.test_y, src_len, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False, insert_bos=True)
     self.test_size = len(self.test_x)
     self.test_index = 0
 
@@ -223,7 +223,7 @@ class DataUtil(object):
       mask = mask.cuda()
     return padded_sentences, mask, count, lengths, pos_emb_indices
 
-  def _build_parallel(self, src_file_name, trg_file_name, is_train=True):
+  def _build_parallel(self, src_file_name, trg_file_name, is_train=True, insert_bos = False):
     print("loading parallel sentences from {} {}".format(src_file_name, trg_file_name))
     with open(src_file_name, 'r', encoding='utf-8') as f:
       src_lines = f.read().split('\n')
@@ -249,8 +249,13 @@ class DataUtil(object):
       #  continue
 
       src_lens.append(len(src_tokens))
-      src_indices, trg_indices = [], []
-      src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
+      if insert_bos:
+        src_indices, trg_indices = [self.hparams.bos_id], []
+        src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
+      else:
+        src_indices, trg_indices = [], []
+        src_indices += self.tokenizer.convert_tokens_to_ids(src_tokens)
+
       if len(src_indices) >= self.hparams.max_length:
         src_indices = src_indices[:(self.hparams.max_length - 1)]
 

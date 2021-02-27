@@ -13,8 +13,9 @@ from torch.autograd import Variable
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
 from data_utils import DataUtil
+from src import DataUtil2
 from hparams import *
-#from utils import *
+from utils import *
 #from model import *
 
 class BiLSTMClassify(nn.Module):
@@ -114,7 +115,7 @@ class CNNClassify(nn.Module):
     logits = self.project(torch.cat(conv_out, dim=-1))
     return logits
 
-def test(model, data, hparams, test_src_file, test_trg_file, negate=False):
+def test(model, data, batch_size, test_src_file, test_trg_file, negate=False):
   model.hparams.decode = True
   valid_words = 0
   valid_loss = 0
@@ -128,7 +129,7 @@ def test(model, data, hparams, test_src_file, test_trg_file, negate=False):
   while True:
     x, x_mask, x_count, x_len, x_pos_emb_idxs, \
     y, y_mask, y_count, y_len, y_pos_emb_idxs, \
-    y_neg, batch_size, end_of_epoch, _ = data.next_test(test_batch_size=hparams)
+    y_neg, batch_size, end_of_epoch, _ = data.next_test(test_batch_size=batch_size)
     # clear GPU memory
     gc.collect()
 
@@ -226,7 +227,7 @@ def train():
 
   print("building model...")
   if args.load_model:
-    data = DataUtil(hparams=hparams)
+    data = DataUtil2(hparams=hparams)
     model_file_name = os.path.join(args.output_dir, "model.pt")
     print("Loading model from '{0}'".format(model_file_name))
     model = torch.load(model_file_name)
@@ -245,7 +246,7 @@ def train():
     extra_file_name = os.path.join(args.output_dir, "extra.pt")
     step, best_loss, best_acc, cur_attempt, lr = torch.load(extra_file_name)
   else:
-    data = DataUtil(hparams=hparams)
+    data = DataUtil2(hparams=hparams)
     if hparams.classifer == "cnn":
         model = CNNClassify(hparams)
     else:
@@ -511,7 +512,7 @@ if __name__ == "__main__":
     hparams.test_src_file = args.test_src_file
     hparams.test_trg_file = args.test_trg_file
 
-    data = DataUtil(hparams=hparams)
+    data = DataUtil2(hparams=hparams)
     model_file_name = os.path.join(args.output_dir, "model.pt")
     print("Loading model from '{0}'".format(model_file_name))
     model = torch.load(model_file_name)

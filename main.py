@@ -4,6 +4,7 @@ from data_utils import DataUtil
 from models import StyleTransformer, Discriminator
 from train import train, auto_eval
 from cnn_classify import test, CNNClassify, BiLSTMClassify
+from lm_lstm import LSTM_LM
 
 
 class Config():
@@ -61,7 +62,7 @@ class Config():
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
-    albert_kd = True
+    albert_kd = False
     kd_alpha = 0.5
     kd_temperature = 1
     bert_dump0 = 'data/targets/teacher0'

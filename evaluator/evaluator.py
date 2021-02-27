@@ -6,6 +6,7 @@ import pkg_resources
 import kenlm
 import math
 from cnn_classify import test, CNNClassify, BiLSTMClassify
+from lm_lstm import LSTM_LM
 import os
 import torch
 
@@ -22,6 +23,14 @@ class Evaluator(object):
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
         self.classifier = torch.load(classifier_file_name)
+
+        lm0_dir = "pretrained_lm/shakespeare_style0"
+        lm1_dir = "pretrained_lm/shakespeare_style1"
+        lm0_file_name = os.path.join(lm0_dir, "model.pt")
+        lm1_file_name = os.path.join(lm1_dir, "model.pt")
+        print("Loading language models from '{0}' and {1}".format(lm0_file_name,lm1_file_name))
+        self.lm0 = torch.load(lm0_file_name)
+        self.lm1 = torch.load(lm1_file_name)
 
         
         #yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)

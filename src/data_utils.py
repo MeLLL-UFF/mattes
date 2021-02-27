@@ -5,7 +5,7 @@ from transformers import AlbertTokenizer
 
 import torch
 
-class DataUtil(object):
+class DataUtil2(object):
 
   def __init__(self, hparams, decode=True):
     self.hparams = hparams

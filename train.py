@@ -9,6 +9,7 @@ from torch.nn.utils import clip_grad_norm_
 from evaluator import Evaluator
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop, kd_loss
 from cnn_classify import test, CNNClassify, BiLSTMClassify
+from lm_lstm import lm_ppl
 import random
 
 def get_lengths(tokens, eos_idx):
@@ -49,7 +50,30 @@ def batch_preprocess(batch, pad_idx, eos_idx, reverse=False):
 
 
     return tokens, lengths, styles, topk_logit, topk_index
+
+def batch_preprocess_eval(batch, pad_idx, eos_idx, reverse=False):
+    batch_0, batch_1 = batch
+    diff = batch_0.size(1) - batch_1.size(1)
+    if diff < 0:
+        pad = torch.full_like(batch_1[:, :-diff], pad_idx)
+        batch_0 = torch.cat((batch_0, pad), 1)
+
+    elif diff > 0:
+        pad = torch.full_like(batch_0[:, :diff], pad_idx)
+        batch_1 = torch.cat((batch_1, pad), 1)
+
+    pos_styles = torch.ones_like(batch_0[:, 0])
+    neg_styles = torch.zeros_like(batch_1[:, 0])
+
+    if reverse:
+        batch_0, batch_1 = batch_1, batch_0
+        pos_styles, neg_styles = neg_styles, pos_styles
         
+    tokens = torch.cat((batch_0, batch_1), 0)
+    lengths = get_lengths(tokens, eos_idx)
+    styles = torch.cat((neg_styles, pos_styles), 0)
+
+    return tokens, lengths, styles     
 
 def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
     model_F.eval()
@@ -429,6 +453,86 @@ def mass_step(config, data, model_F, model_D, optimizer_F, batch, temperature, d
     self.stats['processed_w'] += (len2 - 1).sum().item()
     '''
 
+def eval_step(config, data, model_F, model_D, batch, temperature):
+    model_D.eval()
+    model_F.eval()
+    
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    unk_idx = config.unk_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles = batch_preprocess_eval(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    batch_size = inp_tokens.size(0)
+    token_mask = (inp_tokens != pad_idx).float()
+
+    # self reconstruction loss
+
+    noise_inp_tokens = inp_tokens
+    noise_inp_lengths = get_lengths(noise_inp_tokens, eos_idx)
+
+    slf_log_probs = model_F(
+        noise_inp_tokens, 
+        inp_tokens, 
+        noise_inp_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    slf_rec_loss = loss_fn(slf_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    slf_rec_loss = slf_rec_loss.sum() / batch_size
+    slf_rec_loss *= config.slf_factor
+    
+    # cycle consistency loss
+    
+    gen_log_probs = model_F(
+        inp_tokens,
+        None,
+        inp_lengths,
+        rev_styles,
+        generate=True,
+        differentiable_decode=True,
+        temperature=temperature,
+    )
+
+    gen_soft_tokens = gen_log_probs.exp()
+    gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+    cyc_log_probs = model_F(
+        gen_soft_tokens,
+        inp_tokens,
+        gen_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    cyc_rec_loss = loss_fn(cyc_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    cyc_rec_loss = cyc_rec_loss.sum() / batch_size
+
+    cyc_rec_loss *= config.cyc_factor
+
+    # style consistency loss
+
+    adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
+    if config.discriminator_method == 'Multi':
+        adv_labels = rev_styles + 1
+    else:
+        adv_labels = torch.ones_like(rev_styles)
+    adv_loss = loss_fn(adv_log_porbs, adv_labels)
+    adv_loss = adv_loss.sum() / batch_size
+    adv_loss *= config.adv_factor
+        
+    model_D.train()
+    model_F.train()
+
+    return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item(), inp_lengths.float().mean().item(), gen_lengths.float().mean().item()
+
 def train(config, data, model_F, model_D):
     optimizer_F = optim.Adam(model_F.parameters(), lr=config.lr_F, weight_decay=config.L2)
     optimizer_D = optim.Adam(model_D.parameters(), lr=config.lr_D, weight_decay=config.L2)
@@ -549,11 +653,11 @@ def train(config, data, model_F, model_D):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            auto_eval(config, data, model_F, global_step, temperature)
+            auto_eval(config, data, model_F, model_D, global_step, temperature)
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
 
-def auto_eval(config, data, model_F, global_step, temperature):
+def auto_eval(config, data, model_F, model_D, global_step, temperature):
     model_F.eval()
     vocab_size = len(data.tokenizer)
     eos_idx = config.eos_id
@@ -624,17 +728,17 @@ def auto_eval(config, data, model_F, global_step, temperature):
 
     
     #acc_neg = evaluator.yelp_acc_0(rev_output[0])
-    acc_neg, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
-    acc_pos, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
+    acc_mod, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_cla, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
-    bleu_neg = evaluator.yelp_ref_bleu_0(rev_output[0])
-    bleu_pos = evaluator.yelp_ref_bleu_1(rev_output[1])
-    ppl_neg = 100 #evaluator.yelp_ppl(rev_output[0])
-    ppl_pos = 100 #evaluator.yelp_ppl(rev_output[1])
+    bleu_mod = evaluator.yelp_ref_bleu_0(rev_output[0])
+    bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
+    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 32, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 32, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[0]))
-        print('*' * 20, 'neg sample', '*' * 20)
+        print('*' * 20, 'classic sample', '*' * 20)
         print('[gold]', gold_text[0][idx])
         print('[raw ]', raw_output[0][idx])
         print('[rev ]', rev_output[0][idx])
@@ -645,7 +749,7 @@ def auto_eval(config, data, model_F, global_step, temperature):
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[1]))
-        print('*' * 20, 'pos sample', '*' * 20)
+        print('*' * 20, 'modern sample', '*' * 20)
         print('[gold]', gold_text[1][idx])
         print('[raw ]', raw_output[1][idx])
         print('[rev ]', rev_output[1][idx])
@@ -653,31 +757,57 @@ def auto_eval(config, data, model_F, global_step, temperature):
 
     print('*' * 20, '********', '*' * 20)
 
-    print(('[auto_eval] acc_pos: {:.4f} acc_neg: {:.4f} ' + \
-          'bleu_pos: {:.4f} bleu_neg: {:.4f} ' + \
-          'ppl_pos: {:.4f} ppl_neg: {:.4f}\n').format(
-              acc_pos, acc_neg, bleu_pos, bleu_neg, ppl_pos, ppl_neg,
+    print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+          'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+              acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
     ))
 
-    
+    his_f_slf_loss = []
+    his_f_cyc_loss = []
+    his_f_adv_loss = []
+    batches_len = []
+    batches_gen_len = []
+    while True:
+        batch, batch_size, eop = data.next_dev(dev_batch_size = 16)
+        f_slf_loss, f_cyc_loss, f_adv_loss, batch_len , batch_gen_len = eval_step(
+            config, data, model_F, model_D, batch, 1)
+        his_f_slf_loss.append(f_slf_loss)
+        his_f_cyc_loss.append(f_cyc_loss)
+        his_f_adv_loss.append(f_adv_loss)
+        batches_len.append(batch_len)
+        batches_gen_len.append(batch_gen_len)
+
+
+        if eop: break
+
+    avrg_f_slf_loss = np.mean(his_f_slf_loss)
+    avrg_f_cyc_loss = np.mean(his_f_cyc_loss)
+    avrg_f_adv_loss = np.mean(his_f_adv_loss)
+    avrg_batches_len = np.mean(batches_len)
+    avrg_batches_gen_len = np.mean(batches_gen_len)
+
     # save output
     save_file = config.save_folder + '/' + str(global_step) + '.txt'
     eval_log_file = config.save_folder + '/eval_log.txt'
     with open(eval_log_file, 'a') as fl:
-        print(('iter{:5d}:  acc_pos: {:.4f} acc_neg: {:.4f} ' + \
-               'bleu_pos: {:.4f} bleu_neg: {:.4f} ' + \
-               'ppl_pos: {:.4f} ppl_neg: {:.4f}\n').format(
-            global_step, acc_pos, acc_neg, bleu_pos, bleu_neg, ppl_pos, ppl_neg,
+        print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f} ' + \
+               'f_slf_loss: {:.4f} f_cyc_loss: {:.4f} f_adv_loss: {:.4f} ' + \
+               'batches_len: {:.2f} batches_gen_len: {:.2f}\n').format(
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+            avrg_f_slf_loss, avrg_f_cyc_loss, avrg_f_adv_loss, avrg_batches_len, avrg_batches_gen_len
         ), file=fl)
     with open(save_file, 'w') as fw:
-        print(('[auto_eval] acc_pos: {:.4f} acc_neg: {:.4f} ' + \
-               'bleu_pos: {:.4f} bleu_neg: {:.4f} ' + \
-               'ppl_pos: {:.4f} ppl_neg: {:.4f}\n').format(
-            acc_pos, acc_neg, bleu_pos, bleu_neg, ppl_pos, ppl_neg,
+        print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
         ), file=fw)
 
         for idx in range(len(rev_output[0])):
-            print('*' * 20, 'neg sample', '*' * 20, file=fw)
+            print('*' * 20, 'classic sample', '*' * 20, file=fw)
             print('[gold]', gold_text[0][idx], file=fw)
             print('[raw ]', raw_output[0][idx], file=fw)
             print('[rev ]', rev_output[0][idx], file=fw)
@@ -686,7 +816,7 @@ def auto_eval(config, data, model_F, global_step, temperature):
         print('*' * 20, '********', '*' * 20, file=fw)
 
         for idx in range(len(rev_output[1])):
-            print('*' * 20, 'pos sample', '*' * 20, file=fw)
+            print('*' * 20, 'modern sample', '*' * 20, file=fw)
             print('[gold]', gold_text[1][idx], file=fw)
             print('[raw ]', raw_output[1][idx], file=fw)
             print('[rev ]', rev_output[1][idx], file=fw)

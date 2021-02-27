@@ -6,7 +6,7 @@
 
 export PYTHONPATH="$(pwd)"
 
-python src/cnn_classify.py \
+python cnn_classify.py \
   --dataset shakespeare \
   --output_dir "pretrained_classifer/shakespeare/" \
   --clean_mem_every 5 \
