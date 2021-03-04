@@ -62,9 +62,9 @@ class Config():
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
-    albert_kd = False
+    albert_kd = True
     kd_alpha = 0.5
-    kd_temperature = 1
+    kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
 

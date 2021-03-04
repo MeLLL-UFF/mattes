@@ -559,7 +559,7 @@ def train(config, data, model_F, model_D):
     for i in range(config.F_pretrain_iter):
         batch, batch_size, eop = data.next_train()
         #print(batch[0], batch[1])
-        slf_loss, cyc_loss, _ , batch_len, _ = f_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
+        slf_loss, cyc_loss, _ , batch_len, _ = mass_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0)#, False)
         his_f_slf_loss.append(slf_loss)
         his_f_cyc_loss.append(cyc_loss)
         batches_len.append(batch_len)
