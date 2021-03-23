@@ -4,8 +4,11 @@ from data_utils import DataUtil
 from models import StyleTransformer
 #from train import train, auto_eval
 from cnn_classify import test, CNNClassify, BiLSTMClassify
-from lm_lstm import LSTM_LM
+from lm_lstm import LSTM_LM, lm_ppl
 import os
+from utils import tensor2text, list2text
+from evaluator import Evaluator
+import numpy as np
 
 
 class Config():
@@ -69,7 +72,15 @@ class Config():
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
     translate = True
+    ckpt = 'save/Mar09145150/ckpts/4000_F.pth'
+    model_name = 'massKD10_75_d1_t2'
+    beam_size = 4
 
+def get_lengths(tokens, eos_idx):
+    lengths = torch.cumsum(tokens == eos_idx, 1)
+    lengths = (lengths == 0).long().sum(-1)
+    lengths = lengths + 1 # +1 for <eos> token
+    return lengths
 
 def auto_eval(config, data, model_F, model_name, temperature):
     model_F.eval()
@@ -171,7 +182,7 @@ def auto_eval(config, data, model_F, model_name, temperature):
         print(('{:18d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
+            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
         ), file=fl)
 
     if config.translate == True:
@@ -201,10 +212,13 @@ def auto_eval(config, data, model_F, model_name, temperature):
 
             print('*' * 20, '********', '*' * 20, file=fw)
 
-def beam_eval(config, data, model_F, global_step, temperature):
+def beam_eval(config, data, model_F, model_name, temperature=1):
     model_F.eval()
     vocab_size = len(data.tokenizer)
     eos_idx = config.eos_id
+    config.save_folder = config.save_path + '/' + model_name
+    os.makedirs(config.save_folder)
+    print('Save Path:', config.save_folder)
 
     def beam_inference(data, raw_style):
         gold_text = []
@@ -227,30 +241,8 @@ def beam_eval(config, data, model_F, global_step, temperature):
                 x = inp_tokens[i,:].unsqueeze(0)
                 inp_length = inp_lengths[i].unsqueeze(0)
                 rev_style = rev_styles[i].unsqueeze(0)      
-                hyp = model_F.translate_sent(x, inp_length, rev_style, temperature, max_len=config.max_len, beam_size=config.beam_size, poly_norm_m=poly_norm_m)[0]
+                hyp = model_F.translate_sent(x, inp_length, rev_style, temperature, max_len=config.max_length, beam_size=config.beam_size, poly_norm_m=1)[0]
                 hyps.append(hyp.y[1:-1])
-
-            with torch.no_grad():
-                raw_log_probs = model_F(
-                    inp_tokens,
-                    None,
-                    inp_lengths,
-                    raw_styles,
-                    generate=True,
-                    differentiable_decode=False,
-                    temperature=temperature,
-                )
-            
-            with torch.no_grad():
-                rev_log_probs = model_F(
-                    inp_tokens, 
-                    None,
-                    inp_lengths,
-                    rev_styles,
-                    generate=True,
-                    differentiable_decode=False,
-                    temperature=temperature,
-                )
                 
             gold_text += tensor2text(data, inp_tokens.cpu())
             rev_output += list2text(data, hyps)
@@ -260,8 +252,8 @@ def beam_eval(config, data, model_F, global_step, temperature):
     
     gold_text, rev_output = zip(beam_inference(data, 0), beam_inference(data, 1))
 
-    valid_file_0 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_0')
-    valid_file_1 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_1')
+    valid_file_0 = os.path.join( config.save_folder + '/' , str(model_name) + '_0')
+    valid_file_1 = os.path.join( config.save_folder + '/' , str(model_name) + '_1')
     out_file_0 = open(valid_file_0, 'w', encoding='utf-8')
     out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
     for i in range(len(rev_output[0])):
@@ -314,19 +306,13 @@ def beam_eval(config, data, model_F, global_step, temperature):
     ))
 
     # save output
-    save_file = config.save_folder + '/' + str(global_step) + '.txt'
     eval_log_file = config.save_folder + '/eval_log.txt'
     with open(eval_log_file, 'a') as fl:
-        print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+        print(('iter{:18d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
-               'ppl_cla: {:.4f} ppl_mod: {:.4f} ' + \
-               'f_slf_loss: {:.4f} f_cyc_loss: {:.4f} f_adv_loss: {:.4f} ' + \
-               'batches_len: {:.2f} batches_gen_len: {:.2f}\n').format(
-            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
-            avrg_f_slf_loss, avrg_f_cyc_loss, avrg_f_adv_loss, avrg_batches_len, avrg_batches_gen_len
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
         ), file=fl)
-
-    model_F.train()
 
 def main():
     config = Config()
@@ -340,7 +326,7 @@ def main():
     if config.beam_size == 1:
         auto_eval(config, data, model_F, config.model_name, config.temperature)
     else:
-        beam_eval(config, data, model_F, config.model_name, config.temperature)
+        beam_eval(config, data, model_F, config.model_name)
     
 
 if __name__ == '__main__':

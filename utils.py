@@ -163,6 +163,15 @@ def tensor2text(data, tensor):
 
     return text
 
+def list2text(data, lista):
+    text = []
+    for sample in lista:
+        sample = data.tokenizer.decode(sample)
+        sample = sample.split('[SEP]')[0]
+        text.append(sample)
+
+    return text
+
 def calc_ppl(log_probs, tokens_mask):
     return (log_probs.sum() / tokens_mask.sum()).exp()
 

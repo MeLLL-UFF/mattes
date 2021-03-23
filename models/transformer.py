@@ -3,6 +3,7 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 from utils import idx2onehot
+import numpy as np
 
 
 class StyleTransformer(nn.Module):
@@ -154,6 +155,83 @@ class StyleTransformer(nn.Module):
             
             
         return log_probs
+
+    def translate_sent(self, inp_tokens, inp_lengths, style, temperature=1, max_len=100, beam_size=5, poly_norm_m=1):
+        batch_size = inp_tokens.size(0)
+        max_enc_len = inp_tokens.size(1)
+
+        assert max_enc_len <= self.max_length
+
+        pos_idx = torch.arange(self.max_length).unsqueeze(0).expand((batch_size, -1))
+        pos_idx = pos_idx.to(inp_lengths.device)
+
+        src_mask = pos_idx[:, :max_enc_len] >= inp_lengths.unsqueeze(-1)
+        src_mask = torch.cat((torch.zeros_like(src_mask[:, :1]), src_mask), 1)
+        src_mask = src_mask.view(batch_size, 1, 1, max_enc_len + 1)
+
+        tgt_mask = torch.ones((self.max_length, self.max_length)).to(src_mask.device)
+        tgt_mask = (tgt_mask.tril() == 0).view(1, 1, self.max_length, self.max_length)
+
+        style_emb = self.style_embed(style).unsqueeze(1)
+
+        enc_input = torch.cat((style_emb, self.embed(inp_tokens, pos_idx[:, :max_enc_len])), 1)
+        memory = self.encoder(enc_input, src_mask)
+        
+        sos_token = self.sos_token.view(1, 1, -1).expand(batch_size, -1, -1)
+    
+        length = 0
+        completed_hyp = []
+        active_hyp = [Hyp(state=None, y=[], score=0.)]
+
+        while len(completed_hyp) < beam_size and length < max_len:
+            length += 1
+            new_hyp_score_list = []
+            for i, hyp in enumerate(active_hyp):
+                if length == 1:
+                    log_prob, prev_states = self.decoder.incremental_forward(
+                        sos_token, memory,
+                        src_mask, tgt_mask[:, :, (length-1):length, :length],
+                        temperature,
+                        hyp.state
+                    )
+                    hyp.state = prev_states
+                else:
+                    log_prob, prev_states = self.decoder.incremental_forward(
+                        self.embed(torch.LongTensor([int(hyp.y[-1])]).unsqueeze(0).to(inp_lengths.device), pos_idx[:, (length-2):(length-1)]), memory,
+                        src_mask, tgt_mask[:, :, (length-1):length, :length],
+                        temperature,
+                        hyp.state
+                    )
+                    hyp.state = prev_states
+
+                p_t = log_prob.data
+                if poly_norm_m > 0 and length > 1:
+                    new_hyp_scores = (hyp.score * pow(length-1, poly_norm_m) + p_t) / pow(length, poly_norm_m)
+                else:
+                    new_hyp_scores = hyp.score + p_t
+                new_hyp_score_list.append(new_hyp_scores.cpu())
+
+            live_hyp_num = beam_size - len(completed_hyp)
+            new_hyp_scores = np.concatenate(new_hyp_score_list).flatten()
+            new_hyp_pos = (-new_hyp_scores).argsort()[:live_hyp_num]
+            prev_hyp_ids = new_hyp_pos / self.embed.vocab_size
+            word_ids = new_hyp_pos % self.embed.vocab_size
+            new_hyp_scores = new_hyp_scores[new_hyp_pos]
+
+            new_hypotheses = []
+            for prev_hyp_id, word_id, hyp_score in zip(prev_hyp_ids, word_ids, new_hyp_scores):
+                prev_hyp = active_hyp[int(prev_hyp_id)]
+                hyp = Hyp(state=prev_hyp.state, y=prev_hyp.y+[word_id], score=hyp_score)
+                if word_id == self.eos_idx:
+                    completed_hyp.append(hyp)
+                else:
+                    new_hypotheses.append(hyp)
+
+            active_hyp = new_hypotheses
+
+        if len(completed_hyp) == 0:
+            completed_hyp.append(active_hyp[0])
+        return sorted(completed_hyp, key=lambda x: x.score, reverse=True)
     
 class Discriminator(nn.Module):
     def __init__(self, config, data):
@@ -398,3 +476,9 @@ def Embedding(num_embeddings, embedding_dim, padding_idx=None):
 def LayerNorm(embedding_dim, eps=1e-6):
     m = nn.LayerNorm(embedding_dim, eps)
     return m
+
+class Hyp(object):
+  def __init__(self, state, y, score):
+    self.state = state
+    self.y = y
+    self.score = score
