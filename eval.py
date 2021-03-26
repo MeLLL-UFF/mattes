@@ -71,10 +71,12 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = True
+    translate = False
     ckpt = 'save/Mar09145150/ckpts/4000_F.pth'
-    model_name = 'massKD10_75_d1_t2'
-    beam_size = 4
+    model_name = 'masKD10_75_d1_t2'
+    beam_size = 1
+    valid_file_0 = 'save/Mar09145150/ckpts/4000_0'
+    valid_file_1 = 'save/Mar09145150/ckpts/4000_1'
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -82,7 +84,7 @@ def get_lengths(tokens, eos_idx):
     lengths = lengths + 1 # +1 for <eos> token
     return lengths
 
-def auto_eval(config, data, model_F, model_name, temperature):
+def auto_eval(config, data, model_F, model_name, temperature=1):
     model_F.eval()
     vocab_size = len(data.tokenizer)
     eos_idx = config.eos_id
@@ -151,8 +153,16 @@ def auto_eval(config, data, model_F, model_name, temperature):
         out_file_0.close()
         out_file_1.close()
     else:
+        rev_output = []
         valid_file_0 = config.valid_file_0
         valid_file_1 = config.valid_file_1
+        with open(valid_file_0, 'r', encoding='utf-8') as f:
+            src_lines_0 = f.read().split('\n')
+        rev_output.append(src_lines_0)
+
+        with open(valid_file_1, 'r', encoding='utf-8') as f:
+            src_lines_1 = f.read().split('\n')
+        rev_output.append(src_lines_1)
 
 
 
@@ -179,7 +189,7 @@ def auto_eval(config, data, model_F, model_name, temperature):
     
     eval_log_file = config.save_folder + '/eval_log.txt'
     with open(eval_log_file, 'a') as fl:
-        print(('{:18d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+        print(('{:18s}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
             model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
@@ -242,7 +252,7 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
                 inp_length = inp_lengths[i].unsqueeze(0)
                 rev_style = rev_styles[i].unsqueeze(0)      
                 hyp = model_F.translate_sent(x, inp_length, rev_style, temperature, max_len=config.max_length, beam_size=config.beam_size, poly_norm_m=1)[0]
-                hyps.append(hyp.y[1:-1])
+                hyps.append(hyp.y)
                 
             gold_text += tensor2text(data, inp_tokens.cpu())
             rev_output += list2text(data, hyps)
@@ -308,7 +318,7 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
     # save output
     eval_log_file = config.save_folder + '/eval_log.txt'
     with open(eval_log_file, 'a') as fl:
-        print(('iter{:18d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+        print(('iter{:18s}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
             model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
@@ -318,13 +328,15 @@ def main():
     config = Config()
     data = DataUtil(config)
     print('Vocab size:', config.src_vocab_size)
-
+    if config.valid_file_0:
+        assert config.translate == False
+        assert config.beam_size == 1
     state_dict = torch.load(config.ckpt)
     model_F = StyleTransformer(config, data).to(config.device)
     model_F.load_state_dict(state_dict)
     
     if config.beam_size == 1:
-        auto_eval(config, data, model_F, config.model_name, config.temperature)
+        auto_eval(config, data, model_F, config.model_name)
     else:
         beam_eval(config, data, model_F, config.model_name)
     
