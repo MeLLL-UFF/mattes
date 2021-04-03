@@ -667,11 +667,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
         raw_output = []
         rev_output = []
         while True:
-            batch, batch_size, eop = data.next_dev()
             if raw_style == 0:
-                inp_tokens = batch[0]
+                inp_tokens, _ , eop = data.next_dev0()
             else:
-                inp_tokens = batch[1]
+                inp_tokens, _ , eop = data.next_dev1()
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -706,19 +705,23 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
 
         return gold_text, raw_output, rev_output
     
-    gold_text, raw_output, rev_output = zip(inference(data, 0), inference(data, 1))
+    gold_text0, raw_output0, rev_output0 = inference(data, 0)
+    gold_text1, raw_output1, rev_output1 = inference(data, 1)
 
     valid_file_0 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_0')
     valid_file_1 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_1')
     out_file_0 = open(valid_file_0, 'w', encoding='utf-8')
     out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
-    for i in range(len(rev_output[0])):
-        line_0 = rev_output[0][i].strip()
-        line_1 = rev_output[1][i].strip()
+    for i in range(len(rev_output0)):
+        line_0 = rev_output0[i].strip()
         out_file_0.write(line_0 + '\n')
-        out_file_1.write(line_1 + '\n')
         out_file_0.flush()
+
+    for i in range(len(rev_output1)):
+        line_1 = rev_output1[i].strip()
+        out_file_1.write(line_1 + '\n')
         out_file_1.flush()
+
     out_file_0.close()
     out_file_1.close()
 
@@ -731,28 +734,28 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     acc_mod, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
     acc_cla, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
-    bleu_mod = evaluator.yelp_ref_bleu_0(rev_output[0])
-    bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
+    bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
+    bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
     _ , ppl_mod = lm_ppl(evaluator.lm1, data, 32, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
     _ , ppl_cla = lm_ppl(evaluator.lm0, data, 32, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
 
     for k in range(5):
-        idx = np.random.randint(len(rev_output[0]))
+        idx = np.random.randint(len(rev_output0))
         print('*' * 20, 'classic sample', '*' * 20)
-        print('[gold]', gold_text[0][idx])
-        print('[raw ]', raw_output[0][idx])
-        print('[rev ]', rev_output[0][idx])
+        print('[gold]', gold_text0[idx])
+        print('[raw ]', raw_output0[idx])
+        print('[rev ]', rev_output0[idx])
         print('[ref ]', ref_text[0][idx])
 
     print('*' * 20, '********', '*' * 20)
     
 
     for k in range(5):
-        idx = np.random.randint(len(rev_output[1]))
+        idx = np.random.randint(len(rev_output1))
         print('*' * 20, 'modern sample', '*' * 20)
-        print('[gold]', gold_text[1][idx])
-        print('[raw ]', raw_output[1][idx])
-        print('[rev ]', rev_output[1][idx])
+        print('[gold]', gold_text1[idx])
+        print('[raw ]', raw_output1[idx])
+        print('[rev ]', rev_output1[idx])
         print('[ref ]', ref_text[1][idx])
 
     print('*' * 20, '********', '*' * 20)
@@ -762,7 +765,7 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
           'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
               acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
     ))
-
+    '''
     his_f_slf_loss = []
     his_f_cyc_loss = []
     his_f_adv_loss = []
@@ -786,18 +789,15 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     avrg_f_adv_loss = np.mean(his_f_adv_loss)
     avrg_batches_len = np.mean(batches_len)
     avrg_batches_gen_len = np.mean(batches_gen_len)
-
+    '''
     # save output
     save_file = config.save_folder + '/' + str(global_step) + '.txt'
     eval_log_file = config.save_folder + '/eval_log.txt'
     with open(eval_log_file, 'a') as fl:
         print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
-               'ppl_cla: {:.4f} ppl_mod: {:.4f} ' + \
-               'f_slf_loss: {:.4f} f_cyc_loss: {:.4f} f_adv_loss: {:.4f} ' + \
-               'batches_len: {:.2f} batches_gen_len: {:.2f}\n').format(
-            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
-            avrg_f_slf_loss, avrg_f_cyc_loss, avrg_f_adv_loss, avrg_batches_len, avrg_batches_gen_len
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
         ), file=fl)
     with open(save_file, 'w') as fw:
         print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
@@ -806,20 +806,20 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
             acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
         ), file=fw)
 
-        for idx in range(len(rev_output[0])):
+        for idx in range(len(rev_output0)):
             print('*' * 20, 'classic sample', '*' * 20, file=fw)
-            print('[gold]', gold_text[0][idx], file=fw)
-            print('[raw ]', raw_output[0][idx], file=fw)
-            print('[rev ]', rev_output[0][idx], file=fw)
+            print('[gold]', gold_text0[idx], file=fw)
+            print('[raw ]', raw_output0[idx], file=fw)
+            print('[rev ]', rev_output0[idx], file=fw)
             print('[ref ]', ref_text[0][idx], file=fw)
 
         print('*' * 20, '********', '*' * 20, file=fw)
 
-        for idx in range(len(rev_output[1])):
+        for idx in range(len(rev_output1)):
             print('*' * 20, 'modern sample', '*' * 20, file=fw)
-            print('[gold]', gold_text[1][idx], file=fw)
-            print('[raw ]', raw_output[1][idx], file=fw)
-            print('[rev ]', rev_output[1][idx], file=fw)
+            print('[gold]', gold_text1[idx], file=fw)
+            print('[raw ]', raw_output1[idx], file=fw)
+            print('[rev ]', rev_output1[idx], file=fw)
             print('[ref ]', ref_text[1][idx], file=fw)
 
         print('*' * 20, '********', '*' * 20, file=fw)

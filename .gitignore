@@ -3,7 +3,9 @@
 *.pyc
 outputs*
 outputs/*
+save/*
 !archived_exp/*
+.pth
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

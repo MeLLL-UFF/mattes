@@ -42,18 +42,14 @@ def gather_hiddens(hiddens, masks):
 
 
 class BertSampleDataset(Dataset):
-    def __init__(self, corpus_path, tokenizer, style, num_samples=7):
+    def __init__(self, corpus_path, tokenizer, num_samples=7):
         self.db = shelve.open(corpus_path, 'r')
         self.ids = []
-        self.style = style
-        if style == 'classic':
-            for i, ex in self.db.items():
-                if len(ex['src']) > 0:
-                    self.ids.append(i)
-        else:
-            for i, ex in self.db.items():
-                if len(ex['tgt']) > 0:
-                    self.ids.append(i)
+        #self.style = style
+        for i, ex in self.db.items():
+            if len(ex['src']) > 0:
+                self.ids.append(i)
+
         self.toker = tokenizer
         self.num_samples = num_samples
 
@@ -63,10 +59,7 @@ class BertSampleDataset(Dataset):
     def __getitem__(self, i):
         id_ = self.ids[i]
         example = self.db[id_]
-        if self.style == 'classic':
-            features = convert_example(example['src'], self.toker, self.num_samples)
-        else:
-            features = convert_example(example['tgt'], self.toker, self.num_samples)
+        features = convert_example(example['src'], self.toker, self.num_samples)
 
         return (id_, ) + features
 
@@ -144,8 +137,8 @@ def process_batch(batch, bert, toker, num_samples=7):
     return outputs
 
 
-def build_db_batched(corpus, out_db, bert, toker, style, batch_size=8):
-    dataset = BertSampleDataset(corpus, toker, style)
+def build_db_batched(corpus, out_db, bert, toker, batch_size=8):
+    dataset = BertSampleDataset(corpus, toker)
     loader = DataLoader(dataset, batch_size=batch_size,
                         num_workers=4, collate_fn=batch_features)
     with tqdm(desc='computing ALBERT features', total=len(dataset)) as pbar:
@@ -175,12 +168,12 @@ def main(opts):
     # create DB
     with shelve.open(f'{opts.output}/db') as out_db, \
             torch.no_grad():
-        build_db_batched(opts.db, out_db, albert, toker, opts.style)
+        build_db_batched(opts.db, out_db, albert, toker)
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--style', required=True, choices=['classic', 'modern'])
+    #parser.add_argument('--style', required=True, choices=['classic', 'modern'])
     parser.add_argument('--ckpt', required=True, help='ALBERT checkpoint')
     parser.add_argument('--db', required=True, help='dataset to compute')
     parser.add_argument('--output', required=True, help='path to dump output')

@@ -45,7 +45,7 @@ class Config():
     learned_pos_embed = True
     dropout = 0
     drop_rate_config = [(0.2, 0), (0.2, 230), (0.3, 11500)]
-    temperature_config = [(1, 0), (1, 2300), (0.9, 4600), (0.8, 11500)]
+    temperature_config = [(1, 0), (1, 1150), (0.8, 4600), (0.6, 11500)]
 
     slf_factor = 0.1
     cyc_factor = 0.2

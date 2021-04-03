@@ -33,19 +33,22 @@ class DataUtil(object):
 
     if not self.hparams.decode:
 
-      self.train_size = 0
-      self.n_train_batches = 0
+      self.train_size_0 = 0
+      self.n_train_batches_0 = 0
+      self.train_size_1 = 0
+      self.n_train_batches_1 = 0
 
       self.train_x0, self.train_y0, _ , self.index0 = self._build_parallel(self.hparams.train_src_file0, self.hparams.train_trg_file)
-      self.train_size = len(self.train_x0)
+      self.train_size_0 = len(self.train_x0)
       self.train_x1, self.train_y1, _ , self.index1 = self._build_parallel(self.hparams.train_src_file1, self.hparams.train_trg_file)
-      assert self.train_size == len(self.train_x1)
+      self.train_size_1 = len(self.train_x1)
 
       self.dev_x0, self.dev_y0, _ , _ = self._build_parallel(self.hparams.dev_src_file0, self.hparams.dev_trg_file, is_train=False)
       self.dev_x1, self.dev_y1, _ , _ = self._build_parallel(self.hparams.dev_src_file1, self.hparams.dev_trg_file, is_train=False)
-      self.dev_size = len(self.dev_x0)
-      assert self.dev_size == len(self.dev_x1)
-      self.dev_index = 0
+      self.dev_size_0 = len(self.dev_x0)
+      self.dev_size_1 = len(self.dev_x1)
+      self.dev_index_0 = 0
+      self.dev_index_1 = 0
       self.reset_train()
     else:
       #test_src_file = os.path.join(self.hparams.data_path, self.hparams.test_src_file)
@@ -80,49 +83,58 @@ class DataUtil(object):
     return torch.FloatTensor(matrix), i2w, w2i
 
   def reset_train(self):
-    if not self.n_train_batches:
-      self.n_train_batches = (self.train_size + self.hparams.batch_size - 1) // self.hparams.batch_size
-    self.train_queue = np.random.permutation(self.n_train_batches)
-    self.train_index = 0
+    if not self.n_train_batches_0:
+      self.n_train_batches_0 = (self.train_size_0 + self.hparams.batch_size - 1) // self.hparams.batch_size
+    if not self.n_train_batches_1:
+      self.n_train_batches_1 = (self.train_size_1 + self.hparams.batch_size - 1) // self.hparams.batch_size
+    self.train_queue_0 = np.random.permutation(self.n_train_batches_0)
+    self.train_index_0 = 0
+    self.train_queue_1 = np.random.permutation(self.n_train_batches_1)
+    self.train_index_1 = 0
 
   def next_train(self):
-    start_index = (self.train_queue[self.train_index] * self.hparams.batch_size)
-    end_index = min(start_index + self.hparams.batch_size, self.train_size)
+    start_index_0 = (self.train_queue_0[self.train_index_0] * self.hparams.batch_size)
+    end_index_0 = min(start_index_0 + self.hparams.batch_size, self.train_size_0)
+    start_index_1 = (self.train_queue_1[self.train_index_1] * self.hparams.batch_size)
+    end_index_1 = min(start_index_1 + self.hparams.batch_size, self.train_size_1)
 
-    x_train0 = self.train_x0[start_index:end_index]
-    x_train1 = self.train_x1[start_index:end_index]
+    x_train0 = self.train_x0[start_index_0:end_index_0]
+    x_train1 = self.train_x1[start_index_1:end_index_1]
 
-    self.train_index += 1
-    batch_size = len(x_train0)
+    self.train_index_0 += 1
+    self.train_index_1 += 1
+    batch_size = len(x_train0) + len(x_train1)
     # pad
     x_train0, _, _, _, _ = self._pad(x_train0, self.hparams.pad_id)
     x_train1, _, _, _, _ = self._pad(x_train1, self.hparams.pad_id)
 
-    if self.train_index >= self.n_train_batches:
+    if (self.train_index_0 >= max(self.n_train_batches_0, self.n_train_batches_1)) or (self.train_index_1 >= max(self.n_train_batches_0, self.n_train_batches_1)):
       self.reset_train()
       eop = True
     else:
       eop = False
 
-    assert x_train0.size(0) == x_train1.size(0)
+    self.train_index_0 %= self.n_train_batches_0
+    self.train_index_1 %= self.n_train_batches_1
 
-    batch, len_ = x_train0.size()
-    len1 = x_train1.size(1)
-    topk_logit0 = torch.zeros(batch, len_, self.k)
-    topk_index0 = torch.zeros(batch, len_, self.k , dtype = torch.long)
-    topk_logit1 = torch.zeros(batch, len1, self.k)
-    topk_index1 = torch.zeros(batch, len1, self.k , dtype = torch.long)
-    for i, j in zip(range(start_index, end_index, 1), range(end_index - start_index)):
+    batch0, len0 = x_train0.size()
+    barch1, len1 = x_train1.size()
+    topk_logit0 = torch.zeros(batch0, len0, self.k)
+    topk_index0 = torch.zeros(batch0, len0, self.k , dtype = torch.long)
+    topk_logit1 = torch.zeros(batch1, len1, self.k)
+    topk_index1 = torch.zeros(batch1, len1, self.k , dtype = torch.long)
+    for i, j in zip(range(start_index_0, end_index_0, 1), range(end_index_0 - start_index_0)):
       topk_logits0, topk_inds0 = load_topk(self.topk_db0[str(int(self.index0[i]))])
-      topk_logits1, topk_inds1 = load_topk(self.topk_db1[str(int(self.index1[i]))])
       topk_logits0 = topk_logits0[:, :self.k].float()
       #print(topk_logits0.size())
       topk_inds0 = topk_inds0[:, :self.k]
-      topk_logits1 = topk_logits1[:, :self.k].float()
-      topk_inds1 = topk_inds1[:, :self.k]
-      
       topk_logit0.data[j, :topk_logits0.size(0), :] = topk_logits0.data
       topk_index0.data[j, :topk_inds0.size(0), :] = topk_inds0.data
+    
+    for i, j in zip(range(start_index_1, end_index_1, 1), range(end_index_1 - start_index_1)):
+      topk_logits1, topk_inds1 = load_topk(self.topk_db1[str(int(self.index1[i]))])
+      topk_logits1 = topk_logits1[:, :self.k].float()
+      topk_inds1 = topk_inds1[:, :self.k]
       topk_logit1.data[j, :topk_logits1.size(0), :] = topk_logits1.data
       topk_index1.data[j, :topk_inds1.size(0), :] = topk_inds1.data
 
@@ -142,30 +154,47 @@ class DataUtil(object):
     y = y + np.arange(attn_num) * 2
     return y.tolist()
 
-  def next_dev(self, dev_batch_size=1, sort=True):
-    start_index = self.dev_index
-    end_index = min(start_index + dev_batch_size, self.dev_size)
+  def next_dev0(self, dev_batch_size=1, sort=True):
+    start_index = self.dev_index_0
+    end_index = min(start_index + dev_batch_size, self.dev_size_0)
     batch_size = end_index - start_index
 
     x_dev0 = self.dev_x0[start_index:end_index]
-    x_dev1 = self.dev_x1[start_index:end_index]
     y_dev0 = self.dev_y0[start_index:end_index]
-    y_dev1 = self.dev_y1[start_index:end_index]
     if sort:
       x_dev0, y_dev0, _ = self.sort_by_xlen(x_dev0, y_dev0)
-      x_dev1, y_dev1, _ = self.sort_by_xlen(x_dev1, y_dev1)
 
     x_dev0, _, _, _, _ = self._pad(x_dev0, self.hparams.pad_id)
-    x_dev1, _, _, _, _ = self._pad(x_dev1, self.hparams.pad_id)
 
-    if end_index >= self.dev_size:
+    if end_index >= self.dev_size_0:
       eop = True
-      self.dev_index = 0
+      self.dev_index_0 = 0
     else:
       eop = False
-      self.dev_index += batch_size
+      self.dev_index_0 += batch_size
 
-    return (x_dev0, x_dev1),  batch_size, eop
+    return x_dev0,  batch_size, eop
+
+  def next_dev1(self, dev_batch_size=1, sort=True):
+    start_index = self.dev_index_1
+    end_index = min(start_index + dev_batch_size, self.dev_size_1)
+    batch_size = end_index - start_index
+
+    x_dev1 = self.dev_x1[start_index:end_index]
+    y_dev1 = self.dev_y1[start_index:end_index]
+    if sort:
+      x_dev1, y_dev1, _ = self.sort_by_xlen(x_dev1, y_dev1)
+
+    x_dev1, _, _, _, _ = self._pad(x_dev1, self.hparams.pad_id)
+
+    if end_index >= self.dev_size_1:
+      eop = True
+      self.dev_index_1 = 0
+    else:
+      eop = False
+      self.dev_index_1 += batch_size
+
+    return x_dev1,  batch_size, eop
 
   def reset_test(self, test_src_file, test_trg_file):
     self.test_x, self.test_y, src_len, _ = self._build_parallel(test_src_file, test_trg_file, is_train=False, insert_bos=True)

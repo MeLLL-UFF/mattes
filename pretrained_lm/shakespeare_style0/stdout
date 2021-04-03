@@ -1,0 +1,494 @@
+Namespace(batch_size=32, cuda=True, d_model=512, d_word_vec=128, dataset='shakespeare', decode=False, dev_src_file='data/shakespeare/cleaned_dev_0.txt', dev_trg_file='data/shakespeare/dev_0.attr', device=device(type='cuda'), dropout_in=0.5, dropout_out=0.5, eval_every=500, eval_from='', log_every=100, max_len=10000, output='', output_dir='pretrained_lm/shakespeare_style0/', seed=783435, shuffle_train=False, style=0, test_src_file='', test_trg_file='', tie_weight=False, train_src_file='data/shakespeare/cleaned_train_0.txt', train_trg_file='data/shakespeare/train_0.attr', trg_vocab='data/shakespeare/attr.vocab')
+src_vocab_size=30000
+trg_vocab_size=2
+loading parallel sentences from data/shakespeare/cleaned_train_0.txt data/shakespeare/train_0.attr
+processed 10000 lines
+src_unk=0, trg_unk=0
+lines=18395, skipped_lines=1
+loading parallel sentences from data/shakespeare/cleaned_dev_0.txt data/shakespeare/dev_0.attr
+src_unk=0, trg_unk=0
+lines=1218, skipped_lines=1
+Model has 20544816 params
+ep=0   steps=0 lr=1.0000000 loss=175.25  |g|=2.15  ppl=29996.77 time(min)=0.00 
+
+-----------VAL-----------
+ VAL loss=134.03  VAL ppl=22802.59
+-----------VAL-----------
+
+ep=0   steps=100 lr=1.0000000 loss=113.78  |g|=11.62 ppl=1412.31  time(min)=0.03 
+ep=0   steps=200 lr=1.0000000 loss=98.19   |g|=2.36  ppl=843.24   time(min)=0.04 
+ep=0   steps=300 lr=1.0000000 loss=92.14   |g|=3.45  ppl=630.75   time(min)=0.06 
+ep=0   steps=400 lr=1.0000000 loss=89.46   |g|=8.48  ppl=524.51   time(min)=0.08 
+ep=0   steps=500 lr=1.0000000 loss=85.28   |g|=2.18  ppl=447.23   time(min)=0.09 
+
+-----------VAL-----------
+ VAL loss=68.37   VAL ppl=167.21  
+-----------VAL-----------
+
+update best ppl
+ep=1   steps=600 lr=1.0000000 loss=86.20   |g|=2.43  ppl=246.94   time(min)=0.12 
+ep=1   steps=700 lr=1.0000000 loss=83.42   |g|=7.57  ppl=233.95   time(min)=0.14 
+ep=1   steps=800 lr=1.0000000 loss=80.06   |g|=8.40  ppl=216.33   time(min)=0.16 
+ep=1   steps=900 lr=1.0000000 loss=80.07   |g|=3.62  ppl=211.31   time(min)=0.18 
+ep=1   steps=1000 lr=1.0000000 loss=78.88   |g|=3.34  ppl=201.39   time(min)=0.19 
+
+-----------VAL-----------
+ VAL loss=64.60   VAL ppl=126.03  
+-----------VAL-----------
+
+update best ppl
+ep=1   steps=1100 lr=1.0000000 loss=66.12   |g|=3.38  ppl=152.26   time(min)=0.22 
+ep=2   steps=1200 lr=1.0000000 loss=72.89   |g|=3.59  ppl=160.74   time(min)=0.24 
+ep=2   steps=1300 lr=1.0000000 loss=74.85   |g|=4.99  ppl=159.00   time(min)=0.25 
+ep=2   steps=1400 lr=1.0000000 loss=72.14   |g|=3.27  ppl=150.49   time(min)=0.27 
+ep=2   steps=1500 lr=1.0000000 loss=72.33   |g|=3.18  ppl=148.54   time(min)=0.29 
+
+-----------VAL-----------
+ VAL loss=62.93   VAL ppl=111.24  
+-----------VAL-----------
+
+update best ppl
+ep=2   steps=1600 lr=1.0000000 loss=67.12   |g|=4.66  ppl=134.75   time(min)=0.31 
+ep=2   steps=1700 lr=1.0000000 loss=66.39   |g|=2.70  ppl=131.55   time(min)=0.33 
+ep=3   steps=1800 lr=1.0000000 loss=67.85   |g|=3.71  ppl=131.11   time(min)=0.35 
+ep=3   steps=1900 lr=1.0000000 loss=68.11   |g|=2.80  ppl=129.10   time(min)=0.37 
+ep=3   steps=2000 lr=1.0000000 loss=65.96   |g|=4.03  ppl=123.79   time(min)=0.38 
+
+-----------VAL-----------
+ VAL loss=61.24   VAL ppl=98.01   
+-----------VAL-----------
+
+update best ppl
+ep=3   steps=2100 lr=1.0000000 loss=71.81   |g|=3.25  ppl=125.34   time(min)=0.41 
+ep=3   steps=2200 lr=1.0000000 loss=72.55   |g|=6.22  ppl=121.78   time(min)=0.43 
+ep=4   steps=2300 lr=1.0000000 loss=71.99   |g|=4.90  ppl=120.62   time(min)=0.44 
+ep=4   steps=2400 lr=1.0000000 loss=72.27   |g|=2.98  ppl=118.56   time(min)=0.46 
+ep=4   steps=2500 lr=1.0000000 loss=71.33   |g|=2.95  ppl=116.94   time(min)=0.48 
+
+-----------VAL-----------
+ VAL loss=60.46   VAL ppl=92.42   
+-----------VAL-----------
+
+update best ppl
+ep=4   steps=2600 lr=1.0000000 loss=69.81   |g|=5.01  ppl=108.48   time(min)=0.51 
+ep=4   steps=2700 lr=1.0000000 loss=64.06   |g|=2.52  ppl=102.93   time(min)=0.52 
+ep=4   steps=2800 lr=1.0000000 loss=65.82   |g|=3.52  ppl=104.72   time(min)=0.54 
+ep=5   steps=2900 lr=1.0000000 loss=64.17   |g|=3.54  ppl=101.23   time(min)=0.56 
+ep=5   steps=3000 lr=1.0000000 loss=65.26   |g|=6.82  ppl=101.59   time(min)=0.57 
+
+-----------VAL-----------
+ VAL loss=60.61   VAL ppl=93.52   
+-----------VAL-----------
+
+ep=5   steps=3100 lr=1.0000000 loss=61.18   |g|=5.11  ppl=89.74    time(min)=0.60 
+ep=5   steps=3200 lr=1.0000000 loss=66.41   |g|=7.09  ppl=97.94    time(min)=0.62 
+ep=5   steps=3300 lr=1.0000000 loss=65.17   |g|=2.77  ppl=95.36    time(min)=0.63 
+ep=5   steps=3400 lr=1.0000000 loss=63.23   |g|=8.56  ppl=92.94    time(min)=0.65 
+ep=6   steps=3500 lr=1.0000000 loss=66.53   |g|=8.37  ppl=96.42    time(min)=0.67 
+
+-----------VAL-----------
+ VAL loss=61.16   VAL ppl=97.41   
+-----------VAL-----------
+
+ep=6   steps=3600 lr=1.0000000 loss=67.72   |g|=3.29  ppl=92.59    time(min)=0.69 
+ep=6   steps=3700 lr=1.0000000 loss=64.76   |g|=3.19  ppl=91.25    time(min)=0.71 
+ep=6   steps=3800 lr=1.0000000 loss=62.89   |g|=3.17  ppl=88.22    time(min)=0.73 
+ep=6   steps=3900 lr=1.0000000 loss=63.60   |g|=4.24  ppl=89.07    time(min)=0.75 
+ep=6   steps=4000 lr=1.0000000 loss=63.30   |g|=3.28  ppl=88.29    time(min)=0.76 
+
+-----------VAL-----------
+ VAL loss=59.12   VAL ppl=83.62   
+-----------VAL-----------
+
+update best ppl
+ep=7   steps=4100 lr=1.0000000 loss=64.59   |g|=3.30  ppl=85.74    time(min)=0.79 
+ep=7   steps=4200 lr=1.0000000 loss=64.37   |g|=2.22  ppl=84.08    time(min)=0.81 
+ep=7   steps=4300 lr=1.0000000 loss=67.34   |g|=2.52  ppl=86.66    time(min)=0.83 
+ep=7   steps=4400 lr=1.0000000 loss=66.29   |g|=9.05  ppl=86.30    time(min)=0.84 
+ep=7   steps=4500 lr=1.0000000 loss=65.10   |g|=4.30  ppl=85.33    time(min)=0.86 
+
+-----------VAL-----------
+ VAL loss=58.96   VAL ppl=82.62   
+-----------VAL-----------
+
+update best ppl
+ep=8   steps=4600 lr=1.0000000 loss=55.18   |g|=4.42  ppl=74.15    time(min)=0.88 
+ep=8   steps=4700 lr=1.0000000 loss=58.64   |g|=2.58  ppl=75.82    time(min)=0.90 
+ep=8   steps=4800 lr=1.0000000 loss=61.37   |g|=2.86  ppl=78.71    time(min)=0.92 
+ep=8   steps=4900 lr=1.0000000 loss=62.05   |g|=9.77  ppl=78.22    time(min)=0.94 
+ep=8   steps=5000 lr=1.0000000 loss=59.75   |g|=5.10  ppl=75.81    time(min)=0.95 
+
+-----------VAL-----------
+ VAL loss=58.71   VAL ppl=81.09   
+-----------VAL-----------
+
+update best ppl
+ep=8   steps=5100 lr=1.0000000 loss=71.34   |g|=5.52  ppl=90.40    time(min)=0.98 
+ep=9   steps=5200 lr=1.0000000 loss=64.83   |g|=3.74  ppl=81.92    time(min)=1.00 
+ep=9   steps=5300 lr=1.0000000 loss=63.19   |g|=3.51  ppl=77.11    time(min)=1.01 
+ep=9   steps=5400 lr=1.0000000 loss=61.90   |g|=2.86  ppl=75.25    time(min)=1.03 
+ep=9   steps=5500 lr=1.0000000 loss=62.09   |g|=3.61  ppl=75.66    time(min)=1.05 
+
+-----------VAL-----------
+ VAL loss=58.99   VAL ppl=82.79   
+-----------VAL-----------
+
+ep=9   steps=5600 lr=1.0000000 loss=62.61   |g|=3.77  ppl=72.68    time(min)=1.07 
+ep=9   steps=5700 lr=1.0000000 loss=62.55   |g|=2.42  ppl=75.83    time(min)=1.09 
+ep=10  steps=5800 lr=1.0000000 loss=64.65   |g|=2.59  ppl=77.52    time(min)=1.11 
+ep=10  steps=5900 lr=1.0000000 loss=62.47   |g|=5.71  ppl=74.54    time(min)=1.13 
+ep=10  steps=6000 lr=1.0000000 loss=62.70   |g|=4.78  ppl=74.36    time(min)=1.15 
+
+-----------VAL-----------
+ VAL loss=58.68   VAL ppl=80.90   
+-----------VAL-----------
+
+update best ppl
+ep=10  steps=6100 lr=1.0000000 loss=63.09   |g|=2.36  ppl=74.87    time(min)=1.17 
+ep=10  steps=6200 lr=1.0000000 loss=61.81   |g|=3.59  ppl=71.65    time(min)=1.19 
+ep=10  steps=6300 lr=1.0000000 loss=60.70   |g|=5.62  ppl=71.07    time(min)=1.21 
+ep=11  steps=6400 lr=1.0000000 loss=61.76   |g|=5.12  ppl=71.44    time(min)=1.22 
+ep=11  steps=6500 lr=1.0000000 loss=61.80   |g|=2.79  ppl=70.72    time(min)=1.24 
+
+-----------VAL-----------
+ VAL loss=58.94   VAL ppl=82.50   
+-----------VAL-----------
+
+ep=11  steps=6600 lr=1.0000000 loss=57.06   |g|=5.27  ppl=62.95    time(min)=1.26 
+ep=11  steps=6700 lr=1.0000000 loss=58.40   |g|=5.63  ppl=64.12    time(min)=1.28 
+ep=11  steps=6800 lr=1.0000000 loss=58.49   |g|=4.23  ppl=65.22    time(min)=1.30 
+ep=12  steps=6900 lr=1.0000000 loss=59.75   |g|=5.63  ppl=67.43    time(min)=1.32 
+ep=12  steps=7000 lr=1.0000000 loss=59.10   |g|=4.47  ppl=65.99    time(min)=1.33 
+
+-----------VAL-----------
+ VAL loss=58.86   VAL ppl=82.01   
+-----------VAL-----------
+
+ep=12  steps=7100 lr=1.0000000 loss=70.75   |g|=3.62  ppl=74.31    time(min)=1.36 
+ep=12  steps=7200 lr=1.0000000 loss=65.35   |g|=4.69  ppl=69.71    time(min)=1.38 
+ep=12  steps=7300 lr=1.0000000 loss=61.20   |g|=2.98  ppl=66.42    time(min)=1.39 
+ep=12  steps=7400 lr=1.0000000 loss=59.91   |g|=5.58  ppl=65.62    time(min)=1.41 
+ep=13  steps=7500 lr=1.0000000 loss=60.84   |g|=3.03  ppl=66.18    time(min)=1.43 
+
+-----------VAL-----------
+ VAL loss=58.93   VAL ppl=82.46   
+-----------VAL-----------
+
+ep=13  steps=7600 lr=1.0000000 loss=54.27   |g|=4.04  ppl=55.00    time(min)=1.45 
+ep=13  steps=7700 lr=1.0000000 loss=55.11   |g|=4.97  ppl=56.93    time(min)=1.47 
+ep=13  steps=7800 lr=1.0000000 loss=56.58   |g|=3.16  ppl=59.46    time(min)=1.49 
+ep=13  steps=7900 lr=1.0000000 loss=58.34   |g|=3.26  ppl=61.72    time(min)=1.51 
+ep=13  steps=8000 lr=1.0000000 loss=59.32   |g|=2.60  ppl=62.50    time(min)=1.52 
+
+-----------VAL-----------
+ VAL loss=59.03   VAL ppl=83.09   
+-----------VAL-----------
+
+ep=14  steps=8100 lr=1.0000000 loss=58.82   |g|=2.65  ppl=60.40    time(min)=1.55 
+ep=14  steps=8200 lr=1.0000000 loss=57.83   |g|=2.96  ppl=60.27    time(min)=1.56 
+ep=14  steps=8300 lr=1.0000000 loss=58.23   |g|=3.47  ppl=60.26    time(min)=1.58 
+ep=14  steps=8400 lr=1.0000000 loss=56.76   |g|=2.93  ppl=58.88    time(min)=1.60 
+ep=14  steps=8500 lr=1.0000000 loss=56.54   |g|=2.93  ppl=58.68    time(min)=1.61 
+
+-----------VAL-----------
+ VAL loss=58.42   VAL ppl=79.37   
+-----------VAL-----------
+
+update best ppl
+ep=14  steps=8600 lr=1.0000000 loss=68.19   |g|=2.95  ppl=69.01    time(min)=1.64 
+ep=15  steps=8700 lr=1.0000000 loss=66.20   |g|=3.89  ppl=64.68    time(min)=1.66 
+ep=15  steps=8800 lr=1.0000000 loss=61.35   |g|=7.67  ppl=60.42    time(min)=1.68 
+ep=15  steps=8900 lr=1.0000000 loss=61.52   |g|=3.64  ppl=61.00    time(min)=1.70 
+ep=15  steps=9000 lr=1.0000000 loss=59.34   |g|=6.61  ppl=58.90    time(min)=1.71 
+
+-----------VAL-----------
+ VAL loss=58.73   VAL ppl=81.21   
+-----------VAL-----------
+
+ep=15  steps=9100 lr=1.0000000 loss=61.02   |g|=4.68  ppl=62.33    time(min)=1.74 
+ep=16  steps=9200 lr=1.0000000 loss=61.34   |g|=2.27  ppl=63.27    time(min)=1.75 
+ep=16  steps=9300 lr=1.0000000 loss=60.35   |g|=4.17  ppl=60.01    time(min)=1.77 
+ep=16  steps=9400 lr=1.0000000 loss=60.16   |g|=7.63  ppl=59.15    time(min)=1.79 
+ep=16  steps=9500 lr=1.0000000 loss=60.05   |g|=9.21  ppl=59.39    time(min)=1.81 
+
+-----------VAL-----------
+ VAL loss=58.82   VAL ppl=81.76   
+-----------VAL-----------
+
+ep=16  steps=9600 lr=1.0000000 loss=56.79   |g|=3.06  ppl=56.27    time(min)=1.83 
+ep=16  steps=9700 lr=1.0000000 loss=58.72   |g|=4.27  ppl=57.31    time(min)=1.85 
+ep=17  steps=9800 lr=1.0000000 loss=56.44   |g|=6.36  ppl=55.35    time(min)=1.87 
+ep=17  steps=9900 lr=1.0000000 loss=57.05   |g|=3.85  ppl=54.92    time(min)=1.88 
+ep=17  steps=10000 lr=1.0000000 loss=57.34   |g|=4.03  ppl=54.96    time(min)=1.90 
+
+-----------VAL-----------
+ VAL loss=59.18   VAL ppl=84.00   
+-----------VAL-----------
+
+ep=17  steps=10100 lr=1.0000000 loss=61.06   |g|=3.99  ppl=58.32    time(min)=1.93 
+ep=17  steps=10200 lr=1.0000000 loss=61.02   |g|=5.05  ppl=59.75    time(min)=1.94 
+ep=17  steps=10300 lr=1.0000000 loss=58.42   |g|=2.85  ppl=56.79    time(min)=1.96 
+ep=18  steps=10400 lr=1.0000000 loss=58.25   |g|=2.03  ppl=56.31    time(min)=1.98 
+ep=18  steps=10500 lr=1.0000000 loss=56.43   |g|=2.68  ppl=54.16    time(min)=2.00 
+
+-----------VAL-----------
+ VAL loss=59.72   VAL ppl=87.48   
+-----------VAL-----------
+
+ep=18  steps=10600 lr=1.0000000 loss=57.96   |g|=3.35  ppl=57.02    time(min)=2.02 
+ep=18  steps=10700 lr=1.0000000 loss=57.93   |g|=5.73  ppl=54.66    time(min)=2.04 
+ep=18  steps=10800 lr=1.0000000 loss=56.71   |g|=6.12  ppl=53.15    time(min)=2.05 
+ep=18  steps=10900 lr=1.0000000 loss=56.43   |g|=5.35  ppl=53.46    time(min)=2.07 
+ep=19  steps=11000 lr=1.0000000 loss=56.80   |g|=4.42  ppl=52.77    time(min)=2.09 
+
+-----------VAL-----------
+ VAL loss=59.41   VAL ppl=85.44   
+-----------VAL-----------
+
+new lr: 0.5000000
+ep=19  steps=11100 lr=0.5000000 loss=63.06   |g|=4.52  ppl=58.78    time(min)=2.12 
+ep=19  steps=11200 lr=0.5000000 loss=59.38   |g|=5.63  ppl=55.18    time(min)=2.13 
+ep=19  steps=11300 lr=0.5000000 loss=59.45   |g|=5.87  ppl=54.40    time(min)=2.15 
+ep=19  steps=11400 lr=0.5000000 loss=59.14   |g|=4.07  ppl=54.73    time(min)=2.17 
+ep=20  steps=11500 lr=0.5000000 loss=57.41   |g|=3.75  ppl=53.22    time(min)=2.19 
+
+-----------VAL-----------
+ VAL loss=58.45   VAL ppl=79.55   
+-----------VAL-----------
+
+ep=20  steps=11600 lr=0.5000000 loss=58.93   |g|=9.24  ppl=51.57    time(min)=2.21 
+ep=20  steps=11700 lr=0.5000000 loss=56.81   |g|=6.17  ppl=50.27    time(min)=2.23 
+ep=20  steps=11800 lr=0.5000000 loss=54.65   |g|=11.36 ppl=48.56    time(min)=2.24 
+ep=20  steps=11900 lr=0.5000000 loss=54.51   |g|=3.62  ppl=48.02    time(min)=2.26 
+ep=20  steps=12000 lr=0.5000000 loss=53.43   |g|=2.99  ppl=47.48    time(min)=2.28 
+
+-----------VAL-----------
+ VAL loss=59.09   VAL ppl=83.42   
+-----------VAL-----------
+
+ep=21  steps=12100 lr=0.5000000 loss=73.01   |g|=6.51  ppl=62.72    time(min)=2.30 
+ep=21  steps=12200 lr=0.5000000 loss=65.99   |g|=2.94  ppl=56.43    time(min)=2.32 
+ep=21  steps=12300 lr=0.5000000 loss=63.37   |g|=3.42  ppl=54.01    time(min)=2.34 
+ep=21  steps=12400 lr=0.5000000 loss=59.44   |g|=5.12  ppl=51.61    time(min)=2.36 
+ep=21  steps=12500 lr=0.5000000 loss=59.45   |g|=5.70  ppl=51.33    time(min)=2.38 
+
+-----------VAL-----------
+ VAL loss=58.47   VAL ppl=79.63   
+-----------VAL-----------
+
+ep=21  steps=12600 lr=0.5000000 loss=50.37   |g|=3.24  ppl=43.87    time(min)=2.40 
+ep=22  steps=12700 lr=0.5000000 loss=50.41   |g|=5.13  ppl=43.71    time(min)=2.41 
+ep=22  steps=12800 lr=0.5000000 loss=54.35   |g|=6.82  ppl=46.75    time(min)=2.43 
+ep=22  steps=12900 lr=0.5000000 loss=56.48   |g|=2.58  ppl=48.06    time(min)=2.45 
+ep=22  steps=13000 lr=0.5000000 loss=54.94   |g|=3.74  ppl=47.12    time(min)=2.47 
+
+-----------VAL-----------
+ VAL loss=58.71   VAL ppl=81.13   
+-----------VAL-----------
+
+ep=22  steps=13100 lr=0.5000000 loss=54.64   |g|=2.38  ppl=46.12    time(min)=2.49 
+ep=22  steps=13200 lr=0.5000000 loss=53.25   |g|=4.28  ppl=45.10    time(min)=2.51 
+ep=23  steps=13300 lr=0.5000000 loss=52.24   |g|=6.79  ppl=43.86    time(min)=2.53 
+ep=23  steps=13400 lr=0.5000000 loss=52.20   |g|=6.62  ppl=43.75    time(min)=2.54 
+ep=23  steps=13500 lr=0.5000000 loss=54.65   |g|=7.21  ppl=45.11    time(min)=2.56 
+
+-----------VAL-----------
+ VAL loss=58.61   VAL ppl=80.52   
+-----------VAL-----------
+
+new lr: 0.2500000
+ep=23  steps=13600 lr=0.2500000 loss=49.37   |g|=3.72  ppl=45.83    time(min)=2.59 
+ep=23  steps=13700 lr=0.2500000 loss=57.33   |g|=2.45  ppl=52.94    time(min)=2.61 
+ep=24  steps=13800 lr=0.2500000 loss=55.85   |g|=10.10 ppl=51.02    time(min)=2.62 
+ep=24  steps=13900 lr=0.2500000 loss=56.37   |g|=7.61  ppl=51.32    time(min)=2.64 
+ep=24  steps=14000 lr=0.2500000 loss=56.20   |g|=5.78  ppl=50.38    time(min)=2.66 
+
+-----------VAL-----------
+ VAL loss=58.27   VAL ppl=78.49   
+-----------VAL-----------
+
+update best ppl
+ep=24  steps=14100 lr=0.2500000 loss=49.96   |g|=4.85  ppl=45.08    time(min)=2.68 
+ep=24  steps=14200 lr=0.2500000 loss=53.10   |g|=5.14  ppl=46.54    time(min)=2.70 
+ep=24  steps=14300 lr=0.2500000 loss=56.21   |g|=3.37  ppl=49.13    time(min)=2.72 
+ep=25  steps=14400 lr=0.2500000 loss=55.58   |g|=4.19  ppl=48.48    time(min)=2.74 
+ep=25  steps=14500 lr=0.2500000 loss=55.84   |g|=3.60  ppl=48.07    time(min)=2.76 
+
+-----------VAL-----------
+ VAL loss=58.30   VAL ppl=78.62   
+-----------VAL-----------
+
+ep=25  steps=14600 lr=0.2500000 loss=60.67   |g|=4.47  ppl=52.12    time(min)=2.78 
+ep=25  steps=14700 lr=0.2500000 loss=54.57   |g|=4.89  ppl=46.22    time(min)=2.80 
+ep=25  steps=14800 lr=0.2500000 loss=53.83   |g|=3.11  ppl=45.79    time(min)=2.81 
+ep=25  steps=14900 lr=0.2500000 loss=55.00   |g|=7.97  ppl=46.75    time(min)=2.83 
+ep=26  steps=15000 lr=0.2500000 loss=53.77   |g|=2.82  ppl=45.76    time(min)=2.85 
+
+-----------VAL-----------
+ VAL loss=58.30   VAL ppl=78.67   
+-----------VAL-----------
+
+ep=26  steps=15100 lr=0.2500000 loss=57.81   |g|=10.10 ppl=47.03    time(min)=2.87 
+ep=26  steps=15200 lr=0.2500000 loss=53.33   |g|=6.33  ppl=44.06    time(min)=2.89 
+ep=26  steps=15300 lr=0.2500000 loss=52.25   |g|=2.56  ppl=43.55    time(min)=2.91 
+ep=26  steps=15400 lr=0.2500000 loss=51.01   |g|=5.43  ppl=42.66    time(min)=2.92 
+ep=26  steps=15500 lr=0.2500000 loss=54.84   |g|=8.28  ppl=45.81    time(min)=2.94 
+
+-----------VAL-----------
+ VAL loss=58.22   VAL ppl=78.17   
+-----------VAL-----------
+
+update best ppl
+ep=27  steps=15600 lr=0.2500000 loss=58.13   |g|=3.76  ppl=46.34    time(min)=2.97 
+ep=27  steps=15700 lr=0.2500000 loss=58.80   |g|=4.48  ppl=47.55    time(min)=2.99 
+ep=27  steps=15800 lr=0.2500000 loss=56.48   |g|=5.91  ppl=45.54    time(min)=3.00 
+ep=27  steps=15900 lr=0.2500000 loss=53.69   |g|=4.51  ppl=43.11    time(min)=3.02 
+ep=27  steps=16000 lr=0.2500000 loss=54.25   |g|=2.91  ppl=44.05    time(min)=3.04 
+
+-----------VAL-----------
+ VAL loss=58.45   VAL ppl=79.52   
+-----------VAL-----------
+
+ep=28  steps=16100 lr=0.2500000 loss=57.01   |g|=5.12  ppl=46.47    time(min)=3.06 
+ep=28  steps=16200 lr=0.2500000 loss=58.67   |g|=2.78  ppl=46.66    time(min)=3.08 
+ep=28  steps=16300 lr=0.2500000 loss=61.92   |g|=10.87 ppl=48.67    time(min)=3.10 
+ep=28  steps=16400 lr=0.2500000 loss=58.75   |g|=3.02  ppl=46.50    time(min)=3.12 
+ep=28  steps=16500 lr=0.2500000 loss=56.39   |g|=5.14  ppl=45.01    time(min)=3.14 
+
+-----------VAL-----------
+ VAL loss=58.28   VAL ppl=78.51   
+-----------VAL-----------
+
+ep=28  steps=16600 lr=0.2500000 loss=52.08   |g|=3.66  ppl=41.05    time(min)=3.16 
+ep=29  steps=16700 lr=0.2500000 loss=49.09   |g|=3.53  ppl=39.10    time(min)=3.17 
+ep=29  steps=16800 lr=0.2500000 loss=48.37   |g|=5.46  ppl=38.59    time(min)=3.19 
+ep=29  steps=16900 lr=0.2500000 loss=48.16   |g|=5.75  ppl=38.40    time(min)=3.21 
+ep=29  steps=17000 lr=0.2500000 loss=51.03   |g|=3.58  ppl=40.57    time(min)=3.23 
+
+-----------VAL-----------
+ VAL loss=58.38   VAL ppl=79.13   
+-----------VAL-----------
+
+ep=29  steps=17100 lr=0.2500000 loss=53.81   |g|=5.35  ppl=42.85    time(min)=3.25 
+ep=29  steps=17200 lr=0.2500000 loss=56.79   |g|=4.56  ppl=45.05    time(min)=3.27 
+ep=30  steps=17300 lr=0.2500000 loss=55.45   |g|=4.55  ppl=43.71    time(min)=3.29 
+ep=30  steps=17400 lr=0.2500000 loss=57.73   |g|=3.32  ppl=44.74    time(min)=3.31 
+ep=30  steps=17500 lr=0.2500000 loss=56.49   |g|=5.51  ppl=43.74    time(min)=3.32 
+
+-----------VAL-----------
+ VAL loss=58.54   VAL ppl=80.08   
+-----------VAL-----------
+
+ep=30  steps=17600 lr=0.2500000 loss=57.12   |g|=12.83 ppl=46.29    time(min)=3.35 
+ep=30  steps=17700 lr=0.2500000 loss=52.53   |g|=6.21  ppl=41.70    time(min)=3.36 
+ep=30  steps=17800 lr=0.2500000 loss=51.05   |g|=6.28  ppl=40.76    time(min)=3.38 
+ep=31  steps=17900 lr=0.2500000 loss=51.22   |g|=2.90  ppl=40.67    time(min)=3.40 
+ep=31  steps=18000 lr=0.2500000 loss=51.03   |g|=2.48  ppl=40.46    time(min)=3.42 
+
+-----------VAL-----------
+ VAL loss=58.60   VAL ppl=80.44   
+-----------VAL-----------
+
+new lr: 0.1250000
+ep=31  steps=18100 lr=0.1250000 loss=51.35   |g|=5.80  ppl=40.46    time(min)=3.44 
+ep=31  steps=18200 lr=0.1250000 loss=53.60   |g|=7.17  ppl=41.06    time(min)=3.46 
+ep=31  steps=18300 lr=0.1250000 loss=53.21   |g|=6.58  ppl=41.85    time(min)=3.47 
+ep=32  steps=18400 lr=0.1250000 loss=54.68   |g|=3.19  ppl=43.08    time(min)=3.49 
+ep=32  steps=18500 lr=0.1250000 loss=53.31   |g|=8.17  ppl=41.88    time(min)=3.51 
+
+-----------VAL-----------
+ VAL loss=58.32   VAL ppl=78.74   
+-----------VAL-----------
+
+ep=32  steps=18600 lr=0.1250000 loss=49.54   |g|=4.94  ppl=39.70    time(min)=3.53 
+ep=32  steps=18700 lr=0.1250000 loss=50.97   |g|=8.14  ppl=40.14    time(min)=3.55 
+ep=32  steps=18800 lr=0.1250000 loss=54.76   |g|=3.18  ppl=43.34    time(min)=3.57 
+ep=32  steps=18900 lr=0.1250000 loss=54.82   |g|=4.24  ppl=43.61    time(min)=3.59 
+ep=33  steps=19000 lr=0.1250000 loss=55.56   |g|=6.57  ppl=43.81    time(min)=3.61 
+
+-----------VAL-----------
+ VAL loss=58.30   VAL ppl=78.66   
+-----------VAL-----------
+
+ep=33  steps=19100 lr=0.1250000 loss=51.48   |g|=3.25  ppl=40.82    time(min)=3.63 
+ep=33  steps=19200 lr=0.1250000 loss=53.13   |g|=6.82  ppl=41.93    time(min)=3.65 
+ep=33  steps=19300 lr=0.1250000 loss=55.03   |g|=3.09  ppl=43.39    time(min)=3.67 
+ep=33  steps=19400 lr=0.1250000 loss=52.84   |g|=3.68  ppl=42.03    time(min)=3.68 
+ep=33  steps=19500 lr=0.1250000 loss=52.94   |g|=3.63  ppl=41.89    time(min)=3.70 
+
+-----------VAL-----------
+ VAL loss=58.39   VAL ppl=79.16   
+-----------VAL-----------
+
+ep=34  steps=19600 lr=0.1250000 loss=58.52   |g|=2.19  ppl=46.66    time(min)=3.72 
+ep=34  steps=19700 lr=0.1250000 loss=57.99   |g|=6.25  ppl=44.76    time(min)=3.74 
+ep=34  steps=19800 lr=0.1250000 loss=55.91   |g|=3.88  ppl=43.42    time(min)=3.76 
+ep=34  steps=19900 lr=0.1250000 loss=55.69   |g|=5.18  ppl=42.99    time(min)=3.78 
+ep=34  steps=20000 lr=0.1250000 loss=54.63   |g|=2.67  ppl=42.15    time(min)=3.79 
+
+-----------VAL-----------
+ VAL loss=58.43   VAL ppl=79.39   
+-----------VAL-----------
+
+ep=34  steps=20100 lr=0.1250000 loss=50.38   |g|=3.83  ppl=39.68    time(min)=3.82 
+ep=35  steps=20200 lr=0.1250000 loss=53.43   |g|=3.07  ppl=40.59    time(min)=3.84 
+ep=35  steps=20300 lr=0.1250000 loss=51.44   |g|=5.12  ppl=38.85    time(min)=3.85 
+ep=35  steps=20400 lr=0.1250000 loss=53.26   |g|=4.65  ppl=40.51    time(min)=3.87 
+ep=35  steps=20500 lr=0.1250000 loss=54.15   |g|=5.22  ppl=41.24    time(min)=3.89 
+
+-----------VAL-----------
+ VAL loss=58.39   VAL ppl=79.16   
+-----------VAL-----------
+
+new lr: 0.0625000
+ep=35  steps=20600 lr=0.0625000 loss=53.74   |g|=3.62  ppl=43.83    time(min)=3.91 
+ep=36  steps=20700 lr=0.0625000 loss=49.14   |g|=3.81  ppl=40.20    time(min)=3.93 
+ep=36  steps=20800 lr=0.0625000 loss=53.29   |g|=5.81  ppl=42.43    time(min)=3.95 
+ep=36  steps=20900 lr=0.0625000 loss=51.94   |g|=3.51  ppl=41.27    time(min)=3.97 
+ep=36  steps=21000 lr=0.0625000 loss=54.16   |g|=4.40  ppl=42.43    time(min)=3.99 
+
+-----------VAL-----------
+ VAL loss=58.25   VAL ppl=78.34   
+-----------VAL-----------
+
+ep=36  steps=21100 lr=0.0625000 loss=50.40   |g|=3.15  ppl=41.56    time(min)=4.01 
+ep=36  steps=21200 lr=0.0625000 loss=48.97   |g|=4.29  ppl=39.92    time(min)=4.02 
+ep=37  steps=21300 lr=0.0625000 loss=51.08   |g|=7.79  ppl=41.77    time(min)=4.04 
+ep=37  steps=21400 lr=0.0625000 loss=51.80   |g|=7.58  ppl=42.03    time(min)=4.06 
+ep=37  steps=21500 lr=0.0625000 loss=52.30   |g|=4.48  ppl=42.14    time(min)=4.08 
+
+-----------VAL-----------
+ VAL loss=58.32   VAL ppl=78.75   
+-----------VAL-----------
+
+ep=37  steps=21600 lr=0.0625000 loss=51.13   |g|=4.95  ppl=39.38    time(min)=4.10 
+ep=37  steps=21700 lr=0.0625000 loss=53.84   |g|=8.52  ppl=41.33    time(min)=4.12 
+ep=37  steps=21800 lr=0.0625000 loss=54.93   |g|=9.23  ppl=42.33    time(min)=4.14 
+ep=38  steps=21900 lr=0.0625000 loss=52.77   |g|=4.64  ppl=41.24    time(min)=4.15 
+ep=38  steps=22000 lr=0.0625000 loss=53.69   |g|=3.69  ppl=41.41    time(min)=4.17 
+
+-----------VAL-----------
+ VAL loss=58.30   VAL ppl=78.65   
+-----------VAL-----------
+
+ep=38  steps=22100 lr=0.0625000 loss=50.74   |g|=5.69  ppl=41.95    time(min)=4.19 
+ep=38  steps=22200 lr=0.0625000 loss=51.77   |g|=7.33  ppl=41.56    time(min)=4.21 
+ep=38  steps=22300 lr=0.0625000 loss=55.07   |g|=3.38  ppl=44.29    time(min)=4.23 
+ep=38  steps=22400 lr=0.0625000 loss=53.77   |g|=4.02  ppl=42.37    time(min)=4.25 
+ep=39  steps=22500 lr=0.0625000 loss=52.57   |g|=5.63  ppl=41.31    time(min)=4.27 
+
+-----------VAL-----------
+ VAL loss=58.32   VAL ppl=78.79   
+-----------VAL-----------
+
+ep=39  steps=22600 lr=0.0625000 loss=55.50   |g|=2.60  ppl=42.73    time(min)=4.29 
+ep=39  steps=22700 lr=0.0625000 loss=56.91   |g|=3.86  ppl=43.46    time(min)=4.31 
+ep=39  steps=22800 lr=0.0625000 loss=52.59   |g|=3.29  ppl=40.71    time(min)=4.32 
+ep=39  steps=22900 lr=0.0625000 loss=53.95   |g|=11.38 ppl=41.87    time(min)=4.34 
+ep=40  steps=23000 lr=0.0625000 loss=53.35   |g|=3.05  ppl=41.33    time(min)=4.36 
+
+-----------VAL-----------
+ VAL loss=58.35   VAL ppl=78.97   
+-----------VAL-----------
+
+new lr: 0.0312500
