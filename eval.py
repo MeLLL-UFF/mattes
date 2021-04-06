@@ -1,6 +1,6 @@
 import torch
 import time
-from data_utils import DataUtil
+from data_utils_yelp import DataUtil
 from models import StyleTransformer
 #from train import train, auto_eval
 from cnn_classify import test, CNNClassify, BiLSTMClassify
@@ -71,12 +71,12 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = False
+    translate = True
     ckpt = 'save/Mar09145150/ckpts/4000_F.pth'
-    model_name = 'masKD10_75_d1_t2'
+    model_name = 'teste1'
     beam_size = 1
-    valid_file_0 = 'save/Mar09145150/ckpts/4000_0'
-    valid_file_1 = 'save/Mar09145150/ckpts/4000_1'
+    valid_file_0 = False #'save/Mar09145150/ckpts/4000_0'
+    valid_file_1 = False #'save/Mar09145150/ckpts/4000_1'
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -97,11 +97,10 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         raw_output = []
         rev_output = []
         while True:
-            batch, batch_size, eop = data.next_dev()
             if raw_style == 0:
-                inp_tokens = batch[0]
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 64, sort = False)
             else:
-                inp_tokens = batch[1]
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 64, sort = False)
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -137,7 +136,11 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         return gold_text, raw_output, rev_output
 
     if config.translate == True:
-        gold_text, raw_output, rev_output = zip(inference(data, 0), inference(data, 1))
+        gold_text0, raw_output0, rev_output0 = inference(data, 0)
+        gold_text1, raw_output1, rev_output1 = inference(data, 1)
+        gold_text = (gold_text0, gold_text1)
+        raw_output = (raw_output0,raw_output1)
+        rev_output = (rev_output0, rev_output1)
 
         valid_file_0 = os.path.join( config.save_folder + '/', str(model_name) + '_0')
         valid_file_1 = os.path.join( config.save_folder + '/', str(model_name) + '_1')
@@ -145,10 +148,11 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
         for i in range(len(rev_output[0])):
             line_0 = rev_output[0][i].strip()
-            line_1 = rev_output[1][i].strip()
             out_file_0.write(line_0 + '\n')
-            out_file_1.write(line_1 + '\n')
             out_file_0.flush()
+        for i in range(len(rev_output[1])):
+            line_1 = rev_output[1][i].strip()
+            out_file_1.write(line_1 + '\n')
             out_file_1.flush()
         out_file_0.close()
         out_file_1.close()
@@ -234,11 +238,10 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
         gold_text = []
         rev_output = []
         while True:
-            batch, batch_size, eop = data.next_dev()
             if raw_style == 0:
-                inp_tokens = batch[0]
+                inp_tokens, _ , eop = data.next_dev0()
             else:
-                inp_tokens = batch[1]
+                inp_tokens, _ , eop = data.next_dev1()
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -260,7 +263,10 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
 
         return gold_text, rev_output
     
-    gold_text, rev_output = zip(beam_inference(data, 0), beam_inference(data, 1))
+    gold_text0, rev_output0 = beam_inference(data, 0)
+    gold_text1, rev_output1 = beam_inference(data, 1)
+    gold_text = (gold_text0, gold_text1)
+    rev_output = (rev_output0, rev_output1)
 
     valid_file_0 = os.path.join( config.save_folder + '/' , str(model_name) + '_0')
     valid_file_1 = os.path.join( config.save_folder + '/' , str(model_name) + '_1')
