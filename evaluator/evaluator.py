@@ -3,7 +3,7 @@ from nltk.translate.bleu_score import sentence_bleu
 
 import fasttext
 import pkg_resources
-import kenlm
+from transformers import AlbertTokenizer
 import math
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import LSTM_LM
@@ -31,7 +31,7 @@ class Evaluator(object):
         print("Loading language models from '{0}' and {1}".format(lm0_file_name,lm1_file_name))
         self.lm0 = torch.load(lm0_file_name)
         self.lm1 = torch.load(lm1_file_name)
-
+        self.tokenizer = AlbertTokenizer.from_pretrained('albert-large-v2')
         
         #yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
         #yelp_ppl_file = pkg_resources.resource_stream(resource_package, yelp_ppl_path)
@@ -72,8 +72,9 @@ class Evaluator(object):
         return self.yelp_acc_b(texts, styles_origin)
 
     def nltk_bleu(self, texts_origin, text_transfered):
-        texts_origin = [word_tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
-        text_transfered = word_tokenize(text_transfered.lower().strip())
+        texts_origin = [self.tokenizer.tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
+        text_transfered = self.tokenizer.tokenize(text_transfered.lower().strip())
+        #print(texts_origin, text_transfered)
         return sentence_bleu(texts_origin, text_transfered) * 100
 
     def self_bleu_b(self, texts_origin, texts_transfered):
@@ -87,7 +88,8 @@ class Evaluator(object):
     def yelp_ref_bleu_0(self, texts_neg2pos):
         #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = 500
+        n = len(texts_neg2pos)
+        print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
             sum += self.nltk_bleu([x], y)
         return sum / n
@@ -95,8 +97,11 @@ class Evaluator(object):
     def yelp_ref_bleu_1(self, texts_pos2neg):
         #assert len(texts_pos2neg) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = 500
+        n = len(texts_pos2neg)
+        print(n)
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
+            #print(x,y)
+            #print(self.nltk_bleu([x], y))
             sum += self.nltk_bleu([x], y)
         return sum / n
 
