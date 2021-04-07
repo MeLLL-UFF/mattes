@@ -118,7 +118,7 @@ class DataUtil(object):
     self.train_index_1 %= self.n_train_batches_1
 
     batch0, len0 = x_train0.size()
-    barch1, len1 = x_train1.size()
+    batch1, len1 = x_train1.size()
     topk_logit0 = torch.zeros(batch0, len0, self.k)
     topk_index0 = torch.zeros(batch0, len0, self.k , dtype = torch.long)
     topk_logit1 = torch.zeros(batch1, len1, self.k)

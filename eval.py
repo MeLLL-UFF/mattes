@@ -18,8 +18,8 @@ class Config():
     dev_src_file0 = 'data/shakespeare/cleaned_dev_0.txt'
     dev_src_file1 = 'data/shakespeare/cleaned_dev_1.txt'
     dev_trg_file = 'data/shakespeare/dev.attr'
-    dev_trg_file0 = 'data/shakespeare/dev_0.attr'
-    dev_trg_file1 = 'data/shakespeare/dev_1.attr'
+    dev_trg_file0 = 'data/shakespeare/test_0.attr'
+    dev_trg_file1 = 'data/shakespeare/test_1.attr'
     dev_trg_ref = 'data/shakespeare/cleaned_dev_ref.txt'
     trg_vocab  = 'data/shakespeare/attr.vocab'
     data_path = './data/shakespeare/'
@@ -71,12 +71,12 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = True
+    translate = False
     ckpt = 'save/Mar09145150/ckpts/4000_F.pth'
-    model_name = 'teste1'
+    model_name = 'deep_latent_shake'
     beam_size = 1
-    valid_file_0 = False #'save/Mar09145150/ckpts/4000_0'
-    valid_file_1 = False #'save/Mar09145150/ckpts/4000_1'
+    valid_file_0 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_0to1.txt' #False #'save/Mar09145150/ckpts/4000_0'
+    valid_file_1 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_1to0.txt' #False #'save/Mar09145150/ckpts/4000_1'
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
