@@ -22,16 +22,20 @@ def batch_preprocess(batch, pad_idx, eos_idx, reverse=False):
     batch_0, batch_1, topk_logit0, topk_logit1, topk_index0, topk_index1 = batch
     diff = batch_0.size(1) - batch_1.size(1)
     if diff < 0:
-        pad = torch.full_like(batch_1[:, :-diff], pad_idx)
+        #pad = torch.full_like(batch_1[:, :-diff], pad_idx)
+        pad = torch.full((batch_0.size(0), -diff), pad_idx, dtype = batch_1.dtype, layout=batch_1.layout, device=batch_1.device)
         batch_0 = torch.cat((batch_0, pad), 1)
-        pad_topk = torch.full_like(topk_logit1[:, :-diff], pad_idx)
+        #pad_topk = torch.full_like(topk_logit1[:, :-diff], pad_idx)
+        pad_topk = torch.full((topk_logit0.size(0), -diff, topk_logit0.size(2)), pad_idx, dtype = topk_logit1.dtype, layout=topk_logit1.layout, device=topk_logit1.device)
         topk_logit0 = torch.cat((topk_logit0, pad_topk), 1)
         topk_index0 = torch.cat((topk_index0, pad_topk.long()), 1)
 
     elif diff > 0:
-        pad = torch.full_like(batch_0[:, :diff], pad_idx)
+        #pad = torch.full_like(batch_0[:, :diff], pad_idx)
+        pad = torch.full((batch_1.size(0), diff), pad_idx, dtype = batch_0.dtype, layout=batch_0.layout, device=batch_0.device)
         batch_1 = torch.cat((batch_1, pad), 1)
-        pad_topk = torch.full_like(topk_logit0[:, :diff], pad_idx)
+        #pad_topk = torch.full_like(topk_logit0[:, :diff], pad_idx)
+        pad_topk = torch.full((topk_logit1.size(0), diff, topk_logit1.size(2)), pad_idx, dtype = topk_logit0.dtype, layout=topk_logit0.layout, device=topk_logit0.device)
         topk_logit1 = torch.cat((topk_logit1, pad_topk), 1)
         topk_index1 = torch.cat((topk_index1, pad_topk.long()), 1)
 
@@ -668,9 +672,9 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
         rev_output = []
         while True:
             if raw_style == 0:
-                inp_tokens, _ , eop = data.next_dev0()
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 64, sort = False)
             else:
-                inp_tokens, _ , eop = data.next_dev1()
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 64, sort = False)
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
