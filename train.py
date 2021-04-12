@@ -549,7 +549,10 @@ def train(config, data, model_F, model_D):
     batches_gen_len = []
     
     #writer = SummaryWriter(config.log_dir)
-    global_step = 0
+    if config.load_ckpt:
+        global_step = int(config.d_ckpt.split("/")[-1].split("_")[0])
+    else:
+        global_step = 0
     model_F.train()
     model_D.train()
 
@@ -558,25 +561,26 @@ def train(config, data, model_F, model_D):
     os.makedirs(config.save_folder + '/ckpts')
     print('Save Path:', config.save_folder)
 
-    print('Model F pretraining......')
-    #for i, batch in enumerate(train_iters):
-    for i in range(config.F_pretrain_iter):
-        batch, batch_size, eop = data.next_train()
-        #print(batch[0], batch[1])
-        slf_loss, cyc_loss, _ , batch_len, _ = mass_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0)#, False)
-        his_f_slf_loss.append(slf_loss)
-        his_f_cyc_loss.append(cyc_loss)
-        batches_len.append(batch_len)
+    if not config.load_ckpt:
+        print('Model F pretraining......')
+        #for i, batch in enumerate(train_iters):
+        for i in range(config.F_pretrain_iter):
+            batch, batch_size, eop = data.next_train()
+            #print(batch[0], batch[1])
+            slf_loss, cyc_loss, _ , batch_len, _ = f_step(config, data, model_F, model_D, optimizer_F, batch, 1.0, 1.0, False)
+            his_f_slf_loss.append(slf_loss)
+            his_f_cyc_loss.append(cyc_loss)
+            batches_len.append(batch_len)
 
-        if (i + 1) % 10 == 0:
-            avrg_f_slf_loss = np.mean(his_f_slf_loss)
-            avrg_f_cyc_loss = np.mean(his_f_cyc_loss)
-            avrg_batches_len = np.mean(batches_len)
-            his_f_slf_loss = []
-            his_f_cyc_loss = []
-            batches_len = []
-            print('[iter: {}] slf_loss:{:.4f}, rec_loss:{:.4f}, len_batches:{:.2f}'.format(i + 1, avrg_f_slf_loss, avrg_f_cyc_loss, avrg_batches_len))
-        #if eop: break
+            if (i + 1) % 10 == 0:
+                avrg_f_slf_loss = np.mean(his_f_slf_loss)
+                avrg_f_cyc_loss = np.mean(his_f_cyc_loss)
+                avrg_batches_len = np.mean(batches_len)
+                his_f_slf_loss = []
+                his_f_cyc_loss = []
+                batches_len = []
+                print('[iter: {}] slf_loss:{:.4f}, rec_loss:{:.4f}, len_batches:{:.2f}'.format(i + 1, avrg_f_slf_loss, avrg_f_cyc_loss, avrg_batches_len))
+            #if eop: break
     
     print('Training start......')
 

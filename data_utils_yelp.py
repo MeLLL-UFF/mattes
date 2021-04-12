@@ -125,16 +125,19 @@ class DataUtil(object):
     topk_index1 = torch.zeros(batch1, len1, self.k , dtype = torch.long)
     for i, j in zip(range(start_index_0, end_index_0, 1), range(end_index_0 - start_index_0)):
       topk_logits0, topk_inds0 = load_topk(self.topk_db0[str(int(self.index0[i]))])
-      topk_logits0 = topk_logits0[:, :self.k].float()
+      topk_logits0 = topk_logits0[:self.hparams.max_length, :self.k].float()
       #print(topk_logits0.size())
-      topk_inds0 = topk_inds0[:, :self.k]
+      #print(topk_logit0.size())
+      topk_inds0 = topk_inds0[:self.hparams.max_length, :self.k]
       topk_logit0.data[j, :topk_logits0.size(0), :] = topk_logits0.data
       topk_index0.data[j, :topk_inds0.size(0), :] = topk_inds0.data
     
     for i, j in zip(range(start_index_1, end_index_1, 1), range(end_index_1 - start_index_1)):
       topk_logits1, topk_inds1 = load_topk(self.topk_db1[str(int(self.index1[i]))])
-      topk_logits1 = topk_logits1[:, :self.k].float()
-      topk_inds1 = topk_inds1[:, :self.k]
+      topk_logits1 = topk_logits1[:self.hparams.max_length, :self.k].float()
+      #print(topk_logits1.size())
+      #print(topk_logit1.size())
+      topk_inds1 = topk_inds1[:self.hparams.max_length, :self.k]
       topk_logit1.data[j, :topk_logits1.size(0), :] = topk_logits1.data
       topk_index1.data[j, :topk_inds1.size(0), :] = topk_inds1.data
 

@@ -1,6 +1,6 @@
 import torch
 import time
-from data_utils import DataUtil
+from data_utils_yelp import DataUtil
 from models import StyleTransformer, Discriminator
 from train import train, auto_eval
 from cnn_classify import test, CNNClassify, BiLSTMClassify
@@ -23,7 +23,7 @@ class Config():
     save_path = './save'
     pretrained_embed_path = './embedding/'
     device = torch.device('cuda' if True and torch.cuda.is_available() else 'cpu')
-    discriminator_method = 'Cond' # 'Multi' or 'Cond'
+    discriminator_method = 'Multi' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
     max_length = 64
@@ -33,22 +33,22 @@ class Config():
     num_styles = 2
     num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
-    batch_size = 16
+    batch_size = 32
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
-    iter_D = 10
+    iter_D = 7
     iter_F = 5
     F_pretrain_iter = 500#57500
     log_steps = 5
     eval_steps = 200
     learned_pos_embed = True
     dropout = 0
-    drop_rate_config = [(0.2, 0), (0.2, 230), (0.3, 11500)]
-    temperature_config = [(1, 0), (1, 1150), (0.8, 4600), (0.6, 11500)]
+    drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 5750)]
+    temperature_config = [(1, 0), (1, 575), (0.8, 2300), (0.6, 5750)]
 
-    slf_factor = 0.1
-    cyc_factor = 0.2
+    slf_factor = 0.15
+    cyc_factor = 0.3
     adv_factor = 1
 
     inp_shuffle_len = 0
@@ -62,19 +62,30 @@ class Config():
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
-    albert_kd = True
+    albert_kd = False
     kd_alpha = 0.5
-    kd_temperature = 5
+    kd_temperature = 1
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
+    load_ckpt = False
+    d_ckpt = 'save/Apr09212226/ckpts/1600_D.pth'
+    f_ckpt = 'save/Apr09212226/ckpts/1600_F.pth'
 
 
 def main():
     config = Config()
     data = DataUtil(config)
     print('Vocab size:', config.src_vocab_size)
-    model_F = StyleTransformer(config, data).to(config.device)
-    model_D = Discriminator(config, data).to(config.device)
+    if config.load_ckpt:
+        state_dict = torch.load(config.f_ckpt)
+        model_F = StyleTransformer(config, data).to(config.device)
+        model_F.load_state_dict(state_dict)
+        state_dict = torch.load(config.d_ckpt)
+        model_D = Discriminator(config, data).to(config.device)
+        model_D.load_state_dict(state_dict)
+    else:
+        model_F = StyleTransformer(config, data).to(config.device)
+        model_D = Discriminator(config, data).to(config.device)
     print(config.discriminator_method)
     
     train(config, data, model_F, model_D)

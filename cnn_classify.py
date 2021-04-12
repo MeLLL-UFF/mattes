@@ -12,7 +12,7 @@ import torch.nn as nn
 from torch.autograd import Variable
 from torch.nn.utils.rnn import pack_padded_sequence, pad_packed_sequence
 
-from data_utils import DataUtil
+from data_utils_yelp import DataUtil
 from src import DataUtil2
 from hparams import *
 from utils import *
