@@ -33,7 +33,7 @@ class Config():
     num_styles = 2
     num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
-    batch_size = 64
+    batch_size = 96
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
@@ -41,7 +41,7 @@ class Config():
     iter_F = 5
     F_pretrain_iter = 500#57500
     log_steps = 5
-    eval_steps = 200
+    eval_steps = 100
     learned_pos_embed = True
     dropout = 0
     drop_rate_config = [(0.2, 0), (0.2, 500), (0.3, 25000)]
@@ -64,7 +64,7 @@ class Config():
     word_rand = 0.1
     albert_kd = True
     kd_alpha = 0.5
-    kd_temperature = 10
+    kd_temperature = 1
     bert_dump0 = 'data/targets/teacher0_yelp'
     bert_dump1 = 'data/targets/teacher1_yelp'
     load_ckpt = False

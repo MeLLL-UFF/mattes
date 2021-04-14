@@ -676,9 +676,9 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
         rev_output = []
         while True:
             if raw_style == 0:
-                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 64, sort = False)
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
             else:
-                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 64, sort = False)
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -739,13 +739,13 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
 
     
     #acc_neg = evaluator.yelp_acc_0(rev_output[0])
-    acc_mod, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
-    acc_cla, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
+    acc_mod, _ = test(evaluator.classifier, data, 128, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_cla, _ = test(evaluator.classifier, data, 128, valid_file_1, config.dev_trg_file1, negate = True)
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 32, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 32, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output0))

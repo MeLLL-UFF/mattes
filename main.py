@@ -37,11 +37,11 @@ class Config():
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
-    iter_D = 7
+    iter_D = 10
     iter_F = 5
     F_pretrain_iter = 500#57500
     log_steps = 5
-    eval_steps = 200
+    eval_steps = 100
     learned_pos_embed = True
     dropout = 0
     drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 5750)]
@@ -62,14 +62,14 @@ class Config():
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
-    albert_kd = False
+    albert_kd = True
     kd_alpha = 0.5
-    kd_temperature = 1
+    kd_temperature = 10
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
     load_ckpt = False
-    d_ckpt = 'save/Apr09212226/ckpts/1600_D.pth'
-    f_ckpt = 'save/Apr09212226/ckpts/1600_F.pth'
+    d_ckpt = 'save/Apr12011239/ckpts/1200_D.pth'
+    f_ckpt = 'save/Apr12011239/ckpts/1200_F.pth'
 
 
 def main():
