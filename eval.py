@@ -72,11 +72,11 @@ class Config():
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
     translate = False
-    ckpt = 'save/Mar09145150/ckpts/4000_F.pth'
-    model_name = 'deep_latent_shake'
+    ckpt = 'save/Mar29112346/ckpts/2200_F.pth'
+    model_name = 'deel_lat'
     beam_size = 1
-    valid_file_0 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_0to1.txt' #False #'save/Mar09145150/ckpts/4000_0'
-    valid_file_1 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_1to0.txt' #False #'save/Mar09145150/ckpts/4000_1'
+    valid_file_0 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_0to1.txt' #False #'save/Mar26002743/ckpts/6200_0'  
+    valid_file_1 = 'baseline_outputs/shakespeare/deep_latent_seq/cleaned_readable_output_1to0.txt'#False #  'save/Mar26002743/ckpts/6200_1' 
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -98,9 +98,9 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         rev_output = []
         while True:
             if raw_style == 0:
-                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 64, sort = False)
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
             else:
-                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 64, sort = False)
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -175,13 +175,13 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
 
     
     #acc_neg = evaluator.yelp_acc_0(rev_output[0])
-    acc_mod, _ = test(evaluator.classifier, data, 32, valid_file_0, config.dev_trg_file0, negate = True)
-    acc_cla, _ = test(evaluator.classifier, data, 32, valid_file_1, config.dev_trg_file1, negate = True)
+    acc_mod, _ = test(evaluator.classifier, data, 128, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_cla, _ = test(evaluator.classifier, data, 128, valid_file_1, config.dev_trg_file1, negate = True)
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output[0])
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 32, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 32, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
 
     print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
           'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \

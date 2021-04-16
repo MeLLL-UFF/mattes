@@ -19,7 +19,7 @@ class Evaluator(object):
         #yelp_ppl_path = 'ppl_yelp.binary'
         yelp_ref0_path = 'cleaned_dev_1.txt'
         yelp_ref1_path = 'cleaned_dev_0.txt'
-        classifier_dir = "pretrained_classifer/shakespeare"
+        classifier_dir = "pretrained_classifer/shakespeare2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
         self.classifier = torch.load(classifier_file_name)
