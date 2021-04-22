@@ -1,0 +1,1280 @@
+[iter 5] d_adv_loss: 2.5084  f_slf_loss: 10.4696  f_cyc_loss: 22.3013  f_adv_loss: 0.5968  temp: 1.0000  drop: 0.2000  len_batches: 9.98  len_gen_batches: 7.20
+
+[iter 10] d_adv_loss: 2.0807  f_slf_loss: 10.8646  f_cyc_loss: 23.1006  f_adv_loss: 0.5826  temp: 1.0000  drop: 0.2000  len_batches: 10.28  len_gen_batches: 6.60
+
+[iter 15] d_adv_loss: 1.9257  f_slf_loss: 10.8555  f_cyc_loss: 23.0717  f_adv_loss: 0.5913  temp: 1.0000  drop: 0.2000  len_batches: 10.29  len_gen_batches: 6.40
+
+[iter 20] d_adv_loss: 1.8464  f_slf_loss: 10.9377  f_cyc_loss: 23.2404  f_adv_loss: 0.5791  temp: 1.0000  drop: 0.2000  len_batches: 10.37  len_gen_batches: 6.30
+
+[iter 25] d_adv_loss: 1.7919  f_slf_loss: 11.1651  f_cyc_loss: 23.7286  f_adv_loss: 0.5640  temp: 1.0000  drop: 0.2000  len_batches: 10.58  len_gen_batches: 6.24
+
+[iter 30] d_adv_loss: 1.7516  f_slf_loss: 11.2322  f_cyc_loss: 23.8968  f_adv_loss: 0.5715  temp: 1.0000  drop: 0.2000  len_batches: 10.68  len_gen_batches: 6.20
+
+[iter 35] d_adv_loss: 1.7269  f_slf_loss: 11.2164  f_cyc_loss: 23.8982  f_adv_loss: 0.5747  temp: 1.0000  drop: 0.2000  len_batches: 10.70  len_gen_batches: 6.17
+
+[iter 40] d_adv_loss: 1.7006  f_slf_loss: 11.0823  f_cyc_loss: 23.6498  f_adv_loss: 0.5730  temp: 1.0000  drop: 0.2000  len_batches: 10.62  len_gen_batches: 6.15
+
+[iter 45] d_adv_loss: 1.6801  f_slf_loss: 11.2069  f_cyc_loss: 23.9410  f_adv_loss: 0.5725  temp: 1.0000  drop: 0.2000  len_batches: 10.77  len_gen_batches: 6.13
+
+[iter 50] d_adv_loss: 1.6657  f_slf_loss: 11.0857  f_cyc_loss: 23.7100  f_adv_loss: 0.5689  temp: 1.0000  drop: 0.2000  len_batches: 10.72  len_gen_batches: 6.06
+
+[iter 55] d_adv_loss: 1.6474  f_slf_loss: 11.1393  f_cyc_loss: 23.8386  f_adv_loss: 0.5550  temp: 1.0000  drop: 0.2000  len_batches: 10.81  len_gen_batches: 6.00
+
+[iter 60] d_adv_loss: 1.6331  f_slf_loss: 11.0874  f_cyc_loss: 23.7447  f_adv_loss: 0.5211  temp: 1.0000  drop: 0.2000  len_batches: 10.80  len_gen_batches: 5.79
+
+[iter 65] d_adv_loss: 1.6231  f_slf_loss: 11.1741  f_cyc_loss: 23.9557  f_adv_loss: 0.4868  temp: 1.0000  drop: 0.2000  len_batches: 10.92  len_gen_batches: 5.52
+
+[iter 70] d_adv_loss: 1.6142  f_slf_loss: 11.0048  f_cyc_loss: 23.6161  f_adv_loss: 0.4565  temp: 1.0000  drop: 0.2000  len_batches: 10.83  len_gen_batches: 5.29
+
+[iter 75] d_adv_loss: 1.6066  f_slf_loss: 10.9081  f_cyc_loss: 23.4215  f_adv_loss: 0.4327  temp: 1.0000  drop: 0.2000  len_batches: 10.78  len_gen_batches: 5.08
+
+[iter 80] d_adv_loss: 1.5980  f_slf_loss: 10.9535  f_cyc_loss: 23.5191  f_adv_loss: 0.4090  temp: 1.0000  drop: 0.2000  len_batches: 10.85  len_gen_batches: 4.89
+
+[iter 85] d_adv_loss: 1.5874  f_slf_loss: 10.9409  f_cyc_loss: 23.4904  f_adv_loss: 0.3891  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 4.72
+
+[iter 90] d_adv_loss: 1.5787  f_slf_loss: 10.9005  f_cyc_loss: 23.4087  f_adv_loss: 0.3717  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 4.57
+
+[iter 95] d_adv_loss: 1.5696  f_slf_loss: 10.8391  f_cyc_loss: 23.2799  f_adv_loss: 0.3560  temp: 1.0000  drop: 0.2000  len_batches: 10.86  len_gen_batches: 4.44
+
+[iter 100] d_adv_loss: 1.5639  f_slf_loss: 10.8207  f_cyc_loss: 23.2451  f_adv_loss: 0.3428  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 4.31
+
+[iter 105] d_adv_loss: 1.5556  f_slf_loss: 10.6888  f_cyc_loss: 22.9672  f_adv_loss: 0.3320  temp: 1.0000  drop: 0.2000  len_batches: 10.80  len_gen_batches: 4.20
+
+[iter 110] d_adv_loss: 1.5463  f_slf_loss: 10.6542  f_cyc_loss: 22.8935  f_adv_loss: 0.3231  temp: 1.0000  drop: 0.2000  len_batches: 10.80  len_gen_batches: 4.11
+
+[iter 115] d_adv_loss: 1.5383  f_slf_loss: 10.6187  f_cyc_loss: 22.8184  f_adv_loss: 0.3127  temp: 1.0000  drop: 0.2000  len_batches: 10.80  len_gen_batches: 4.02
+
+[iter 120] d_adv_loss: 1.5302  f_slf_loss: 10.6452  f_cyc_loss: 22.8697  f_adv_loss: 0.3038  temp: 1.0000  drop: 0.2000  len_batches: 10.85  len_gen_batches: 3.93
+
+[iter 125] d_adv_loss: 1.5258  f_slf_loss: 10.5761  f_cyc_loss: 22.7202  f_adv_loss: 0.2949  temp: 1.0000  drop: 0.2000  len_batches: 10.82  len_gen_batches: 3.85
+
+[iter 130] d_adv_loss: 1.5204  f_slf_loss: 10.5153  f_cyc_loss: 22.5886  f_adv_loss: 0.2873  temp: 1.0000  drop: 0.2000  len_batches: 10.80  len_gen_batches: 3.78
+
+[iter 135] d_adv_loss: 1.5137  f_slf_loss: 10.5235  f_cyc_loss: 22.6008  f_adv_loss: 0.2803  temp: 1.0000  drop: 0.2000  len_batches: 10.84  len_gen_batches: 3.72
+
+[iter 140] d_adv_loss: 1.5052  f_slf_loss: 10.5013  f_cyc_loss: 22.5487  f_adv_loss: 0.2734  temp: 1.0000  drop: 0.2000  len_batches: 10.84  len_gen_batches: 3.66
+
+[iter 145] d_adv_loss: 1.5006  f_slf_loss: 10.4743  f_cyc_loss: 22.4919  f_adv_loss: 0.2741  temp: 1.0000  drop: 0.2000  len_batches: 10.84  len_gen_batches: 3.60
+
+[iter 150] d_adv_loss: 1.4980  f_slf_loss: 10.4382  f_cyc_loss: 22.4171  f_adv_loss: 0.2683  temp: 1.0000  drop: 0.2000  len_batches: 10.83  len_gen_batches: 3.55
+
+[iter 155] d_adv_loss: 1.4923  f_slf_loss: 10.3975  f_cyc_loss: 22.3287  f_adv_loss: 0.2701  temp: 1.0000  drop: 0.2000  len_batches: 10.82  len_gen_batches: 3.50
+
+[iter 160] d_adv_loss: 1.4857  f_slf_loss: 10.3967  f_cyc_loss: 22.3197  f_adv_loss: 0.2664  temp: 1.0000  drop: 0.2000  len_batches: 10.84  len_gen_batches: 3.45
+
+[iter 165] d_adv_loss: 1.4791  f_slf_loss: 10.3861  f_cyc_loss: 22.2950  f_adv_loss: 0.2630  temp: 1.0000  drop: 0.2000  len_batches: 10.85  len_gen_batches: 3.41
+
+[iter 170] d_adv_loss: 1.4714  f_slf_loss: 10.3780  f_cyc_loss: 22.2752  f_adv_loss: 0.2585  temp: 1.0000  drop: 0.2000  len_batches: 10.87  len_gen_batches: 3.36
+
+[iter 175] d_adv_loss: 1.4660  f_slf_loss: 10.3639  f_cyc_loss: 22.2454  f_adv_loss: 0.2629  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 3.33
+
+[iter 180] d_adv_loss: 1.4632  f_slf_loss: 10.3562  f_cyc_loss: 22.2350  f_adv_loss: 0.2685  temp: 1.0000  drop: 0.2000  len_batches: 10.89  len_gen_batches: 3.29
+
+[iter 185] d_adv_loss: 1.4599  f_slf_loss: 10.3211  f_cyc_loss: 22.1617  f_adv_loss: 0.2716  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 3.26
+
+[iter 190] d_adv_loss: 1.4574  f_slf_loss: 10.2955  f_cyc_loss: 22.1108  f_adv_loss: 0.2746  temp: 1.0000  drop: 0.2000  len_batches: 10.87  len_gen_batches: 3.22
+
+[iter 195] d_adv_loss: 1.4531  f_slf_loss: 10.2669  f_cyc_loss: 22.0531  f_adv_loss: 0.2786  temp: 1.0000  drop: 0.2000  len_batches: 10.87  len_gen_batches: 3.19
+
+[iter 200] d_adv_loss: 1.4505  f_slf_loss: 10.2613  f_cyc_loss: 22.0442  f_adv_loss: 0.2830  temp: 1.0000  drop: 0.2000  len_batches: 10.88  len_gen_batches: 3.17
+
+[iter 205] d_adv_loss: 1.2874  f_slf_loss: 9.9918  f_cyc_loss: 21.7235  f_adv_loss: 0.4114  temp: 1.0000  drop: 0.2000  len_batches: 11.64  len_gen_batches: 2.14
+
+[iter 210] d_adv_loss: 1.2909  f_slf_loss: 9.0525  f_cyc_loss: 19.6498  f_adv_loss: 0.4086  temp: 1.0000  drop: 0.2000  len_batches: 10.73  len_gen_batches: 2.14
+
+[iter 215] d_adv_loss: 1.3022  f_slf_loss: 8.7773  f_cyc_loss: 19.0068  f_adv_loss: 0.4143  temp: 1.0000  drop: 0.2000  len_batches: 10.49  len_gen_batches: 2.13
+
+[iter 220] d_adv_loss: 1.2890  f_slf_loss: 8.9241  f_cyc_loss: 19.3075  f_adv_loss: 0.4203  temp: 1.0000  drop: 0.2000  len_batches: 10.64  len_gen_batches: 2.13
+
+[iter 225] d_adv_loss: 1.2929  f_slf_loss: 8.7865  f_cyc_loss: 19.0073  f_adv_loss: 0.4095  temp: 1.0000  drop: 0.2000  len_batches: 10.52  len_gen_batches: 2.12
+
+[iter 230] d_adv_loss: 1.2912  f_slf_loss: 8.7271  f_cyc_loss: 18.8704  f_adv_loss: 0.4061  temp: 1.0000  drop: 0.2000  len_batches: 10.49  len_gen_batches: 2.12
+
+[iter 235] d_adv_loss: 1.2760  f_slf_loss: 8.7985  f_cyc_loss: 19.0043  f_adv_loss: 0.4021  temp: 1.0000  drop: 0.2000  len_batches: 10.57  len_gen_batches: 2.12
+
+[iter 240] d_adv_loss: 1.2714  f_slf_loss: 8.8548  f_cyc_loss: 19.1074  f_adv_loss: 0.3966  temp: 1.0000  drop: 0.2000  len_batches: 10.63  len_gen_batches: 2.12
+
+[iter 245] d_adv_loss: 1.2735  f_slf_loss: 8.8043  f_cyc_loss: 18.9886  f_adv_loss: 0.3936  temp: 1.0000  drop: 0.2000  len_batches: 10.59  len_gen_batches: 2.12
+
+[iter 250] d_adv_loss: 1.2692  f_slf_loss: 8.8034  f_cyc_loss: 18.9887  f_adv_loss: 0.3939  temp: 1.0000  drop: 0.2000  len_batches: 10.62  len_gen_batches: 2.11
+
+[iter 255] d_adv_loss: 1.2661  f_slf_loss: 8.8121  f_cyc_loss: 19.0040  f_adv_loss: 0.3959  temp: 1.0000  drop: 0.2000  len_batches: 10.65  len_gen_batches: 2.11
+
+[iter 260] d_adv_loss: 1.2609  f_slf_loss: 8.8601  f_cyc_loss: 19.0943  f_adv_loss: 0.3986  temp: 1.0000  drop: 0.2001  len_batches: 10.70  len_gen_batches: 2.11
+
+[iter 265] d_adv_loss: 1.2550  f_slf_loss: 8.9032  f_cyc_loss: 19.1802  f_adv_loss: 0.3997  temp: 1.0000  drop: 0.2001  len_batches: 10.76  len_gen_batches: 2.10
+
+[iter 270] d_adv_loss: 1.2495  f_slf_loss: 8.8778  f_cyc_loss: 19.1219  f_adv_loss: 0.4001  temp: 1.0000  drop: 0.2002  len_batches: 10.76  len_gen_batches: 2.11
+
+[iter 275] d_adv_loss: 1.2410  f_slf_loss: 8.9006  f_cyc_loss: 19.1653  f_adv_loss: 0.3987  temp: 1.0000  drop: 0.2002  len_batches: 10.80  len_gen_batches: 2.13
+
+[iter 280] d_adv_loss: 1.2358  f_slf_loss: 8.8994  f_cyc_loss: 19.1648  f_adv_loss: 0.3925  temp: 1.0000  drop: 0.2003  len_batches: 10.81  len_gen_batches: 2.17
+
+[iter 285] d_adv_loss: 1.2310  f_slf_loss: 8.8589  f_cyc_loss: 19.0875  f_adv_loss: 0.3903  temp: 1.0000  drop: 0.2003  len_batches: 10.79  len_gen_batches: 2.22
+
+[iter 290] d_adv_loss: 1.2276  f_slf_loss: 8.8075  f_cyc_loss: 18.9872  f_adv_loss: 0.3879  temp: 1.0000  drop: 0.2004  len_batches: 10.75  len_gen_batches: 2.27
+
+[iter 295] d_adv_loss: 1.2237  f_slf_loss: 8.7609  f_cyc_loss: 18.8933  f_adv_loss: 0.3868  temp: 1.0000  drop: 0.2005  len_batches: 10.72  len_gen_batches: 2.31
+
+[iter 300] d_adv_loss: 1.2180  f_slf_loss: 8.7719  f_cyc_loss: 18.9162  f_adv_loss: 0.3850  temp: 1.0000  drop: 0.2005  len_batches: 10.75  len_gen_batches: 2.35
+
+[iter 305] d_adv_loss: 1.2125  f_slf_loss: 8.7489  f_cyc_loss: 18.8675  f_adv_loss: 0.3844  temp: 1.0000  drop: 0.2006  len_batches: 10.75  len_gen_batches: 2.39
+
+[iter 310] d_adv_loss: 1.2086  f_slf_loss: 8.6571  f_cyc_loss: 18.6746  f_adv_loss: 0.3830  temp: 1.0000  drop: 0.2006  len_batches: 10.68  len_gen_batches: 2.42
+
+[iter 315] d_adv_loss: 1.2055  f_slf_loss: 8.6425  f_cyc_loss: 18.6499  f_adv_loss: 0.3852  temp: 1.0000  drop: 0.2007  len_batches: 10.68  len_gen_batches: 2.46
+
+[iter 320] d_adv_loss: 1.2042  f_slf_loss: 8.6362  f_cyc_loss: 18.6391  f_adv_loss: 0.3865  temp: 1.0000  drop: 0.2007  len_batches: 10.69  len_gen_batches: 2.50
+
+[iter 325] d_adv_loss: 1.2012  f_slf_loss: 8.6434  f_cyc_loss: 18.6613  f_adv_loss: 0.3901  temp: 1.0000  drop: 0.2008  len_batches: 10.72  len_gen_batches: 2.54
+
+[iter 330] d_adv_loss: 1.1999  f_slf_loss: 8.6564  f_cyc_loss: 18.6967  f_adv_loss: 0.4045  temp: 1.0000  drop: 0.2008  len_batches: 10.74  len_gen_batches: 2.57
+
+[iter 335] d_adv_loss: 1.2000  f_slf_loss: 8.6394  f_cyc_loss: 18.6617  f_adv_loss: 0.4089  temp: 1.0000  drop: 0.2009  len_batches: 10.74  len_gen_batches: 2.60
+
+[iter 340] d_adv_loss: 1.1991  f_slf_loss: 8.6298  f_cyc_loss: 18.6427  f_adv_loss: 0.4131  temp: 1.0000  drop: 0.2009  len_batches: 10.76  len_gen_batches: 2.63
+
+[iter 345] d_adv_loss: 1.1985  f_slf_loss: 8.6172  f_cyc_loss: 18.6119  f_adv_loss: 0.4207  temp: 1.0000  drop: 0.2010  len_batches: 10.76  len_gen_batches: 2.67
+
+[iter 350] d_adv_loss: 1.1977  f_slf_loss: 8.5835  f_cyc_loss: 18.5398  f_adv_loss: 0.4254  temp: 1.0000  drop: 0.2010  len_batches: 10.74  len_gen_batches: 2.72
+
+[iter 355] d_adv_loss: 1.1973  f_slf_loss: 8.5973  f_cyc_loss: 18.5711  f_adv_loss: 0.4324  temp: 1.0000  drop: 0.2011  len_batches: 10.77  len_gen_batches: 2.76
+
+[iter 360] d_adv_loss: 1.1965  f_slf_loss: 8.5873  f_cyc_loss: 18.5506  f_adv_loss: 0.4365  temp: 1.0000  drop: 0.2011  len_batches: 10.78  len_gen_batches: 2.78
+
+[iter 365] d_adv_loss: 1.1957  f_slf_loss: 8.5546  f_cyc_loss: 18.4864  f_adv_loss: 0.4383  temp: 1.0000  drop: 0.2012  len_batches: 10.77  len_gen_batches: 2.80
+
+[iter 370] d_adv_loss: 1.1935  f_slf_loss: 8.5345  f_cyc_loss: 18.4410  f_adv_loss: 0.4406  temp: 1.0000  drop: 0.2012  len_batches: 10.76  len_gen_batches: 2.83
+
+[iter 375] d_adv_loss: 1.1924  f_slf_loss: 8.5130  f_cyc_loss: 18.3903  f_adv_loss: 0.4442  temp: 1.0000  drop: 0.2013  len_batches: 10.76  len_gen_batches: 2.85
+
+[iter 380] d_adv_loss: 1.1917  f_slf_loss: 8.4743  f_cyc_loss: 18.3079  f_adv_loss: 0.4499  temp: 1.0000  drop: 0.2013  len_batches: 10.75  len_gen_batches: 2.87
+
+[iter 385] d_adv_loss: 1.1913  f_slf_loss: 8.4388  f_cyc_loss: 18.2325  f_adv_loss: 0.4524  temp: 1.0000  drop: 0.2014  len_batches: 10.73  len_gen_batches: 2.90
+
+[iter 390] d_adv_loss: 1.1901  f_slf_loss: 8.3923  f_cyc_loss: 18.1340  f_adv_loss: 0.4544  temp: 1.0000  drop: 0.2014  len_batches: 10.71  len_gen_batches: 2.93
+
+[iter 395] d_adv_loss: 1.1886  f_slf_loss: 8.3799  f_cyc_loss: 18.1145  f_adv_loss: 0.4575  temp: 1.0000  drop: 0.2015  len_batches: 10.72  len_gen_batches: 2.97
+
+[iter 400] d_adv_loss: 1.1865  f_slf_loss: 8.3675  f_cyc_loss: 18.1034  f_adv_loss: 0.4627  temp: 1.0000  drop: 0.2015  len_batches: 10.73  len_gen_batches: 2.99
+
+[iter 405] d_adv_loss: 1.1175  f_slf_loss: 6.9393  f_cyc_loss: 15.2330  f_adv_loss: 0.5506  temp: 1.0000  drop: 0.2016  len_batches: 10.14  len_gen_batches: 3.68
+
+[iter 410] d_adv_loss: 1.1256  f_slf_loss: 7.5636  f_cyc_loss: 16.8552  f_adv_loss: 0.5551  temp: 1.0000  drop: 0.2016  len_batches: 10.78  len_gen_batches: 3.42
+
+[iter 415] d_adv_loss: 1.1329  f_slf_loss: 7.2504  f_cyc_loss: 16.2325  f_adv_loss: 0.5359  temp: 1.0000  drop: 0.2017  len_batches: 10.50  len_gen_batches: 3.19
+
+[iter 420] d_adv_loss: 1.1398  f_slf_loss: 7.2583  f_cyc_loss: 16.3170  f_adv_loss: 0.5169  temp: 1.0000  drop: 0.2017  len_batches: 10.52  len_gen_batches: 2.93
+
+[iter 425] d_adv_loss: 1.1400  f_slf_loss: 7.3132  f_cyc_loss: 16.4289  f_adv_loss: 0.4875  temp: 1.0000  drop: 0.2018  len_batches: 10.59  len_gen_batches: 2.75
+
+[iter 430] d_adv_loss: 1.1468  f_slf_loss: 7.3038  f_cyc_loss: 16.3958  f_adv_loss: 0.4644  temp: 1.0000  drop: 0.2018  len_batches: 10.61  len_gen_batches: 2.62
+
+[iter 435] d_adv_loss: 1.1416  f_slf_loss: 7.2286  f_cyc_loss: 16.2048  f_adv_loss: 0.4487  temp: 1.0000  drop: 0.2019  len_batches: 10.54  len_gen_batches: 2.54
+
+[iter 440] d_adv_loss: 1.1324  f_slf_loss: 7.2585  f_cyc_loss: 16.2542  f_adv_loss: 0.4530  temp: 1.0000  drop: 0.2019  len_batches: 10.60  len_gen_batches: 2.48
+
+[iter 445] d_adv_loss: 1.1299  f_slf_loss: 7.2960  f_cyc_loss: 16.3133  f_adv_loss: 0.4495  temp: 1.0000  drop: 0.2020  len_batches: 10.65  len_gen_batches: 2.44
+
+[iter 450] d_adv_loss: 1.1237  f_slf_loss: 7.3276  f_cyc_loss: 16.3558  f_adv_loss: 0.4423  temp: 1.0000  drop: 0.2020  len_batches: 10.70  len_gen_batches: 2.41
+
+[iter 455] d_adv_loss: 1.1244  f_slf_loss: 7.2946  f_cyc_loss: 16.2692  f_adv_loss: 0.4389  temp: 1.0000  drop: 0.2021  len_batches: 10.68  len_gen_batches: 2.38
+
+[iter 460] d_adv_loss: 1.1207  f_slf_loss: 7.3071  f_cyc_loss: 16.2828  f_adv_loss: 0.4400  temp: 1.0000  drop: 0.2021  len_batches: 10.70  len_gen_batches: 2.36
+
+[iter 465] d_adv_loss: 1.1156  f_slf_loss: 7.2943  f_cyc_loss: 16.2422  f_adv_loss: 0.4361  temp: 1.0000  drop: 0.2022  len_batches: 10.70  len_gen_batches: 2.33
+
+[iter 470] d_adv_loss: 1.1118  f_slf_loss: 7.2633  f_cyc_loss: 16.1684  f_adv_loss: 0.4356  temp: 1.0000  drop: 0.2022  len_batches: 10.68  len_gen_batches: 2.31
+
+[iter 475] d_adv_loss: 1.1078  f_slf_loss: 7.2762  f_cyc_loss: 16.1875  f_adv_loss: 0.4260  temp: 1.0000  drop: 0.2023  len_batches: 10.70  len_gen_batches: 2.29
+
+[iter 480] d_adv_loss: 1.1033  f_slf_loss: 7.2965  f_cyc_loss: 16.2276  f_adv_loss: 0.4199  temp: 1.0000  drop: 0.2023  len_batches: 10.75  len_gen_batches: 2.27
+
+[iter 485] d_adv_loss: 1.1025  f_slf_loss: 7.2911  f_cyc_loss: 16.2055  f_adv_loss: 0.4154  temp: 1.0000  drop: 0.2024  len_batches: 10.75  len_gen_batches: 2.25
+
+[iter 490] d_adv_loss: 1.0995  f_slf_loss: 7.2929  f_cyc_loss: 16.1982  f_adv_loss: 0.4096  temp: 1.0000  drop: 0.2025  len_batches: 10.77  len_gen_batches: 2.24
+
+[iter 495] d_adv_loss: 1.0974  f_slf_loss: 7.2951  f_cyc_loss: 16.1902  f_adv_loss: 0.4053  temp: 1.0000  drop: 0.2025  len_batches: 10.78  len_gen_batches: 2.23
+
+[iter 500] d_adv_loss: 1.0955  f_slf_loss: 7.3198  f_cyc_loss: 16.2318  f_adv_loss: 0.4035  temp: 1.0000  drop: 0.2026  len_batches: 10.83  len_gen_batches: 2.22
+
+[iter 505] d_adv_loss: 1.0935  f_slf_loss: 7.3279  f_cyc_loss: 16.2388  f_adv_loss: 0.4001  temp: 1.0000  drop: 0.2026  len_batches: 10.86  len_gen_batches: 2.21
+
+[iter 510] d_adv_loss: 1.0928  f_slf_loss: 7.2903  f_cyc_loss: 16.1491  f_adv_loss: 0.3974  temp: 1.0000  drop: 0.2027  len_batches: 10.83  len_gen_batches: 2.20
+
+[iter 515] d_adv_loss: 1.0901  f_slf_loss: 7.3086  f_cyc_loss: 16.1806  f_adv_loss: 0.3927  temp: 1.0000  drop: 0.2027  len_batches: 10.86  len_gen_batches: 2.20
+
+[iter 520] d_adv_loss: 1.0839  f_slf_loss: 7.3492  f_cyc_loss: 16.2659  f_adv_loss: 0.3906  temp: 1.0000  drop: 0.2028  len_batches: 10.92  len_gen_batches: 2.19
+
+[iter 525] d_adv_loss: 1.0835  f_slf_loss: 7.2943  f_cyc_loss: 16.1413  f_adv_loss: 0.3860  temp: 1.0000  drop: 0.2028  len_batches: 10.88  len_gen_batches: 2.19
+
+[iter 530] d_adv_loss: 1.0824  f_slf_loss: 7.2760  f_cyc_loss: 16.1015  f_adv_loss: 0.3819  temp: 1.0000  drop: 0.2029  len_batches: 10.88  len_gen_batches: 2.18
+
+[iter 535] d_adv_loss: 1.0811  f_slf_loss: 7.2494  f_cyc_loss: 16.0388  f_adv_loss: 0.3781  temp: 1.0000  drop: 0.2029  len_batches: 10.86  len_gen_batches: 2.18
+
+[iter 540] d_adv_loss: 1.0786  f_slf_loss: 7.2535  f_cyc_loss: 16.0438  f_adv_loss: 0.3780  temp: 1.0000  drop: 0.2030  len_batches: 10.88  len_gen_batches: 2.17
+
+[iter 545] d_adv_loss: 1.0768  f_slf_loss: 7.2481  f_cyc_loss: 16.0233  f_adv_loss: 0.3748  temp: 1.0000  drop: 0.2030  len_batches: 10.89  len_gen_batches: 2.17
+
+[iter 550] d_adv_loss: 1.0739  f_slf_loss: 7.2535  f_cyc_loss: 16.0330  f_adv_loss: 0.3721  temp: 1.0000  drop: 0.2031  len_batches: 10.91  len_gen_batches: 2.17
+
+[iter 555] d_adv_loss: 1.0720  f_slf_loss: 7.2591  f_cyc_loss: 16.0416  f_adv_loss: 0.3723  temp: 1.0000  drop: 0.2031  len_batches: 10.93  len_gen_batches: 2.17
+
+[iter 560] d_adv_loss: 1.0697  f_slf_loss: 7.2414  f_cyc_loss: 15.9985  f_adv_loss: 0.3698  temp: 1.0000  drop: 0.2032  len_batches: 10.92  len_gen_batches: 2.17
+
+[iter 565] d_adv_loss: 1.0693  f_slf_loss: 7.2209  f_cyc_loss: 15.9484  f_adv_loss: 0.3668  temp: 1.0000  drop: 0.2032  len_batches: 10.91  len_gen_batches: 2.17
+
+[iter 570] d_adv_loss: 1.0663  f_slf_loss: 7.1831  f_cyc_loss: 15.8650  f_adv_loss: 0.3666  temp: 1.0000  drop: 0.2033  len_batches: 10.88  len_gen_batches: 2.18
+
+[iter 575] d_adv_loss: 1.0655  f_slf_loss: 7.1688  f_cyc_loss: 15.8316  f_adv_loss: 0.3644  temp: 1.0000  drop: 0.2033  len_batches: 10.88  len_gen_batches: 2.19
+
+[iter 580] d_adv_loss: 1.0620  f_slf_loss: 7.1542  f_cyc_loss: 15.7960  f_adv_loss: 0.3633  temp: 1.0000  drop: 0.2034  len_batches: 10.87  len_gen_batches: 2.19
+
+[iter 585] d_adv_loss: 1.0596  f_slf_loss: 7.1480  f_cyc_loss: 15.7843  f_adv_loss: 0.3623  temp: 1.0000  drop: 0.2034  len_batches: 10.88  len_gen_batches: 2.20
+
+[iter 590] d_adv_loss: 1.0587  f_slf_loss: 7.1305  f_cyc_loss: 15.7506  f_adv_loss: 0.3626  temp: 1.0000  drop: 0.2035  len_batches: 10.87  len_gen_batches: 2.20
+
+[iter 595] d_adv_loss: 1.0566  f_slf_loss: 7.1267  f_cyc_loss: 15.7452  f_adv_loss: 0.3628  temp: 1.0000  drop: 0.2035  len_batches: 10.88  len_gen_batches: 2.20
+
+[iter 600] d_adv_loss: 1.0548  f_slf_loss: 7.1154  f_cyc_loss: 15.7274  f_adv_loss: 0.3618  temp: 1.0000  drop: 0.2036  len_batches: 10.89  len_gen_batches: 2.20
+
+[iter 605] d_adv_loss: 0.9770  f_slf_loss: 6.4858  f_cyc_loss: 14.4900  f_adv_loss: 0.2913  temp: 1.0000  drop: 0.2036  len_batches: 10.68  len_gen_batches: 2.15
+
+[iter 610] d_adv_loss: 0.9986  f_slf_loss: 6.8769  f_cyc_loss: 15.3932  f_adv_loss: 0.3229  temp: 1.0000  drop: 0.2037  len_batches: 11.15  len_gen_batches: 2.18
+
+[iter 615] d_adv_loss: 0.9760  f_slf_loss: 6.6559  f_cyc_loss: 14.8668  f_adv_loss: 0.3531  temp: 1.0000  drop: 0.2037  len_batches: 10.93  len_gen_batches: 2.17
+
+[iter 620] d_adv_loss: 0.9815  f_slf_loss: 6.6374  f_cyc_loss: 14.8079  f_adv_loss: 0.3542  temp: 1.0000  drop: 0.2038  len_batches: 10.94  len_gen_batches: 2.20
+
+[iter 625] d_adv_loss: 0.9938  f_slf_loss: 6.6835  f_cyc_loss: 14.8867  f_adv_loss: 0.3438  temp: 1.0000  drop: 0.2038  len_batches: 11.03  len_gen_batches: 2.22
+
+[iter 630] d_adv_loss: 0.9930  f_slf_loss: 6.6971  f_cyc_loss: 14.9296  f_adv_loss: 0.3368  temp: 1.0000  drop: 0.2039  len_batches: 11.05  len_gen_batches: 2.22
+
+[iter 635] d_adv_loss: 0.9933  f_slf_loss: 6.6293  f_cyc_loss: 14.7376  f_adv_loss: 0.3327  temp: 1.0000  drop: 0.2039  len_batches: 10.98  len_gen_batches: 2.26
+
+[iter 640] d_adv_loss: 0.9845  f_slf_loss: 6.6242  f_cyc_loss: 14.6978  f_adv_loss: 0.3265  temp: 1.0000  drop: 0.2040  len_batches: 11.00  len_gen_batches: 2.29
+
+[iter 645] d_adv_loss: 0.9896  f_slf_loss: 6.5683  f_cyc_loss: 14.5610  f_adv_loss: 0.3314  temp: 1.0000  drop: 0.2040  len_batches: 10.95  len_gen_batches: 2.31
+
+[iter 650] d_adv_loss: 0.9860  f_slf_loss: 6.5553  f_cyc_loss: 14.5285  f_adv_loss: 0.3290  temp: 1.0000  drop: 0.2041  len_batches: 10.96  len_gen_batches: 2.31
+
+[iter 655] d_adv_loss: 0.9853  f_slf_loss: 6.5671  f_cyc_loss: 14.5719  f_adv_loss: 0.3197  temp: 1.0000  drop: 0.2041  len_batches: 10.99  len_gen_batches: 2.30
+
+[iter 660] d_adv_loss: 0.9861  f_slf_loss: 6.4989  f_cyc_loss: 14.4132  f_adv_loss: 0.3225  temp: 1.0000  drop: 0.2042  len_batches: 10.93  len_gen_batches: 2.31
+
+[iter 665] d_adv_loss: 0.9834  f_slf_loss: 6.4791  f_cyc_loss: 14.3679  f_adv_loss: 0.3344  temp: 1.0000  drop: 0.2042  len_batches: 10.93  len_gen_batches: 2.35
+
+[iter 670] d_adv_loss: 0.9837  f_slf_loss: 6.5029  f_cyc_loss: 14.4368  f_adv_loss: 0.3305  temp: 1.0000  drop: 0.2043  len_batches: 10.96  len_gen_batches: 2.37
+
+[iter 675] d_adv_loss: 0.9830  f_slf_loss: 6.5226  f_cyc_loss: 14.4701  f_adv_loss: 0.3292  temp: 1.0000  drop: 0.2043  len_batches: 11.01  len_gen_batches: 2.42
+
+[iter 680] d_adv_loss: 0.9794  f_slf_loss: 6.5238  f_cyc_loss: 14.4634  f_adv_loss: 0.3297  temp: 1.0000  drop: 0.2044  len_batches: 11.03  len_gen_batches: 2.44
+
+[iter 685] d_adv_loss: 0.9755  f_slf_loss: 6.5053  f_cyc_loss: 14.4041  f_adv_loss: 0.3298  temp: 1.0000  drop: 0.2045  len_batches: 11.03  len_gen_batches: 2.46
+
+[iter 690] d_adv_loss: 0.9757  f_slf_loss: 6.4358  f_cyc_loss: 14.2357  f_adv_loss: 0.3370  temp: 1.0000  drop: 0.2045  len_batches: 10.95  len_gen_batches: 2.59
+
+[iter 695] d_adv_loss: 0.9778  f_slf_loss: 6.4074  f_cyc_loss: 14.1601  f_adv_loss: 0.3446  temp: 1.0000  drop: 0.2046  len_batches: 10.93  len_gen_batches: 2.75
+
+[iter 700] d_adv_loss: 0.9798  f_slf_loss: 6.3956  f_cyc_loss: 14.1304  f_adv_loss: 0.3530  temp: 1.0000  drop: 0.2046  len_batches: 10.94  len_gen_batches: 2.91
+
+[iter 705] d_adv_loss: 0.9835  f_slf_loss: 6.3970  f_cyc_loss: 14.1263  f_adv_loss: 0.3616  temp: 1.0000  drop: 0.2047  len_batches: 10.97  len_gen_batches: 3.04
+
+[iter 710] d_adv_loss: 0.9854  f_slf_loss: 6.3928  f_cyc_loss: 14.1178  f_adv_loss: 0.3711  temp: 1.0000  drop: 0.2047  len_batches: 10.99  len_gen_batches: 3.11
+
+[iter 715] d_adv_loss: 0.9864  f_slf_loss: 6.3536  f_cyc_loss: 14.0284  f_adv_loss: 0.3781  temp: 1.0000  drop: 0.2048  len_batches: 10.96  len_gen_batches: 3.18
+
+[iter 720] d_adv_loss: 0.9886  f_slf_loss: 6.3306  f_cyc_loss: 13.9692  f_adv_loss: 0.3840  temp: 1.0000  drop: 0.2048  len_batches: 10.96  len_gen_batches: 3.25
+
+[iter 725] d_adv_loss: 0.9905  f_slf_loss: 6.3102  f_cyc_loss: 13.9340  f_adv_loss: 0.3848  temp: 1.0000  drop: 0.2049  len_batches: 10.95  len_gen_batches: 3.24
+
+[iter 730] d_adv_loss: 0.9890  f_slf_loss: 6.2923  f_cyc_loss: 13.9095  f_adv_loss: 0.3880  temp: 1.0000  drop: 0.2049  len_batches: 10.95  len_gen_batches: 3.23
+
+[iter 735] d_adv_loss: 0.9890  f_slf_loss: 6.2746  f_cyc_loss: 13.8837  f_adv_loss: 0.3907  temp: 1.0000  drop: 0.2050  len_batches: 10.95  len_gen_batches: 3.23
+
+[iter 740] d_adv_loss: 0.9878  f_slf_loss: 6.2408  f_cyc_loss: 13.8076  f_adv_loss: 0.3911  temp: 1.0000  drop: 0.2050  len_batches: 10.93  len_gen_batches: 3.24
+
+[iter 745] d_adv_loss: 0.9878  f_slf_loss: 6.2170  f_cyc_loss: 13.7706  f_adv_loss: 0.3893  temp: 1.0000  drop: 0.2051  len_batches: 10.92  len_gen_batches: 3.23
+
+[iter 750] d_adv_loss: 0.9857  f_slf_loss: 6.2102  f_cyc_loss: 13.7491  f_adv_loss: 0.3904  temp: 1.0000  drop: 0.2051  len_batches: 10.94  len_gen_batches: 3.23
+
+[iter 755] d_adv_loss: 0.9871  f_slf_loss: 6.1637  f_cyc_loss: 13.6343  f_adv_loss: 0.3912  temp: 1.0000  drop: 0.2052  len_batches: 10.91  len_gen_batches: 3.26
+
+[iter 760] d_adv_loss: 0.9881  f_slf_loss: 6.1539  f_cyc_loss: 13.5938  f_adv_loss: 0.3942  temp: 1.0000  drop: 0.2052  len_batches: 10.92  len_gen_batches: 3.30
+
+[iter 765] d_adv_loss: 0.9880  f_slf_loss: 6.1187  f_cyc_loss: 13.5234  f_adv_loss: 0.3957  temp: 1.0000  drop: 0.2053  len_batches: 10.89  len_gen_batches: 3.31
+
+[iter 770] d_adv_loss: 0.9880  f_slf_loss: 6.0895  f_cyc_loss: 13.4808  f_adv_loss: 0.3966  temp: 1.0000  drop: 0.2053  len_batches: 10.88  len_gen_batches: 3.30
+
+[iter 775] d_adv_loss: 0.9891  f_slf_loss: 6.0957  f_cyc_loss: 13.5213  f_adv_loss: 0.3956  temp: 1.0000  drop: 0.2054  len_batches: 10.90  len_gen_batches: 3.29
+
+[iter 780] d_adv_loss: 0.9879  f_slf_loss: 6.0633  f_cyc_loss: 13.4598  f_adv_loss: 0.3946  temp: 1.0000  drop: 0.2054  len_batches: 10.88  len_gen_batches: 3.27
+
+[iter 785] d_adv_loss: 0.9884  f_slf_loss: 6.0476  f_cyc_loss: 13.4312  f_adv_loss: 0.3911  temp: 1.0000  drop: 0.2055  len_batches: 10.88  len_gen_batches: 3.26
+
+[iter 790] d_adv_loss: 0.9872  f_slf_loss: 6.0165  f_cyc_loss: 13.3490  f_adv_loss: 0.3923  temp: 1.0000  drop: 0.2055  len_batches: 10.86  len_gen_batches: 3.28
+
+[iter 795] d_adv_loss: 0.9867  f_slf_loss: 5.9995  f_cyc_loss: 13.2977  f_adv_loss: 0.3937  temp: 1.0000  drop: 0.2056  len_batches: 10.86  len_gen_batches: 3.33
+
+[iter 800] d_adv_loss: 0.9861  f_slf_loss: 5.9822  f_cyc_loss: 13.2499  f_adv_loss: 0.3969  temp: 1.0000  drop: 0.2056  len_batches: 10.86  len_gen_batches: 3.40
+
+[iter 805] d_adv_loss: 1.0567  f_slf_loss: 5.0852  f_cyc_loss: 10.8260  f_adv_loss: 0.4953  temp: 1.0000  drop: 0.2057  len_batches: 10.53  len_gen_batches: 4.99
+
+[iter 810] d_adv_loss: 1.0460  f_slf_loss: 5.0403  f_cyc_loss: 11.0141  f_adv_loss: 0.4973  temp: 1.0000  drop: 0.2057  len_batches: 10.45  len_gen_batches: 4.54
+
+[iter 815] d_adv_loss: 1.0466  f_slf_loss: 5.1110  f_cyc_loss: 11.3278  f_adv_loss: 0.5092  temp: 1.0000  drop: 0.2058  len_batches: 10.54  len_gen_batches: 4.32
+
+[iter 820] d_adv_loss: 1.0324  f_slf_loss: 5.0285  f_cyc_loss: 11.2631  f_adv_loss: 0.4674  temp: 1.0000  drop: 0.2058  len_batches: 10.43  len_gen_batches: 4.02
+
+[iter 825] d_adv_loss: 1.0321  f_slf_loss: 4.8604  f_cyc_loss: 10.9636  f_adv_loss: 0.4410  temp: 1.0000  drop: 0.2059  len_batches: 10.21  len_gen_batches: 3.68
+
+[iter 830] d_adv_loss: 1.0243  f_slf_loss: 4.8837  f_cyc_loss: 11.0547  f_adv_loss: 0.4248  temp: 1.0000  drop: 0.2059  len_batches: 10.29  len_gen_batches: 3.50
+
+[iter 835] d_adv_loss: 1.0307  f_slf_loss: 4.9829  f_cyc_loss: 11.2788  f_adv_loss: 0.4206  temp: 1.0000  drop: 0.2060  len_batches: 10.46  len_gen_batches: 3.38
+
+[iter 840] d_adv_loss: 1.0158  f_slf_loss: 4.9603  f_cyc_loss: 11.1511  f_adv_loss: 0.4137  temp: 1.0000  drop: 0.2060  len_batches: 10.45  len_gen_batches: 3.35
+
+[iter 845] d_adv_loss: 1.0117  f_slf_loss: 4.9239  f_cyc_loss: 10.9816  f_adv_loss: 0.4262  temp: 1.0000  drop: 0.2061  len_batches: 10.41  len_gen_batches: 3.41
+
+[iter 850] d_adv_loss: 1.0116  f_slf_loss: 4.9107  f_cyc_loss: 10.9071  f_adv_loss: 0.4409  temp: 1.0000  drop: 0.2061  len_batches: 10.45  len_gen_batches: 3.47
+
+[iter 855] d_adv_loss: 1.0085  f_slf_loss: 4.9252  f_cyc_loss: 10.8977  f_adv_loss: 0.4479  temp: 1.0000  drop: 0.2062  len_batches: 10.51  len_gen_batches: 3.49
+
+[iter 860] d_adv_loss: 1.0119  f_slf_loss: 4.9364  f_cyc_loss: 10.9142  f_adv_loss: 0.4466  temp: 1.0000  drop: 0.2062  len_batches: 10.54  len_gen_batches: 3.46
+
+[iter 865] d_adv_loss: 1.0152  f_slf_loss: 4.9164  f_cyc_loss: 10.8978  f_adv_loss: 0.4316  temp: 1.0000  drop: 0.2063  len_batches: 10.53  len_gen_batches: 3.39
+
+[iter 870] d_adv_loss: 1.0117  f_slf_loss: 4.9504  f_cyc_loss: 11.0103  f_adv_loss: 0.4221  temp: 1.0000  drop: 0.2063  len_batches: 10.60  len_gen_batches: 3.33
+
+[iter 875] d_adv_loss: 1.0065  f_slf_loss: 4.9697  f_cyc_loss: 11.0621  f_adv_loss: 0.4205  temp: 1.0000  drop: 0.2064  len_batches: 10.65  len_gen_batches: 3.27
+
+[iter 880] d_adv_loss: 1.0051  f_slf_loss: 4.9726  f_cyc_loss: 11.0590  f_adv_loss: 0.4208  temp: 1.0000  drop: 0.2065  len_batches: 10.67  len_gen_batches: 3.24
+
+[iter 885] d_adv_loss: 1.0028  f_slf_loss: 4.9772  f_cyc_loss: 11.0523  f_adv_loss: 0.4266  temp: 1.0000  drop: 0.2065  len_batches: 10.71  len_gen_batches: 3.23
+
+[iter 890] d_adv_loss: 0.9988  f_slf_loss: 4.9424  f_cyc_loss: 10.9557  f_adv_loss: 0.4279  temp: 1.0000  drop: 0.2066  len_batches: 10.68  len_gen_batches: 3.22
+
+[iter 895] d_adv_loss: 0.9961  f_slf_loss: 4.9577  f_cyc_loss: 10.9592  f_adv_loss: 0.4248  temp: 1.0000  drop: 0.2066  len_batches: 10.72  len_gen_batches: 3.22
+
+[iter 900] d_adv_loss: 0.9933  f_slf_loss: 4.9772  f_cyc_loss: 10.9980  f_adv_loss: 0.4245  temp: 1.0000  drop: 0.2067  len_batches: 10.78  len_gen_batches: 3.21
+
+[iter 905] d_adv_loss: 0.9913  f_slf_loss: 4.9700  f_cyc_loss: 10.9815  f_adv_loss: 0.4251  temp: 1.0000  drop: 0.2067  len_batches: 10.79  len_gen_batches: 3.19
+
+[iter 910] d_adv_loss: 0.9869  f_slf_loss: 4.9548  f_cyc_loss: 10.9451  f_adv_loss: 0.4248  temp: 1.0000  drop: 0.2068  len_batches: 10.78  len_gen_batches: 3.17
+
+[iter 915] d_adv_loss: 0.9810  f_slf_loss: 4.9359  f_cyc_loss: 10.9023  f_adv_loss: 0.4213  temp: 1.0000  drop: 0.2068  len_batches: 10.77  len_gen_batches: 3.14
+
+[iter 920] d_adv_loss: 0.9782  f_slf_loss: 4.9178  f_cyc_loss: 10.8597  f_adv_loss: 0.4188  temp: 1.0000  drop: 0.2069  len_batches: 10.76  len_gen_batches: 3.12
+
+[iter 925] d_adv_loss: 0.9784  f_slf_loss: 4.9291  f_cyc_loss: 10.8833  f_adv_loss: 0.4169  temp: 1.0000  drop: 0.2069  len_batches: 10.79  len_gen_batches: 3.11
+
+[iter 930] d_adv_loss: 0.9779  f_slf_loss: 4.9190  f_cyc_loss: 10.8515  f_adv_loss: 0.4148  temp: 1.0000  drop: 0.2070  len_batches: 10.80  len_gen_batches: 3.09
+
+[iter 935] d_adv_loss: 0.9766  f_slf_loss: 4.9207  f_cyc_loss: 10.8346  f_adv_loss: 0.4124  temp: 1.0000  drop: 0.2070  len_batches: 10.81  len_gen_batches: 3.09
+
+[iter 940] d_adv_loss: 0.9724  f_slf_loss: 4.9053  f_cyc_loss: 10.7713  f_adv_loss: 0.4097  temp: 1.0000  drop: 0.2071  len_batches: 10.81  len_gen_batches: 3.09
+
+[iter 945] d_adv_loss: 0.9725  f_slf_loss: 4.9137  f_cyc_loss: 10.7646  f_adv_loss: 0.4119  temp: 1.0000  drop: 0.2071  len_batches: 10.85  len_gen_batches: 3.10
+
+[iter 950] d_adv_loss: 0.9697  f_slf_loss: 4.8837  f_cyc_loss: 10.6840  f_adv_loss: 0.4153  temp: 1.0000  drop: 0.2072  len_batches: 10.81  len_gen_batches: 3.11
+
+[iter 955] d_adv_loss: 0.9675  f_slf_loss: 4.8998  f_cyc_loss: 10.7027  f_adv_loss: 0.4160  temp: 1.0000  drop: 0.2072  len_batches: 10.85  len_gen_batches: 3.11
+
+[iter 960] d_adv_loss: 0.9654  f_slf_loss: 4.8984  f_cyc_loss: 10.6783  f_adv_loss: 0.4148  temp: 1.0000  drop: 0.2073  len_batches: 10.87  len_gen_batches: 3.13
+
+[iter 965] d_adv_loss: 0.9640  f_slf_loss: 4.8917  f_cyc_loss: 10.6476  f_adv_loss: 0.4227  temp: 1.0000  drop: 0.2073  len_batches: 10.89  len_gen_batches: 3.16
+
+[iter 970] d_adv_loss: 0.9627  f_slf_loss: 4.8906  f_cyc_loss: 10.6339  f_adv_loss: 0.4238  temp: 1.0000  drop: 0.2074  len_batches: 10.90  len_gen_batches: 3.18
+
+[iter 975] d_adv_loss: 0.9622  f_slf_loss: 4.8733  f_cyc_loss: 10.5790  f_adv_loss: 0.4307  temp: 1.0000  drop: 0.2074  len_batches: 10.90  len_gen_batches: 3.22
+
+[iter 980] d_adv_loss: 0.9681  f_slf_loss: 4.8748  f_cyc_loss: 10.5929  f_adv_loss: 0.4475  temp: 1.0000  drop: 0.2075  len_batches: 10.89  len_gen_batches: 3.35
+
+[iter 985] d_adv_loss: 0.9743  f_slf_loss: 4.8750  f_cyc_loss: 10.6222  f_adv_loss: 0.4606  temp: 1.0000  drop: 0.2075  len_batches: 10.88  len_gen_batches: 3.42
+
+[iter 990] d_adv_loss: 0.9793  f_slf_loss: 4.8895  f_cyc_loss: 10.6874  f_adv_loss: 0.4691  temp: 1.0000  drop: 0.2076  len_batches: 10.88  len_gen_batches: 3.51
+
+[iter 995] d_adv_loss: 0.9818  f_slf_loss: 4.8921  f_cyc_loss: 10.6946  f_adv_loss: 0.4827  temp: 1.0000  drop: 0.2076  len_batches: 10.88  len_gen_batches: 3.60
+
+[iter 1000] d_adv_loss: 0.9848  f_slf_loss: 4.8769  f_cyc_loss: 10.6612  f_adv_loss: 0.4934  temp: 1.0000  drop: 0.2077  len_batches: 10.86  len_gen_batches: 3.73
+
+[iter 1005] d_adv_loss: 1.1497  f_slf_loss: 4.8528  f_cyc_loss: 10.4731  f_adv_loss: 0.8604  temp: 1.0000  drop: 0.2077  len_batches: 10.86  len_gen_batches: 8.31
+
+[iter 1010] d_adv_loss: 1.1211  f_slf_loss: 4.8622  f_cyc_loss: 10.3641  f_adv_loss: 0.7776  temp: 1.0000  drop: 0.2078  len_batches: 10.99  len_gen_batches: 8.14
+
+[iter 1015] d_adv_loss: 1.0999  f_slf_loss: 4.7243  f_cyc_loss: 10.0353  f_adv_loss: 0.7448  temp: 1.0000  drop: 0.2078  len_batches: 10.83  len_gen_batches: 8.24
+
+[iter 1020] d_adv_loss: 1.1274  f_slf_loss: 4.5782  f_cyc_loss: 9.6416  f_adv_loss: 0.7384  temp: 1.0000  drop: 0.2079  len_batches: 10.66  len_gen_batches: 7.90
+
+[iter 1025] d_adv_loss: 1.1117  f_slf_loss: 4.6419  f_cyc_loss: 9.6740  f_adv_loss: 0.7462  temp: 1.0000  drop: 0.2079  len_batches: 10.88  len_gen_batches: 7.76
+
+[iter 1030] d_adv_loss: 1.1184  f_slf_loss: 4.6791  f_cyc_loss: 9.6835  f_adv_loss: 0.7386  temp: 1.0000  drop: 0.2080  len_batches: 11.01  len_gen_batches: 7.58
+
+[iter 1035] d_adv_loss: 1.0983  f_slf_loss: 4.7053  f_cyc_loss: 9.6347  f_adv_loss: 0.7260  temp: 1.0000  drop: 0.2080  len_batches: 11.11  len_gen_batches: 7.32
+
+[iter 1040] d_adv_loss: 1.0901  f_slf_loss: 4.6079  f_cyc_loss: 9.4163  f_adv_loss: 0.6976  temp: 1.0000  drop: 0.2081  len_batches: 11.00  len_gen_batches: 7.08
+
+[iter 1045] d_adv_loss: 1.0805  f_slf_loss: 4.5240  f_cyc_loss: 9.1970  f_adv_loss: 0.6952  temp: 1.0000  drop: 0.2081  len_batches: 10.91  len_gen_batches: 6.97
+
+[iter 1050] d_adv_loss: 1.0770  f_slf_loss: 4.5295  f_cyc_loss: 9.1798  f_adv_loss: 0.6894  temp: 1.0000  drop: 0.2082  len_batches: 10.99  len_gen_batches: 7.03
+
+[iter 1055] d_adv_loss: 1.0668  f_slf_loss: 4.4891  f_cyc_loss: 9.0896  f_adv_loss: 0.6827  temp: 1.0000  drop: 0.2082  len_batches: 10.97  len_gen_batches: 7.09
+
+[iter 1060] d_adv_loss: 1.0647  f_slf_loss: 4.4334  f_cyc_loss: 9.0023  f_adv_loss: 0.6868  temp: 1.0000  drop: 0.2083  len_batches: 10.90  len_gen_batches: 7.56
+
+[iter 1065] d_adv_loss: 1.0599  f_slf_loss: 4.4200  f_cyc_loss: 8.9655  f_adv_loss: 0.6862  temp: 1.0000  drop: 0.2083  len_batches: 10.91  len_gen_batches: 7.92
+
+[iter 1070] d_adv_loss: 1.0590  f_slf_loss: 4.3867  f_cyc_loss: 8.8919  f_adv_loss: 0.6884  temp: 1.0000  drop: 0.2084  len_batches: 10.87  len_gen_batches: 8.33
+
+[iter 1075] d_adv_loss: 1.0626  f_slf_loss: 4.3411  f_cyc_loss: 8.7741  f_adv_loss: 0.6916  temp: 1.0000  drop: 0.2085  len_batches: 10.81  len_gen_batches: 8.88
+
+[iter 1080] d_adv_loss: 1.0644  f_slf_loss: 4.3561  f_cyc_loss: 8.8042  f_adv_loss: 0.6998  temp: 1.0000  drop: 0.2085  len_batches: 10.85  len_gen_batches: 9.39
+
+[iter 1085] d_adv_loss: 1.0642  f_slf_loss: 4.3220  f_cyc_loss: 8.7319  f_adv_loss: 0.7039  temp: 1.0000  drop: 0.2086  len_batches: 10.80  len_gen_batches: 9.83
+
+[iter 1090] d_adv_loss: 1.0603  f_slf_loss: 4.3210  f_cyc_loss: 8.7347  f_adv_loss: 0.7032  temp: 1.0000  drop: 0.2086  len_batches: 10.80  len_gen_batches: 9.87
+
+[iter 1095] d_adv_loss: 1.0582  f_slf_loss: 4.2946  f_cyc_loss: 8.6763  f_adv_loss: 0.7118  temp: 1.0000  drop: 0.2087  len_batches: 10.76  len_gen_batches: 9.76
+
+[iter 1100] d_adv_loss: 1.0617  f_slf_loss: 4.2997  f_cyc_loss: 8.7020  f_adv_loss: 0.7195  temp: 1.0000  drop: 0.2087  len_batches: 10.76  len_gen_batches: 9.71
+
+[iter 1105] d_adv_loss: 1.0611  f_slf_loss: 4.2935  f_cyc_loss: 8.6944  f_adv_loss: 0.7282  temp: 1.0000  drop: 0.2088  len_batches: 10.75  len_gen_batches: 9.63
+
+[iter 1110] d_adv_loss: 1.0631  f_slf_loss: 4.2855  f_cyc_loss: 8.6592  f_adv_loss: 0.7323  temp: 1.0000  drop: 0.2088  len_batches: 10.74  len_gen_batches: 9.62
+
+[iter 1115] d_adv_loss: 1.0629  f_slf_loss: 4.2887  f_cyc_loss: 8.6470  f_adv_loss: 0.7317  temp: 1.0000  drop: 0.2089  len_batches: 10.76  len_gen_batches: 9.63
+
+[iter 1120] d_adv_loss: 1.0671  f_slf_loss: 4.2757  f_cyc_loss: 8.6202  f_adv_loss: 0.7340  temp: 1.0000  drop: 0.2089  len_batches: 10.76  len_gen_batches: 9.52
+
+[iter 1125] d_adv_loss: 1.0668  f_slf_loss: 4.2767  f_cyc_loss: 8.6316  f_adv_loss: 0.7309  temp: 1.0000  drop: 0.2090  len_batches: 10.78  len_gen_batches: 9.42
+
+[iter 1130] d_adv_loss: 1.0662  f_slf_loss: 4.2580  f_cyc_loss: 8.6061  f_adv_loss: 0.7369  temp: 1.0000  drop: 0.2090  len_batches: 10.76  len_gen_batches: 9.33
+
+[iter 1135] d_adv_loss: 1.0655  f_slf_loss: 4.2380  f_cyc_loss: 8.5672  f_adv_loss: 0.7384  temp: 1.0000  drop: 0.2091  len_batches: 10.74  len_gen_batches: 9.24
+
+[iter 1140] d_adv_loss: 1.0666  f_slf_loss: 4.2451  f_cyc_loss: 8.5733  f_adv_loss: 0.7456  temp: 1.0000  drop: 0.2091  len_batches: 10.77  len_gen_batches: 9.24
+
+[iter 1145] d_adv_loss: 1.0690  f_slf_loss: 4.2482  f_cyc_loss: 8.5762  f_adv_loss: 0.7549  temp: 1.0000  drop: 0.2092  len_batches: 10.77  len_gen_batches: 9.22
+
+[iter 1150] d_adv_loss: 1.0685  f_slf_loss: 4.2438  f_cyc_loss: 8.5515  f_adv_loss: 0.7634  temp: 1.0000  drop: 0.2092  len_batches: 10.77  len_gen_batches: 9.19
+
+[iter 1155] d_adv_loss: 1.0678  f_slf_loss: 4.2492  f_cyc_loss: 8.5514  f_adv_loss: 0.7721  temp: 1.0000  drop: 0.2093  len_batches: 10.79  len_gen_batches: 9.15
+
+[iter 1160] d_adv_loss: 1.0724  f_slf_loss: 4.2362  f_cyc_loss: 8.5210  f_adv_loss: 0.7759  temp: 1.0000  drop: 0.2093  len_batches: 10.78  len_gen_batches: 9.14
+
+[iter 1165] d_adv_loss: 1.0718  f_slf_loss: 4.2182  f_cyc_loss: 8.4761  f_adv_loss: 0.7779  temp: 1.0000  drop: 0.2094  len_batches: 10.76  len_gen_batches: 9.15
+
+[iter 1170] d_adv_loss: 1.0734  f_slf_loss: 4.2162  f_cyc_loss: 8.4551  f_adv_loss: 0.7804  temp: 1.0000  drop: 0.2094  len_batches: 10.78  len_gen_batches: 9.18
+
+[iter 1175] d_adv_loss: 1.0735  f_slf_loss: 4.2054  f_cyc_loss: 8.4234  f_adv_loss: 0.7827  temp: 1.0000  drop: 0.2095  len_batches: 10.78  len_gen_batches: 9.16
+
+[iter 1180] d_adv_loss: 1.0726  f_slf_loss: 4.2156  f_cyc_loss: 8.4361  f_adv_loss: 0.7932  temp: 1.0000  drop: 0.2095  len_batches: 10.82  len_gen_batches: 9.13
+
+[iter 1185] d_adv_loss: 1.0749  f_slf_loss: 4.2140  f_cyc_loss: 8.4282  f_adv_loss: 0.7989  temp: 1.0000  drop: 0.2096  len_batches: 10.83  len_gen_batches: 9.13
+
+[iter 1190] d_adv_loss: 1.0752  f_slf_loss: 4.1988  f_cyc_loss: 8.3904  f_adv_loss: 0.8057  temp: 1.0000  drop: 0.2096  len_batches: 10.82  len_gen_batches: 9.12
+
+[iter 1195] d_adv_loss: 1.0758  f_slf_loss: 4.1923  f_cyc_loss: 8.3613  f_adv_loss: 0.8110  temp: 1.0000  drop: 0.2097  len_batches: 10.82  len_gen_batches: 9.11
+
+[iter 1200] d_adv_loss: 1.0753  f_slf_loss: 4.1813  f_cyc_loss: 8.3348  f_adv_loss: 0.8127  temp: 1.0000  drop: 0.2097  len_batches: 10.82  len_gen_batches: 9.07
+
+[iter 1205] d_adv_loss: 1.0976  f_slf_loss: 3.6412  f_cyc_loss: 6.9661  f_adv_loss: 1.0301  temp: 1.0000  drop: 0.2098  len_batches: 10.26  len_gen_batches: 8.50
+
+[iter 1210] d_adv_loss: 1.1148  f_slf_loss: 3.7435  f_cyc_loss: 7.2353  f_adv_loss: 0.9596  temp: 1.0000  drop: 0.2098  len_batches: 10.59  len_gen_batches: 7.69
+
+[iter 1215] d_adv_loss: 1.0962  f_slf_loss: 3.6294  f_cyc_loss: 6.9412  f_adv_loss: 0.9690  temp: 1.0000  drop: 0.2099  len_batches: 10.44  len_gen_batches: 7.97
+
+[iter 1220] d_adv_loss: 1.0745  f_slf_loss: 3.6674  f_cyc_loss: 6.9749  f_adv_loss: 0.9927  temp: 1.0000  drop: 0.2099  len_batches: 10.55  len_gen_batches: 8.26
+
+[iter 1225] d_adv_loss: 1.0729  f_slf_loss: 3.7881  f_cyc_loss: 7.1823  f_adv_loss: 0.9787  temp: 1.0000  drop: 0.2100  len_batches: 10.83  len_gen_batches: 8.93
+
+[iter 1230] d_adv_loss: 1.0678  f_slf_loss: 3.8037  f_cyc_loss: 7.2488  f_adv_loss: 1.0066  temp: 1.0000  drop: 0.2100  len_batches: 10.87  len_gen_batches: 9.59
+
+[iter 1235] d_adv_loss: 1.0668  f_slf_loss: 3.8168  f_cyc_loss: 7.3285  f_adv_loss: 1.0574  temp: 1.0000  drop: 0.2101  len_batches: 10.91  len_gen_batches: 10.09
+
+[iter 1240] d_adv_loss: 1.0627  f_slf_loss: 3.8799  f_cyc_loss: 7.4051  f_adv_loss: 1.0743  temp: 1.0000  drop: 0.2101  len_batches: 11.01  len_gen_batches: 10.30
+
+[iter 1245] d_adv_loss: 1.0702  f_slf_loss: 3.8392  f_cyc_loss: 7.3478  f_adv_loss: 1.0979  temp: 1.0000  drop: 0.2102  len_batches: 10.93  len_gen_batches: 10.80
+
+[iter 1250] d_adv_loss: 1.0680  f_slf_loss: 3.8457  f_cyc_loss: 7.3427  f_adv_loss: 1.1265  temp: 1.0000  drop: 0.2102  len_batches: 10.92  len_gen_batches: 11.22
+
+[iter 1255] d_adv_loss: 1.0624  f_slf_loss: 3.8174  f_cyc_loss: 7.2589  f_adv_loss: 1.1307  temp: 1.0000  drop: 0.2103  len_batches: 10.88  len_gen_batches: 11.14
+
+[iter 1260] d_adv_loss: 1.0593  f_slf_loss: 3.8033  f_cyc_loss: 7.1978  f_adv_loss: 1.1229  temp: 1.0000  drop: 0.2103  len_batches: 10.85  len_gen_batches: 10.95
+
+[iter 1265] d_adv_loss: 1.0571  f_slf_loss: 3.7733  f_cyc_loss: 7.1235  f_adv_loss: 1.1241  temp: 1.0000  drop: 0.2104  len_batches: 10.81  len_gen_batches: 10.75
+
+[iter 1270] d_adv_loss: 1.0607  f_slf_loss: 3.7268  f_cyc_loss: 7.0245  f_adv_loss: 1.1181  temp: 1.0000  drop: 0.2105  len_batches: 10.74  len_gen_batches: 10.63
+
+[iter 1275] d_adv_loss: 1.0587  f_slf_loss: 3.7135  f_cyc_loss: 6.9896  f_adv_loss: 1.1295  temp: 1.0000  drop: 0.2105  len_batches: 10.74  len_gen_batches: 10.68
+
+[iter 1280] d_adv_loss: 1.0558  f_slf_loss: 3.7079  f_cyc_loss: 6.9829  f_adv_loss: 1.1391  temp: 1.0000  drop: 0.2106  len_batches: 10.74  len_gen_batches: 10.80
+
+[iter 1285] d_adv_loss: 1.0485  f_slf_loss: 3.7220  f_cyc_loss: 7.0077  f_adv_loss: 1.1672  temp: 1.0000  drop: 0.2106  len_batches: 10.79  len_gen_batches: 11.34
+
+[iter 1290] d_adv_loss: 1.0426  f_slf_loss: 3.7205  f_cyc_loss: 6.9905  f_adv_loss: 1.1827  temp: 1.0000  drop: 0.2107  len_batches: 10.79  len_gen_batches: 11.94
+
+[iter 1295] d_adv_loss: 1.0342  f_slf_loss: 3.7338  f_cyc_loss: 7.0033  f_adv_loss: 1.2028  temp: 1.0000  drop: 0.2107  len_batches: 10.82  len_gen_batches: 12.39
+
+[iter 1300] d_adv_loss: 1.0309  f_slf_loss: 3.7447  f_cyc_loss: 7.0115  f_adv_loss: 1.2239  temp: 1.0000  drop: 0.2108  len_batches: 10.84  len_gen_batches: 12.50
+
+[iter 1305] d_adv_loss: 1.0261  f_slf_loss: 3.7508  f_cyc_loss: 6.9972  f_adv_loss: 1.2480  temp: 1.0000  drop: 0.2108  len_batches: 10.85  len_gen_batches: 12.57
+
+[iter 1310] d_adv_loss: 1.0201  f_slf_loss: 3.7699  f_cyc_loss: 7.0317  f_adv_loss: 1.2637  temp: 1.0000  drop: 0.2109  len_batches: 10.89  len_gen_batches: 12.62
+
+[iter 1315] d_adv_loss: 1.0123  f_slf_loss: 3.7591  f_cyc_loss: 7.0037  f_adv_loss: 1.2908  temp: 1.0000  drop: 0.2109  len_batches: 10.86  len_gen_batches: 12.54
+
+[iter 1320] d_adv_loss: 1.0078  f_slf_loss: 3.7616  f_cyc_loss: 6.9922  f_adv_loss: 1.3124  temp: 1.0000  drop: 0.2110  len_batches: 10.87  len_gen_batches: 12.52
+
+[iter 1325] d_adv_loss: 1.0043  f_slf_loss: 3.7690  f_cyc_loss: 6.9923  f_adv_loss: 1.3276  temp: 1.0000  drop: 0.2110  len_batches: 10.88  len_gen_batches: 12.46
+
+[iter 1330] d_adv_loss: 0.9999  f_slf_loss: 3.7778  f_cyc_loss: 6.9941  f_adv_loss: 1.3463  temp: 1.0000  drop: 0.2111  len_batches: 10.90  len_gen_batches: 12.43
+
+[iter 1335] d_adv_loss: 0.9962  f_slf_loss: 3.7913  f_cyc_loss: 7.0095  f_adv_loss: 1.3608  temp: 1.0000  drop: 0.2111  len_batches: 10.94  len_gen_batches: 12.40
+
+[iter 1340] d_adv_loss: 0.9917  f_slf_loss: 3.7892  f_cyc_loss: 7.0035  f_adv_loss: 1.3742  temp: 1.0000  drop: 0.2112  len_batches: 10.94  len_gen_batches: 12.32
+
+[iter 1345] d_adv_loss: 0.9862  f_slf_loss: 3.7891  f_cyc_loss: 7.0111  f_adv_loss: 1.3897  temp: 1.0000  drop: 0.2112  len_batches: 10.94  len_gen_batches: 12.23
+
+[iter 1350] d_adv_loss: 0.9824  f_slf_loss: 3.7810  f_cyc_loss: 7.0043  f_adv_loss: 1.4013  temp: 1.0000  drop: 0.2113  len_batches: 10.92  len_gen_batches: 12.13
+
+[iter 1355] d_adv_loss: 0.9773  f_slf_loss: 3.7667  f_cyc_loss: 6.9756  f_adv_loss: 1.4152  temp: 1.0000  drop: 0.2113  len_batches: 10.90  len_gen_batches: 12.02
+
+[iter 1360] d_adv_loss: 0.9770  f_slf_loss: 3.7492  f_cyc_loss: 6.9494  f_adv_loss: 1.4210  temp: 1.0000  drop: 0.2114  len_batches: 10.86  len_gen_batches: 11.91
+
+[iter 1365] d_adv_loss: 0.9727  f_slf_loss: 3.7424  f_cyc_loss: 6.9305  f_adv_loss: 1.4359  temp: 1.0000  drop: 0.2114  len_batches: 10.86  len_gen_batches: 11.85
+
+[iter 1370] d_adv_loss: 0.9685  f_slf_loss: 3.7463  f_cyc_loss: 6.9303  f_adv_loss: 1.4516  temp: 1.0000  drop: 0.2115  len_batches: 10.87  len_gen_batches: 11.80
+
+[iter 1375] d_adv_loss: 0.9652  f_slf_loss: 3.7447  f_cyc_loss: 6.9176  f_adv_loss: 1.4634  temp: 1.0000  drop: 0.2115  len_batches: 10.86  len_gen_batches: 11.75
+
+[iter 1380] d_adv_loss: 0.9606  f_slf_loss: 3.7359  f_cyc_loss: 6.9071  f_adv_loss: 1.4679  temp: 1.0000  drop: 0.2116  len_batches: 10.85  len_gen_batches: 11.67
+
+[iter 1385] d_adv_loss: 0.9616  f_slf_loss: 3.7428  f_cyc_loss: 6.9693  f_adv_loss: 1.4647  temp: 1.0000  drop: 0.2116  len_batches: 10.87  len_gen_batches: 11.55
+
+[iter 1390] d_adv_loss: 0.9668  f_slf_loss: 3.7513  f_cyc_loss: 7.0375  f_adv_loss: 1.4532  temp: 1.0000  drop: 0.2117  len_batches: 10.89  len_gen_batches: 11.41
+
+[iter 1395] d_adv_loss: 0.9704  f_slf_loss: 3.7514  f_cyc_loss: 7.0484  f_adv_loss: 1.4430  temp: 1.0000  drop: 0.2117  len_batches: 10.90  len_gen_batches: 11.29
+
+[iter 1400] d_adv_loss: 0.9704  f_slf_loss: 3.7436  f_cyc_loss: 7.0322  f_adv_loss: 1.4498  temp: 1.0000  drop: 0.2118  len_batches: 10.89  len_gen_batches: 11.31
+
+[iter 1405] d_adv_loss: 0.8465  f_slf_loss: 4.0230  f_cyc_loss: 7.6342  f_adv_loss: 1.6511  temp: 1.0000  drop: 0.2118  len_batches: 11.62  len_gen_batches: 18.37
+
+[iter 1410] d_adv_loss: 0.8239  f_slf_loss: 3.8687  f_cyc_loss: 6.9912  f_adv_loss: 1.7861  temp: 1.0000  drop: 0.2119  len_batches: 11.32  len_gen_batches: 18.01
+
+[iter 1415] d_adv_loss: 0.8476  f_slf_loss: 3.8959  f_cyc_loss: 6.9319  f_adv_loss: 1.8203  temp: 1.0000  drop: 0.2119  len_batches: 11.33  len_gen_batches: 16.08
+
+[iter 1420] d_adv_loss: 0.8358  f_slf_loss: 3.7658  f_cyc_loss: 6.6822  f_adv_loss: 1.8694  temp: 1.0000  drop: 0.2120  len_batches: 11.10  len_gen_batches: 14.78
+
+[iter 1425] d_adv_loss: 0.8273  f_slf_loss: 3.7978  f_cyc_loss: 6.6939  f_adv_loss: 1.9252  temp: 1.0000  drop: 0.2120  len_batches: 11.15  len_gen_batches: 14.56
+
+[iter 1430] d_adv_loss: 0.8206  f_slf_loss: 3.7925  f_cyc_loss: 6.6569  f_adv_loss: 1.9447  temp: 1.0000  drop: 0.2121  len_batches: 11.13  len_gen_batches: 14.02
+
+[iter 1435] d_adv_loss: 0.8103  f_slf_loss: 3.8071  f_cyc_loss: 6.6751  f_adv_loss: 1.9876  temp: 1.0000  drop: 0.2121  len_batches: 11.14  len_gen_batches: 13.57
+
+[iter 1440] d_adv_loss: 0.8122  f_slf_loss: 3.7381  f_cyc_loss: 6.5392  f_adv_loss: 1.9923  temp: 1.0000  drop: 0.2122  len_batches: 10.99  len_gen_batches: 13.14
+
+[iter 1445] d_adv_loss: 0.8156  f_slf_loss: 3.7098  f_cyc_loss: 6.4727  f_adv_loss: 1.9899  temp: 1.0000  drop: 0.2122  len_batches: 10.93  len_gen_batches: 12.81
+
+[iter 1450] d_adv_loss: 0.8121  f_slf_loss: 3.7473  f_cyc_loss: 6.5196  f_adv_loss: 2.0047  temp: 1.0000  drop: 0.2123  len_batches: 11.03  len_gen_batches: 12.72
+
+[iter 1455] d_adv_loss: 0.8020  f_slf_loss: 3.7141  f_cyc_loss: 6.4577  f_adv_loss: 2.0259  temp: 1.0000  drop: 0.2123  len_batches: 10.98  len_gen_batches: 12.54
+
+[iter 1460] d_adv_loss: 0.8048  f_slf_loss: 3.7179  f_cyc_loss: 6.4488  f_adv_loss: 2.0288  temp: 1.0000  drop: 0.2124  len_batches: 10.97  len_gen_batches: 12.40
+
+[iter 1465] d_adv_loss: 0.8034  f_slf_loss: 3.7248  f_cyc_loss: 6.4573  f_adv_loss: 2.0414  temp: 1.0000  drop: 0.2125  len_batches: 11.00  len_gen_batches: 12.30
+
+[iter 1470] d_adv_loss: 0.7956  f_slf_loss: 3.7325  f_cyc_loss: 6.4732  f_adv_loss: 2.0419  temp: 1.0000  drop: 0.2125  len_batches: 11.01  len_gen_batches: 12.21
+
+[iter 1475] d_adv_loss: 0.7973  f_slf_loss: 3.7409  f_cyc_loss: 6.4754  f_adv_loss: 2.0474  temp: 1.0000  drop: 0.2126  len_batches: 11.05  len_gen_batches: 12.17
+
+[iter 1480] d_adv_loss: 0.7942  f_slf_loss: 3.7284  f_cyc_loss: 6.4377  f_adv_loss: 2.0600  temp: 1.0000  drop: 0.2126  len_batches: 11.03  len_gen_batches: 12.08
+
+[iter 1485] d_adv_loss: 0.7913  f_slf_loss: 3.7024  f_cyc_loss: 6.3907  f_adv_loss: 2.0640  temp: 1.0000  drop: 0.2127  len_batches: 10.98  len_gen_batches: 11.96
+
+[iter 1490] d_adv_loss: 0.7864  f_slf_loss: 3.6956  f_cyc_loss: 6.3746  f_adv_loss: 2.0690  temp: 1.0000  drop: 0.2127  len_batches: 10.96  len_gen_batches: 11.89
+
+[iter 1495] d_adv_loss: 0.7837  f_slf_loss: 3.7022  f_cyc_loss: 6.3618  f_adv_loss: 2.0830  temp: 1.0000  drop: 0.2128  len_batches: 10.98  len_gen_batches: 11.85
+
+[iter 1500] d_adv_loss: 0.7820  f_slf_loss: 3.6802  f_cyc_loss: 6.3282  f_adv_loss: 2.0935  temp: 1.0000  drop: 0.2128  len_batches: 10.94  len_gen_batches: 11.76
+
+[iter 1505] d_adv_loss: 0.7816  f_slf_loss: 3.6706  f_cyc_loss: 6.3180  f_adv_loss: 2.0930  temp: 1.0000  drop: 0.2129  len_batches: 10.93  len_gen_batches: 11.70
+
+[iter 1510] d_adv_loss: 0.7818  f_slf_loss: 3.6593  f_cyc_loss: 6.2957  f_adv_loss: 2.0922  temp: 1.0000  drop: 0.2129  len_batches: 10.91  len_gen_batches: 11.64
+
+[iter 1515] d_adv_loss: 0.7802  f_slf_loss: 3.6582  f_cyc_loss: 6.2857  f_adv_loss: 2.0942  temp: 1.0000  drop: 0.2130  len_batches: 10.92  len_gen_batches: 11.60
+
+[iter 1520] d_adv_loss: 0.7795  f_slf_loss: 3.6645  f_cyc_loss: 6.3056  f_adv_loss: 2.0907  temp: 1.0000  drop: 0.2130  len_batches: 10.93  len_gen_batches: 11.57
+
+[iter 1525] d_adv_loss: 0.7794  f_slf_loss: 3.6675  f_cyc_loss: 6.3005  f_adv_loss: 2.0934  temp: 1.0000  drop: 0.2131  len_batches: 10.94  len_gen_batches: 11.54
+
+[iter 1530] d_adv_loss: 0.7781  f_slf_loss: 3.6577  f_cyc_loss: 6.2836  f_adv_loss: 2.0995  temp: 1.0000  drop: 0.2131  len_batches: 10.93  len_gen_batches: 11.51
+
+[iter 1535] d_adv_loss: 0.7778  f_slf_loss: 3.6574  f_cyc_loss: 6.2884  f_adv_loss: 2.1022  temp: 1.0000  drop: 0.2132  len_batches: 10.93  len_gen_batches: 11.49
+
+[iter 1540] d_adv_loss: 0.7797  f_slf_loss: 3.6521  f_cyc_loss: 6.2745  f_adv_loss: 2.1027  temp: 1.0000  drop: 0.2132  len_batches: 10.92  len_gen_batches: 11.45
+
+[iter 1545] d_adv_loss: 0.7798  f_slf_loss: 3.6538  f_cyc_loss: 6.2762  f_adv_loss: 2.1085  temp: 1.0000  drop: 0.2133  len_batches: 10.93  len_gen_batches: 11.44
+
+[iter 1550] d_adv_loss: 0.7789  f_slf_loss: 3.6634  f_cyc_loss: 6.2842  f_adv_loss: 2.1127  temp: 1.0000  drop: 0.2133  len_batches: 10.96  len_gen_batches: 11.44
+
+[iter 1555] d_adv_loss: 0.7779  f_slf_loss: 3.6747  f_cyc_loss: 6.3068  f_adv_loss: 2.1225  temp: 1.0000  drop: 0.2134  len_batches: 10.99  len_gen_batches: 11.45
+
+[iter 1560] d_adv_loss: 0.7775  f_slf_loss: 3.6722  f_cyc_loss: 6.3084  f_adv_loss: 2.1248  temp: 1.0000  drop: 0.2134  len_batches: 10.99  len_gen_batches: 11.42
+
+[iter 1565] d_adv_loss: 0.7767  f_slf_loss: 3.6755  f_cyc_loss: 6.3089  f_adv_loss: 2.1290  temp: 1.0000  drop: 0.2135  len_batches: 10.99  len_gen_batches: 11.41
+
+[iter 1570] d_adv_loss: 0.7782  f_slf_loss: 3.6780  f_cyc_loss: 6.3118  f_adv_loss: 2.1281  temp: 1.0000  drop: 0.2135  len_batches: 11.01  len_gen_batches: 11.40
+
+[iter 1575] d_adv_loss: 0.7795  f_slf_loss: 3.6720  f_cyc_loss: 6.2984  f_adv_loss: 2.1301  temp: 1.0000  drop: 0.2136  len_batches: 11.00  len_gen_batches: 11.38
+
+[iter 1580] d_adv_loss: 0.7767  f_slf_loss: 3.6831  f_cyc_loss: 6.3144  f_adv_loss: 2.1383  temp: 1.0000  drop: 0.2136  len_batches: 11.03  len_gen_batches: 11.39
+
+[iter 1585] d_adv_loss: 0.7757  f_slf_loss: 3.6759  f_cyc_loss: 6.3023  f_adv_loss: 2.1384  temp: 1.0000  drop: 0.2137  len_batches: 11.02  len_gen_batches: 11.37
+
+[iter 1590] d_adv_loss: 0.7743  f_slf_loss: 3.6663  f_cyc_loss: 6.2887  f_adv_loss: 2.1369  temp: 1.0000  drop: 0.2137  len_batches: 11.00  len_gen_batches: 11.33
+
+[iter 1595] d_adv_loss: 0.7725  f_slf_loss: 3.6500  f_cyc_loss: 6.2638  f_adv_loss: 2.1361  temp: 1.0000  drop: 0.2138  len_batches: 10.96  len_gen_batches: 11.29
+
+[iter 1600] d_adv_loss: 0.7722  f_slf_loss: 3.6442  f_cyc_loss: 6.2547  f_adv_loss: 2.1350  temp: 1.0000  drop: 0.2138  len_batches: 10.96  len_gen_batches: 11.27
+
+[iter 1605] d_adv_loss: 0.7403  f_slf_loss: 3.4620  f_cyc_loss: 6.1063  f_adv_loss: 2.0851  temp: 1.0000  drop: 0.2139  len_batches: 10.47  len_gen_batches: 10.48
+
+[iter 1610] d_adv_loss: 0.7564  f_slf_loss: 3.6242  f_cyc_loss: 6.3025  f_adv_loss: 2.1719  temp: 1.0000  drop: 0.2139  len_batches: 11.08  len_gen_batches: 10.99
+
+[iter 1615] d_adv_loss: 0.7594  f_slf_loss: 3.5883  f_cyc_loss: 6.1803  f_adv_loss: 2.1947  temp: 1.0000  drop: 0.2140  len_batches: 10.99  len_gen_batches: 10.86
+
+[iter 1620] d_adv_loss: 0.7561  f_slf_loss: 3.5294  f_cyc_loss: 5.9872  f_adv_loss: 2.2150  temp: 1.0000  drop: 0.2140  len_batches: 10.85  len_gen_batches: 10.72
+
+[iter 1625] d_adv_loss: 0.7607  f_slf_loss: 3.4825  f_cyc_loss: 5.9077  f_adv_loss: 2.1990  temp: 1.0000  drop: 0.2141  len_batches: 10.76  len_gen_batches: 10.65
+
+[iter 1630] d_adv_loss: 0.7560  f_slf_loss: 3.4587  f_cyc_loss: 5.8635  f_adv_loss: 2.1917  temp: 1.0000  drop: 0.2141  len_batches: 10.72  len_gen_batches: 10.61
+
+[iter 1635] d_adv_loss: 0.7675  f_slf_loss: 3.4149  f_cyc_loss: 5.7699  f_adv_loss: 2.1767  temp: 1.0000  drop: 0.2142  len_batches: 10.64  len_gen_batches: 10.53
+
+[iter 1640] d_adv_loss: 0.7645  f_slf_loss: 3.4141  f_cyc_loss: 5.7844  f_adv_loss: 2.1886  temp: 1.0000  drop: 0.2142  len_batches: 10.67  len_gen_batches: 10.59
+
+[iter 1645] d_adv_loss: 0.7591  f_slf_loss: 3.3937  f_cyc_loss: 5.7470  f_adv_loss: 2.1837  temp: 1.0000  drop: 0.2143  len_batches: 10.63  len_gen_batches: 10.60
+
+[iter 1650] d_adv_loss: 0.7571  f_slf_loss: 3.4243  f_cyc_loss: 5.7874  f_adv_loss: 2.1908  temp: 1.0000  drop: 0.2143  len_batches: 10.70  len_gen_batches: 10.71
+
+[iter 1655] d_adv_loss: 0.7567  f_slf_loss: 3.4497  f_cyc_loss: 5.8378  f_adv_loss: 2.1961  temp: 1.0000  drop: 0.2144  len_batches: 10.76  len_gen_batches: 10.82
+
+[iter 1660] d_adv_loss: 0.7512  f_slf_loss: 3.4462  f_cyc_loss: 5.8175  f_adv_loss: 2.2039  temp: 1.0000  drop: 0.2145  len_batches: 10.76  len_gen_batches: 10.86
+
+[iter 1665] d_adv_loss: 0.7519  f_slf_loss: 3.4426  f_cyc_loss: 5.8160  f_adv_loss: 2.2003  temp: 1.0000  drop: 0.2145  len_batches: 10.76  len_gen_batches: 10.84
+
+[iter 1670] d_adv_loss: 0.7526  f_slf_loss: 3.4406  f_cyc_loss: 5.8148  f_adv_loss: 2.1959  temp: 1.0000  drop: 0.2146  len_batches: 10.75  len_gen_batches: 10.82
+
+[iter 1675] d_adv_loss: 0.7479  f_slf_loss: 3.4373  f_cyc_loss: 5.8178  f_adv_loss: 2.2001  temp: 1.0000  drop: 0.2146  len_batches: 10.75  len_gen_batches: 10.80
+
+[iter 1680] d_adv_loss: 0.7469  f_slf_loss: 3.4699  f_cyc_loss: 5.8879  f_adv_loss: 2.2187  temp: 1.0000  drop: 0.2147  len_batches: 10.83  len_gen_batches: 10.88
+
+[iter 1685] d_adv_loss: 0.7459  f_slf_loss: 3.4534  f_cyc_loss: 5.8751  f_adv_loss: 2.2141  temp: 1.0000  drop: 0.2147  len_batches: 10.80  len_gen_batches: 10.86
+
+[iter 1690] d_adv_loss: 0.7427  f_slf_loss: 3.4722  f_cyc_loss: 5.9046  f_adv_loss: 2.2192  temp: 1.0000  drop: 0.2148  len_batches: 10.85  len_gen_batches: 10.89
+
+[iter 1695] d_adv_loss: 0.7427  f_slf_loss: 3.4633  f_cyc_loss: 5.8926  f_adv_loss: 2.2173  temp: 1.0000  drop: 0.2148  len_batches: 10.85  len_gen_batches: 10.88
+
+[iter 1700] d_adv_loss: 0.7395  f_slf_loss: 3.4676  f_cyc_loss: 5.8862  f_adv_loss: 2.2230  temp: 1.0000  drop: 0.2149  len_batches: 10.86  len_gen_batches: 10.90
+
+[iter 1705] d_adv_loss: 0.7404  f_slf_loss: 3.4675  f_cyc_loss: 5.8828  f_adv_loss: 2.2256  temp: 1.0000  drop: 0.2149  len_batches: 10.87  len_gen_batches: 10.90
+
+[iter 1710] d_adv_loss: 0.7433  f_slf_loss: 3.4723  f_cyc_loss: 5.8902  f_adv_loss: 2.2199  temp: 1.0000  drop: 0.2150  len_batches: 10.88  len_gen_batches: 10.90
+
+[iter 1715] d_adv_loss: 0.7438  f_slf_loss: 3.4626  f_cyc_loss: 5.8741  f_adv_loss: 2.2160  temp: 1.0000  drop: 0.2150  len_batches: 10.87  len_gen_batches: 10.88
+
+[iter 1720] d_adv_loss: 0.7448  f_slf_loss: 3.4518  f_cyc_loss: 5.8526  f_adv_loss: 2.2168  temp: 1.0000  drop: 0.2151  len_batches: 10.84  len_gen_batches: 10.86
+
+[iter 1725] d_adv_loss: 0.7457  f_slf_loss: 3.4561  f_cyc_loss: 5.8653  f_adv_loss: 2.2119  temp: 1.0000  drop: 0.2151  len_batches: 10.86  len_gen_batches: 10.87
+
+[iter 1730] d_adv_loss: 0.7439  f_slf_loss: 3.4451  f_cyc_loss: 5.8492  f_adv_loss: 2.2195  temp: 1.0000  drop: 0.2152  len_batches: 10.85  len_gen_batches: 10.87
+
+[iter 1735] d_adv_loss: 0.7422  f_slf_loss: 3.4540  f_cyc_loss: 5.8740  f_adv_loss: 2.2199  temp: 1.0000  drop: 0.2152  len_batches: 10.88  len_gen_batches: 10.89
+
+[iter 1740] d_adv_loss: 0.7388  f_slf_loss: 3.4726  f_cyc_loss: 5.9025  f_adv_loss: 2.2236  temp: 1.0000  drop: 0.2153  len_batches: 10.92  len_gen_batches: 10.92
+
+[iter 1745] d_adv_loss: 0.7431  f_slf_loss: 3.4620  f_cyc_loss: 5.8925  f_adv_loss: 2.2212  temp: 1.0000  drop: 0.2153  len_batches: 10.90  len_gen_batches: 10.89
+
+[iter 1750] d_adv_loss: 0.7427  f_slf_loss: 3.4534  f_cyc_loss: 5.8783  f_adv_loss: 2.2207  temp: 1.0000  drop: 0.2154  len_batches: 10.88  len_gen_batches: 10.88
+
+[iter 1755] d_adv_loss: 0.7435  f_slf_loss: 3.4533  f_cyc_loss: 5.8706  f_adv_loss: 2.2247  temp: 1.0000  drop: 0.2154  len_batches: 10.89  len_gen_batches: 10.89
+
+[iter 1760] d_adv_loss: 0.7434  f_slf_loss: 3.4484  f_cyc_loss: 5.8717  f_adv_loss: 2.2230  temp: 1.0000  drop: 0.2155  len_batches: 10.88  len_gen_batches: 10.89
+
+[iter 1765] d_adv_loss: 0.7438  f_slf_loss: 3.4359  f_cyc_loss: 5.8582  f_adv_loss: 2.2177  temp: 1.0000  drop: 0.2155  len_batches: 10.85  len_gen_batches: 10.88
+
+[iter 1770] d_adv_loss: 0.7426  f_slf_loss: 3.4348  f_cyc_loss: 5.8548  f_adv_loss: 2.2243  temp: 1.0000  drop: 0.2156  len_batches: 10.85  len_gen_batches: 10.89
+
+[iter 1775] d_adv_loss: 0.7419  f_slf_loss: 3.4291  f_cyc_loss: 5.8401  f_adv_loss: 2.2292  temp: 1.0000  drop: 0.2156  len_batches: 10.85  len_gen_batches: 10.91
+
+[iter 1780] d_adv_loss: 0.7409  f_slf_loss: 3.4284  f_cyc_loss: 5.8401  f_adv_loss: 2.2301  temp: 1.0000  drop: 0.2157  len_batches: 10.85  len_gen_batches: 10.92
+
+[iter 1785] d_adv_loss: 0.7408  f_slf_loss: 3.4219  f_cyc_loss: 5.8296  f_adv_loss: 2.2260  temp: 1.0000  drop: 0.2157  len_batches: 10.84  len_gen_batches: 10.92
+
+[iter 1790] d_adv_loss: 0.7407  f_slf_loss: 3.4314  f_cyc_loss: 5.8349  f_adv_loss: 2.2303  temp: 1.0000  drop: 0.2158  len_batches: 10.85  len_gen_batches: 10.94
+
+[iter 1795] d_adv_loss: 0.7419  f_slf_loss: 3.4227  f_cyc_loss: 5.8169  f_adv_loss: 2.2274  temp: 1.0000  drop: 0.2158  len_batches: 10.84  len_gen_batches: 10.92
+
+[iter 1800] d_adv_loss: 0.7413  f_slf_loss: 3.4207  f_cyc_loss: 5.8233  f_adv_loss: 2.2280  temp: 1.0000  drop: 0.2159  len_batches: 10.84  len_gen_batches: 10.94
+
+[iter 1805] d_adv_loss: 0.7345  f_slf_loss: 3.8024  f_cyc_loss: 6.5278  f_adv_loss: 2.1494  temp: 1.0000  drop: 0.2159  len_batches: 11.92  len_gen_batches: 12.07
+
+[iter 1810] d_adv_loss: 0.7518  f_slf_loss: 3.7137  f_cyc_loss: 6.2632  f_adv_loss: 2.1896  temp: 1.0000  drop: 0.2160  len_batches: 11.68  len_gen_batches: 13.04
+
+[iter 1815] d_adv_loss: 0.7361  f_slf_loss: 3.5597  f_cyc_loss: 5.9648  f_adv_loss: 2.2873  temp: 1.0000  drop: 0.2160  len_batches: 11.38  len_gen_batches: 12.58
+
+[iter 1820] d_adv_loss: 0.7281  f_slf_loss: 3.6204  f_cyc_loss: 6.0470  f_adv_loss: 2.3396  temp: 1.0000  drop: 0.2161  len_batches: 11.56  len_gen_batches: 12.55
+
+[iter 1825] d_adv_loss: 0.7334  f_slf_loss: 3.5688  f_cyc_loss: 5.9743  f_adv_loss: 2.3171  temp: 1.0000  drop: 0.2161  len_batches: 11.37  len_gen_batches: 12.22
+
+[iter 1830] d_adv_loss: 0.7341  f_slf_loss: 3.5676  f_cyc_loss: 5.9855  f_adv_loss: 2.3227  temp: 1.0000  drop: 0.2162  len_batches: 11.40  len_gen_batches: 12.11
+
+[iter 1835] d_adv_loss: 0.7234  f_slf_loss: 3.5116  f_cyc_loss: 5.9085  f_adv_loss: 2.3284  temp: 1.0000  drop: 0.2162  len_batches: 11.27  len_gen_batches: 11.89
+
+[iter 1840] d_adv_loss: 0.7165  f_slf_loss: 3.4581  f_cyc_loss: 5.8313  f_adv_loss: 2.3448  temp: 1.0000  drop: 0.2163  len_batches: 11.16  len_gen_batches: 11.75
+
+[iter 1845] d_adv_loss: 0.7131  f_slf_loss: 3.4310  f_cyc_loss: 5.7847  f_adv_loss: 2.3584  temp: 1.0000  drop: 0.2163  len_batches: 11.09  len_gen_batches: 11.69
+
+[iter 1850] d_adv_loss: 0.7164  f_slf_loss: 3.4125  f_cyc_loss: 5.7567  f_adv_loss: 2.3500  temp: 1.0000  drop: 0.2164  len_batches: 11.06  len_gen_batches: 11.65
+
+[iter 1855] d_adv_loss: 0.7128  f_slf_loss: 3.4053  f_cyc_loss: 5.7181  f_adv_loss: 2.3592  temp: 1.0000  drop: 0.2165  len_batches: 11.03  len_gen_batches: 11.64
+
+[iter 1860] d_adv_loss: 0.7227  f_slf_loss: 3.4232  f_cyc_loss: 5.7241  f_adv_loss: 2.3495  temp: 1.0000  drop: 0.2165  len_batches: 11.06  len_gen_batches: 11.73
+
+[iter 1865] d_adv_loss: 0.7205  f_slf_loss: 3.3998  f_cyc_loss: 5.6873  f_adv_loss: 2.3628  temp: 1.0000  drop: 0.2166  len_batches: 11.01  len_gen_batches: 11.77
+
+[iter 1870] d_adv_loss: 0.7220  f_slf_loss: 3.3856  f_cyc_loss: 5.6580  f_adv_loss: 2.3720  temp: 1.0000  drop: 0.2166  len_batches: 10.99  len_gen_batches: 11.93
+
+[iter 1875] d_adv_loss: 0.7232  f_slf_loss: 3.3844  f_cyc_loss: 5.6483  f_adv_loss: 2.3597  temp: 1.0000  drop: 0.2167  len_batches: 10.98  len_gen_batches: 12.04
+
+[iter 1880] d_adv_loss: 0.7234  f_slf_loss: 3.3763  f_cyc_loss: 5.6242  f_adv_loss: 2.3685  temp: 1.0000  drop: 0.2167  len_batches: 10.98  len_gen_batches: 12.15
+
+[iter 1885] d_adv_loss: 0.7241  f_slf_loss: 3.3848  f_cyc_loss: 5.6355  f_adv_loss: 2.3645  temp: 1.0000  drop: 0.2168  len_batches: 11.00  len_gen_batches: 12.26
+
+[iter 1890] d_adv_loss: 0.7242  f_slf_loss: 3.3693  f_cyc_loss: 5.6039  f_adv_loss: 2.3540  temp: 1.0000  drop: 0.2168  len_batches: 10.96  len_gen_batches: 12.22
+
+[iter 1895] d_adv_loss: 0.7211  f_slf_loss: 3.3654  f_cyc_loss: 5.5927  f_adv_loss: 2.3532  temp: 1.0000  drop: 0.2169  len_batches: 10.96  len_gen_batches: 12.25
+
+[iter 1900] d_adv_loss: 0.7197  f_slf_loss: 3.3632  f_cyc_loss: 5.5851  f_adv_loss: 2.3594  temp: 1.0000  drop: 0.2169  len_batches: 10.97  len_gen_batches: 12.28
+
+[iter 1905] d_adv_loss: 0.7168  f_slf_loss: 3.3544  f_cyc_loss: 5.5697  f_adv_loss: 2.3599  temp: 1.0000  drop: 0.2170  len_batches: 10.94  len_gen_batches: 12.26
+
+[iter 1910] d_adv_loss: 0.7146  f_slf_loss: 3.3540  f_cyc_loss: 5.5768  f_adv_loss: 2.3698  temp: 1.0000  drop: 0.2170  len_batches: 10.95  len_gen_batches: 12.26
+
+[iter 1915] d_adv_loss: 0.7153  f_slf_loss: 3.3504  f_cyc_loss: 5.5740  f_adv_loss: 2.3745  temp: 1.0000  drop: 0.2171  len_batches: 10.94  len_gen_batches: 12.19
+
+[iter 1920] d_adv_loss: 0.7157  f_slf_loss: 3.3269  f_cyc_loss: 5.5365  f_adv_loss: 2.3656  temp: 1.0000  drop: 0.2171  len_batches: 10.89  len_gen_batches: 12.10
+
+[iter 1925] d_adv_loss: 0.7139  f_slf_loss: 3.3202  f_cyc_loss: 5.5222  f_adv_loss: 2.3644  temp: 1.0000  drop: 0.2172  len_batches: 10.87  len_gen_batches: 12.06
+
+[iter 1930] d_adv_loss: 0.7130  f_slf_loss: 3.3400  f_cyc_loss: 5.5554  f_adv_loss: 2.3737  temp: 1.0000  drop: 0.2172  len_batches: 10.92  len_gen_batches: 12.08
+
+[iter 1935] d_adv_loss: 0.7122  f_slf_loss: 3.3389  f_cyc_loss: 5.5585  f_adv_loss: 2.3838  temp: 1.0000  drop: 0.2173  len_batches: 10.92  len_gen_batches: 12.06
+
+[iter 1940] d_adv_loss: 0.7122  f_slf_loss: 3.3188  f_cyc_loss: 5.5242  f_adv_loss: 2.3754  temp: 1.0000  drop: 0.2173  len_batches: 10.87  len_gen_batches: 12.00
+
+[iter 1945] d_adv_loss: 0.7123  f_slf_loss: 3.3024  f_cyc_loss: 5.5010  f_adv_loss: 2.3795  temp: 1.0000  drop: 0.2174  len_batches: 10.83  len_gen_batches: 11.93
+
+[iter 1950] d_adv_loss: 0.7159  f_slf_loss: 3.2990  f_cyc_loss: 5.4994  f_adv_loss: 2.3717  temp: 1.0000  drop: 0.2174  len_batches: 10.82  len_gen_batches: 11.90
+
+[iter 1955] d_adv_loss: 0.7145  f_slf_loss: 3.3031  f_cyc_loss: 5.5163  f_adv_loss: 2.3812  temp: 1.0000  drop: 0.2175  len_batches: 10.85  len_gen_batches: 11.90
+
+[iter 1960] d_adv_loss: 0.7128  f_slf_loss: 3.2913  f_cyc_loss: 5.4913  f_adv_loss: 2.3821  temp: 1.0000  drop: 0.2175  len_batches: 10.81  len_gen_batches: 11.84
+
+[iter 1965] d_adv_loss: 0.7160  f_slf_loss: 3.2882  f_cyc_loss: 5.4854  f_adv_loss: 2.3848  temp: 1.0000  drop: 0.2176  len_batches: 10.82  len_gen_batches: 11.86
+
+[iter 1970] d_adv_loss: 0.7161  f_slf_loss: 3.2895  f_cyc_loss: 5.4829  f_adv_loss: 2.3844  temp: 1.0000  drop: 0.2176  len_batches: 10.82  len_gen_batches: 11.86
+
+[iter 1975] d_adv_loss: 0.7149  f_slf_loss: 3.2951  f_cyc_loss: 5.4864  f_adv_loss: 2.3865  temp: 1.0000  drop: 0.2177  len_batches: 10.83  len_gen_batches: 11.85
+
+[iter 1980] d_adv_loss: 0.7156  f_slf_loss: 3.2954  f_cyc_loss: 5.4910  f_adv_loss: 2.3921  temp: 1.0000  drop: 0.2177  len_batches: 10.83  len_gen_batches: 11.85
+
+[iter 1985] d_adv_loss: 0.7158  f_slf_loss: 3.2987  f_cyc_loss: 5.4940  f_adv_loss: 2.3931  temp: 1.0000  drop: 0.2178  len_batches: 10.83  len_gen_batches: 11.88
+
+[iter 1990] d_adv_loss: 0.7136  f_slf_loss: 3.2968  f_cyc_loss: 5.5010  f_adv_loss: 2.3993  temp: 1.0000  drop: 0.2178  len_batches: 10.83  len_gen_batches: 11.90
+
+[iter 1995] d_adv_loss: 0.7147  f_slf_loss: 3.3015  f_cyc_loss: 5.5096  f_adv_loss: 2.4004  temp: 1.0000  drop: 0.2179  len_batches: 10.85  len_gen_batches: 11.96
+
+[iter 2000] d_adv_loss: 0.7147  f_slf_loss: 3.2985  f_cyc_loss: 5.5023  f_adv_loss: 2.4046  temp: 1.0000  drop: 0.2179  len_batches: 10.85  len_gen_batches: 11.94
+
+[iter 2005] d_adv_loss: 0.6695  f_slf_loss: 3.6157  f_cyc_loss: 6.0112  f_adv_loss: 2.5264  temp: 1.0000  drop: 0.2180  len_batches: 11.70  len_gen_batches: 14.67
+
+[iter 2010] d_adv_loss: 0.6902  f_slf_loss: 3.1938  f_cyc_loss: 5.3914  f_adv_loss: 2.3368  temp: 1.0000  drop: 0.2180  len_batches: 10.71  len_gen_batches: 12.89
+
+[iter 2015] d_adv_loss: 0.6736  f_slf_loss: 3.2420  f_cyc_loss: 5.4439  f_adv_loss: 2.4547  temp: 1.0000  drop: 0.2181  len_batches: 10.84  len_gen_batches: 13.70
+
+[iter 2020] d_adv_loss: 0.6810  f_slf_loss: 3.1514  f_cyc_loss: 5.3327  f_adv_loss: 2.4124  temp: 1.0000  drop: 0.2181  len_batches: 10.60  len_gen_batches: 13.52
+
+[iter 2025] d_adv_loss: 0.6630  f_slf_loss: 3.2439  f_cyc_loss: 5.4577  f_adv_loss: 2.4247  temp: 1.0000  drop: 0.2182  len_batches: 10.74  len_gen_batches: 13.30
+
+[iter 2030] d_adv_loss: 0.6782  f_slf_loss: 3.2886  f_cyc_loss: 5.5240  f_adv_loss: 2.4120  temp: 1.0000  drop: 0.2182  len_batches: 10.89  len_gen_batches: 13.44
+
+[iter 2035] d_adv_loss: 0.6795  f_slf_loss: 3.2467  f_cyc_loss: 5.4639  f_adv_loss: 2.3984  temp: 1.0000  drop: 0.2183  len_batches: 10.79  len_gen_batches: 13.20
+
+[iter 2040] d_adv_loss: 0.6688  f_slf_loss: 3.2558  f_cyc_loss: 5.4984  f_adv_loss: 2.4238  temp: 1.0000  drop: 0.2183  len_batches: 10.82  len_gen_batches: 13.05
+
+[iter 2045] d_adv_loss: 0.6792  f_slf_loss: 3.2868  f_cyc_loss: 5.5925  f_adv_loss: 2.4288  temp: 1.0000  drop: 0.2184  len_batches: 10.89  len_gen_batches: 13.24
+
+[iter 2050] d_adv_loss: 0.6752  f_slf_loss: 3.3008  f_cyc_loss: 5.6087  f_adv_loss: 2.4367  temp: 1.0000  drop: 0.2185  len_batches: 10.91  len_gen_batches: 13.25
+
+[iter 2055] d_adv_loss: 0.6811  f_slf_loss: 3.2864  f_cyc_loss: 5.5822  f_adv_loss: 2.4331  temp: 1.0000  drop: 0.2185  len_batches: 10.91  len_gen_batches: 13.52
+
+[iter 2060] d_adv_loss: 0.6823  f_slf_loss: 3.2867  f_cyc_loss: 5.6179  f_adv_loss: 2.4224  temp: 1.0000  drop: 0.2186  len_batches: 10.90  len_gen_batches: 13.40
+
+[iter 2065] d_adv_loss: 0.6874  f_slf_loss: 3.2972  f_cyc_loss: 5.6273  f_adv_loss: 2.4208  temp: 1.0000  drop: 0.2186  len_batches: 10.92  len_gen_batches: 13.38
+
+[iter 2070] d_adv_loss: 0.6790  f_slf_loss: 3.3131  f_cyc_loss: 5.6396  f_adv_loss: 2.4526  temp: 1.0000  drop: 0.2187  len_batches: 10.95  len_gen_batches: 13.30
+
+[iter 2075] d_adv_loss: 0.6785  f_slf_loss: 3.3001  f_cyc_loss: 5.6400  f_adv_loss: 2.4388  temp: 1.0000  drop: 0.2187  len_batches: 10.92  len_gen_batches: 13.24
+
+[iter 2080] d_adv_loss: 0.6779  f_slf_loss: 3.2856  f_cyc_loss: 5.6154  f_adv_loss: 2.4391  temp: 1.0000  drop: 0.2188  len_batches: 10.88  len_gen_batches: 13.08
+
+[iter 2085] d_adv_loss: 0.6743  f_slf_loss: 3.2789  f_cyc_loss: 5.6040  f_adv_loss: 2.4475  temp: 1.0000  drop: 0.2188  len_batches: 10.89  len_gen_batches: 13.02
+
+[iter 2090] d_adv_loss: 0.6747  f_slf_loss: 3.2835  f_cyc_loss: 5.6069  f_adv_loss: 2.4520  temp: 1.0000  drop: 0.2189  len_batches: 10.90  len_gen_batches: 13.01
+
+[iter 2095] d_adv_loss: 0.6735  f_slf_loss: 3.2688  f_cyc_loss: 5.5819  f_adv_loss: 2.4512  temp: 1.0000  drop: 0.2189  len_batches: 10.87  len_gen_batches: 12.97
+
+[iter 2100] d_adv_loss: 0.6736  f_slf_loss: 3.2692  f_cyc_loss: 5.5865  f_adv_loss: 2.4472  temp: 1.0000  drop: 0.2190  len_batches: 10.86  len_gen_batches: 12.95
+
+[iter 2105] d_adv_loss: 0.6724  f_slf_loss: 3.2447  f_cyc_loss: 5.5508  f_adv_loss: 2.4363  temp: 1.0000  drop: 0.2190  len_batches: 10.79  len_gen_batches: 12.86
+
+[iter 2110] d_adv_loss: 0.6721  f_slf_loss: 3.2575  f_cyc_loss: 5.5697  f_adv_loss: 2.4439  temp: 1.0000  drop: 0.2191  len_batches: 10.80  len_gen_batches: 12.94
+
+[iter 2115] d_adv_loss: 0.6746  f_slf_loss: 3.2571  f_cyc_loss: 5.5709  f_adv_loss: 2.4486  temp: 1.0000  drop: 0.2191  len_batches: 10.80  len_gen_batches: 12.94
+
+[iter 2120] d_adv_loss: 0.6742  f_slf_loss: 3.2466  f_cyc_loss: 5.5527  f_adv_loss: 2.4412  temp: 1.0000  drop: 0.2192  len_batches: 10.77  len_gen_batches: 12.87
+
+[iter 2125] d_adv_loss: 0.6758  f_slf_loss: 3.2473  f_cyc_loss: 5.5489  f_adv_loss: 2.4484  temp: 1.0000  drop: 0.2192  len_batches: 10.77  len_gen_batches: 12.81
+
+[iter 2130] d_adv_loss: 0.6768  f_slf_loss: 3.2541  f_cyc_loss: 5.5589  f_adv_loss: 2.4516  temp: 1.0000  drop: 0.2193  len_batches: 10.79  len_gen_batches: 12.77
+
+[iter 2135] d_adv_loss: 0.6754  f_slf_loss: 3.2432  f_cyc_loss: 5.5468  f_adv_loss: 2.4502  temp: 1.0000  drop: 0.2193  len_batches: 10.77  len_gen_batches: 12.73
+
+[iter 2140] d_adv_loss: 0.6762  f_slf_loss: 3.2473  f_cyc_loss: 5.5584  f_adv_loss: 2.4609  temp: 1.0000  drop: 0.2194  len_batches: 10.79  len_gen_batches: 12.86
+
+[iter 2145] d_adv_loss: 0.6747  f_slf_loss: 3.2360  f_cyc_loss: 5.5433  f_adv_loss: 2.4538  temp: 1.0000  drop: 0.2194  len_batches: 10.76  len_gen_batches: 12.88
+
+[iter 2150] d_adv_loss: 0.6757  f_slf_loss: 3.2378  f_cyc_loss: 5.5390  f_adv_loss: 2.4579  temp: 1.0000  drop: 0.2195  len_batches: 10.76  len_gen_batches: 12.87
+
+[iter 2155] d_adv_loss: 0.6740  f_slf_loss: 3.2401  f_cyc_loss: 5.5398  f_adv_loss: 2.4600  temp: 1.0000  drop: 0.2195  len_batches: 10.77  len_gen_batches: 12.92
+
+[iter 2160] d_adv_loss: 0.6750  f_slf_loss: 3.2312  f_cyc_loss: 5.5235  f_adv_loss: 2.4597  temp: 1.0000  drop: 0.2196  len_batches: 10.75  len_gen_batches: 13.02
+
+[iter 2165] d_adv_loss: 0.6743  f_slf_loss: 3.2294  f_cyc_loss: 5.5232  f_adv_loss: 2.4625  temp: 1.0000  drop: 0.2196  len_batches: 10.76  len_gen_batches: 13.06
+
+[iter 2170] d_adv_loss: 0.6800  f_slf_loss: 3.2376  f_cyc_loss: 5.5382  f_adv_loss: 2.4567  temp: 1.0000  drop: 0.2197  len_batches: 10.78  len_gen_batches: 13.24
+
+[iter 2175] d_adv_loss: 0.6801  f_slf_loss: 3.2383  f_cyc_loss: 5.5338  f_adv_loss: 2.4606  temp: 1.0000  drop: 0.2197  len_batches: 10.79  len_gen_batches: 13.25
+
+[iter 2180] d_adv_loss: 0.6797  f_slf_loss: 3.2316  f_cyc_loss: 5.5213  f_adv_loss: 2.4636  temp: 1.0000  drop: 0.2198  len_batches: 10.77  len_gen_batches: 13.21
+
+[iter 2185] d_adv_loss: 0.6784  f_slf_loss: 3.2419  f_cyc_loss: 5.5365  f_adv_loss: 2.4762  temp: 1.0000  drop: 0.2198  len_batches: 10.80  len_gen_batches: 13.26
+
+[iter 2190] d_adv_loss: 0.6801  f_slf_loss: 3.2370  f_cyc_loss: 5.5219  f_adv_loss: 2.4809  temp: 1.0000  drop: 0.2199  len_batches: 10.79  len_gen_batches: 13.23
+
+[iter 2195] d_adv_loss: 0.6780  f_slf_loss: 3.2434  f_cyc_loss: 5.5266  f_adv_loss: 2.4938  temp: 1.0000  drop: 0.2199  len_batches: 10.81  len_gen_batches: 13.25
+
+[iter 2200] d_adv_loss: 0.6769  f_slf_loss: 3.2380  f_cyc_loss: 5.5172  f_adv_loss: 2.4980  temp: 1.0000  drop: 0.2200  len_batches: 10.80  len_gen_batches: 13.29
+
+[iter 2205] d_adv_loss: 0.6006  f_slf_loss: 2.8681  f_cyc_loss: 5.0904  f_adv_loss: 2.6356  temp: 1.0000  drop: 0.2200  len_batches: 9.89  len_gen_batches: 16.36
+
+[iter 2210] d_adv_loss: 0.6505  f_slf_loss: 3.0966  f_cyc_loss: 5.4002  f_adv_loss: 2.7546  temp: 1.0000  drop: 0.2201  len_batches: 10.61  len_gen_batches: 17.40
+
+[iter 2215] d_adv_loss: 0.6558  f_slf_loss: 3.1463  f_cyc_loss: 5.3538  f_adv_loss: 2.7627  temp: 1.0000  drop: 0.2201  len_batches: 10.66  len_gen_batches: 16.52
+
+[iter 2220] d_adv_loss: 0.6754  f_slf_loss: 3.1131  f_cyc_loss: 5.2749  f_adv_loss: 2.6893  temp: 1.0000  drop: 0.2202  len_batches: 10.58  len_gen_batches: 15.82
+
+[iter 2225] d_adv_loss: 0.6759  f_slf_loss: 3.0757  f_cyc_loss: 5.2325  f_adv_loss: 2.6619  temp: 1.0000  drop: 0.2202  len_batches: 10.49  len_gen_batches: 15.61
+
+[iter 2230] d_adv_loss: 0.6806  f_slf_loss: 3.0753  f_cyc_loss: 5.2103  f_adv_loss: 2.6279  temp: 1.0000  drop: 0.2203  len_batches: 10.49  len_gen_batches: 15.76
+
+[iter 2235] d_adv_loss: 0.6788  f_slf_loss: 3.0823  f_cyc_loss: 5.2083  f_adv_loss: 2.6252  temp: 1.0000  drop: 0.2203  len_batches: 10.54  len_gen_batches: 15.57
+
+[iter 2240] d_adv_loss: 0.6777  f_slf_loss: 3.1362  f_cyc_loss: 5.3341  f_adv_loss: 2.6411  temp: 1.0000  drop: 0.2204  len_batches: 10.69  len_gen_batches: 15.61
+
+[iter 2245] d_adv_loss: 0.6766  f_slf_loss: 3.1531  f_cyc_loss: 5.3595  f_adv_loss: 2.6341  temp: 1.0000  drop: 0.2205  len_batches: 10.75  len_gen_batches: 15.76
+
+[iter 2250] d_adv_loss: 0.6736  f_slf_loss: 3.1530  f_cyc_loss: 5.3728  f_adv_loss: 2.6291  temp: 1.0000  drop: 0.2205  len_batches: 10.75  len_gen_batches: 15.65
+
+[iter 2255] d_adv_loss: 0.6779  f_slf_loss: 3.1344  f_cyc_loss: 5.3301  f_adv_loss: 2.6086  temp: 1.0000  drop: 0.2206  len_batches: 10.69  len_gen_batches: 15.36
+
+[iter 2260] d_adv_loss: 0.6766  f_slf_loss: 3.1422  f_cyc_loss: 5.3385  f_adv_loss: 2.6086  temp: 1.0000  drop: 0.2206  len_batches: 10.71  len_gen_batches: 15.29
+
+[iter 2265] d_adv_loss: 0.6765  f_slf_loss: 3.1713  f_cyc_loss: 5.3780  f_adv_loss: 2.6100  temp: 1.0000  drop: 0.2207  len_batches: 10.78  len_gen_batches: 15.52
+
+[iter 2270] d_adv_loss: 0.6751  f_slf_loss: 3.1865  f_cyc_loss: 5.4089  f_adv_loss: 2.6195  temp: 1.0000  drop: 0.2207  len_batches: 10.83  len_gen_batches: 15.59
+
+[iter 2275] d_adv_loss: 0.6738  f_slf_loss: 3.1956  f_cyc_loss: 5.4122  f_adv_loss: 2.6154  temp: 1.0000  drop: 0.2208  len_batches: 10.85  len_gen_batches: 15.58
+
+[iter 2280] d_adv_loss: 0.6761  f_slf_loss: 3.1992  f_cyc_loss: 5.4060  f_adv_loss: 2.6130  temp: 1.0000  drop: 0.2208  len_batches: 10.85  len_gen_batches: 15.59
+
+[iter 2285] d_adv_loss: 0.6789  f_slf_loss: 3.2029  f_cyc_loss: 5.4295  f_adv_loss: 2.6082  temp: 1.0000  drop: 0.2209  len_batches: 10.85  len_gen_batches: 15.47
+
+[iter 2290] d_adv_loss: 0.6809  f_slf_loss: 3.2035  f_cyc_loss: 5.4284  f_adv_loss: 2.5884  temp: 1.0000  drop: 0.2209  len_batches: 10.84  len_gen_batches: 15.32
+
+[iter 2295] d_adv_loss: 0.6779  f_slf_loss: 3.1770  f_cyc_loss: 5.3836  f_adv_loss: 2.5764  temp: 1.0000  drop: 0.2210  len_batches: 10.78  len_gen_batches: 15.12
+
+[iter 2300] d_adv_loss: 0.6802  f_slf_loss: 3.1807  f_cyc_loss: 5.3901  f_adv_loss: 2.5703  temp: 1.0000  drop: 0.2210  len_batches: 10.77  len_gen_batches: 15.31
+
+[iter 2305] d_adv_loss: 0.6786  f_slf_loss: 3.1827  f_cyc_loss: 5.3969  f_adv_loss: 2.5676  temp: 1.0000  drop: 0.2211  len_batches: 10.76  len_gen_batches: 15.24
+
+[iter 2310] d_adv_loss: 0.6762  f_slf_loss: 3.1838  f_cyc_loss: 5.4054  f_adv_loss: 2.5758  temp: 1.0000  drop: 0.2211  len_batches: 10.76  len_gen_batches: 15.18
+
+[iter 2315] d_adv_loss: 0.6776  f_slf_loss: 3.1800  f_cyc_loss: 5.4170  f_adv_loss: 2.5713  temp: 1.0000  drop: 0.2212  len_batches: 10.74  len_gen_batches: 15.17
+
+[iter 2320] d_adv_loss: 0.6753  f_slf_loss: 3.1862  f_cyc_loss: 5.4250  f_adv_loss: 2.5731  temp: 1.0000  drop: 0.2212  len_batches: 10.74  len_gen_batches: 15.26
+
+[iter 2325] d_adv_loss: 0.6745  f_slf_loss: 3.1847  f_cyc_loss: 5.4290  f_adv_loss: 2.5771  temp: 1.0000  drop: 0.2213  len_batches: 10.74  len_gen_batches: 15.34
+
+[iter 2330] d_adv_loss: 0.6774  f_slf_loss: 3.1998  f_cyc_loss: 5.4627  f_adv_loss: 2.5797  temp: 1.0000  drop: 0.2213  len_batches: 10.76  len_gen_batches: 15.39
+
+[iter 2335] d_adv_loss: 0.6764  f_slf_loss: 3.2030  f_cyc_loss: 5.4703  f_adv_loss: 2.5863  temp: 1.0000  drop: 0.2214  len_batches: 10.77  len_gen_batches: 15.49
+
+[iter 2340] d_adv_loss: 0.6763  f_slf_loss: 3.2089  f_cyc_loss: 5.4745  f_adv_loss: 2.5784  temp: 1.0000  drop: 0.2214  len_batches: 10.78  len_gen_batches: 15.60
+
+[iter 2345] d_adv_loss: 0.6810  f_slf_loss: 3.2075  f_cyc_loss: 5.4710  f_adv_loss: 2.5656  temp: 1.0000  drop: 0.2215  len_batches: 10.77  len_gen_batches: 15.75
+
+[iter 2350] d_adv_loss: 0.6830  f_slf_loss: 3.2070  f_cyc_loss: 5.4677  f_adv_loss: 2.5578  temp: 1.0000  drop: 0.2215  len_batches: 10.77  len_gen_batches: 15.88
+
+[iter 2355] d_adv_loss: 0.6830  f_slf_loss: 3.2177  f_cyc_loss: 5.4952  f_adv_loss: 2.5578  temp: 1.0000  drop: 0.2216  len_batches: 10.81  len_gen_batches: 16.02
+
+[iter 2360] d_adv_loss: 0.6848  f_slf_loss: 3.2095  f_cyc_loss: 5.4851  f_adv_loss: 2.5495  temp: 1.0000  drop: 0.2216  len_batches: 10.79  len_gen_batches: 16.10
+
+[iter 2365] d_adv_loss: 0.6867  f_slf_loss: 3.2161  f_cyc_loss: 5.4922  f_adv_loss: 2.5396  temp: 1.0000  drop: 0.2217  len_batches: 10.81  len_gen_batches: 16.36
+
+[iter 2370] d_adv_loss: 0.6883  f_slf_loss: 3.2233  f_cyc_loss: 5.5024  f_adv_loss: 2.5345  temp: 1.0000  drop: 0.2217  len_batches: 10.83  len_gen_batches: 16.48
+
+[iter 2375] d_adv_loss: 0.6891  f_slf_loss: 3.2222  f_cyc_loss: 5.4957  f_adv_loss: 2.5309  temp: 1.0000  drop: 0.2218  len_batches: 10.83  len_gen_batches: 16.41
+
+[iter 2380] d_adv_loss: 0.6880  f_slf_loss: 3.2169  f_cyc_loss: 5.4792  f_adv_loss: 2.5293  temp: 1.0000  drop: 0.2218  len_batches: 10.82  len_gen_batches: 16.29
+
+[iter 2385] d_adv_loss: 0.6862  f_slf_loss: 3.2201  f_cyc_loss: 5.4731  f_adv_loss: 2.5302  temp: 1.0000  drop: 0.2219  len_batches: 10.82  len_gen_batches: 16.18
+
+[iter 2390] d_adv_loss: 0.6838  f_slf_loss: 3.2140  f_cyc_loss: 5.4633  f_adv_loss: 2.5417  temp: 1.0000  drop: 0.2219  len_batches: 10.80  len_gen_batches: 16.03
+
+[iter 2395] d_adv_loss: 0.6810  f_slf_loss: 3.2235  f_cyc_loss: 5.4746  f_adv_loss: 2.5524  temp: 1.0000  drop: 0.2220  len_batches: 10.83  len_gen_batches: 15.99
+
+[iter 2400] d_adv_loss: 0.6803  f_slf_loss: 3.2260  f_cyc_loss: 5.4809  f_adv_loss: 2.5564  temp: 1.0000  drop: 0.2220  len_batches: 10.83  len_gen_batches: 15.94
+
+[iter 2405] d_adv_loss: 0.6485  f_slf_loss: 2.9748  f_cyc_loss: 5.0435  f_adv_loss: 2.6805  temp: 1.0000  drop: 0.2221  len_batches: 10.36  len_gen_batches: 13.57
+
+[iter 2410] d_adv_loss: 0.6400  f_slf_loss: 3.0660  f_cyc_loss: 5.1152  f_adv_loss: 2.6557  temp: 1.0000  drop: 0.2221  len_batches: 10.47  len_gen_batches: 12.54
+
+[iter 2415] d_adv_loss: 0.6315  f_slf_loss: 3.2106  f_cyc_loss: 5.3330  f_adv_loss: 2.7353  temp: 1.0000  drop: 0.2222  len_batches: 10.87  len_gen_batches: 13.83
+
+[iter 2420] d_adv_loss: 0.6390  f_slf_loss: 3.1397  f_cyc_loss: 5.2471  f_adv_loss: 2.7361  temp: 1.0000  drop: 0.2222  len_batches: 10.71  len_gen_batches: 14.00
+
+[iter 2425] d_adv_loss: 0.6361  f_slf_loss: 3.1769  f_cyc_loss: 5.2906  f_adv_loss: 2.7683  temp: 1.0000  drop: 0.2223  len_batches: 10.77  len_gen_batches: 14.36
+
+[iter 2430] d_adv_loss: 0.6395  f_slf_loss: 3.2449  f_cyc_loss: 5.3791  f_adv_loss: 2.7558  temp: 1.0000  drop: 0.2223  len_batches: 10.92  len_gen_batches: 15.70
+
+[iter 2435] d_adv_loss: 0.6532  f_slf_loss: 3.2798  f_cyc_loss: 5.4283  f_adv_loss: 2.7648  temp: 1.0000  drop: 0.2224  len_batches: 11.02  len_gen_batches: 16.57
+
+[iter 2440] d_adv_loss: 0.6701  f_slf_loss: 3.2520  f_cyc_loss: 5.4089  f_adv_loss: 2.7470  temp: 1.0000  drop: 0.2225  len_batches: 10.97  len_gen_batches: 17.44
+
+[iter 2445] d_adv_loss: 0.6881  f_slf_loss: 3.2664  f_cyc_loss: 5.4472  f_adv_loss: 2.6764  temp: 1.0000  drop: 0.2225  len_batches: 11.00  len_gen_batches: 18.11
+
+[iter 2450] d_adv_loss: 0.7045  f_slf_loss: 3.2742  f_cyc_loss: 5.4679  f_adv_loss: 2.6176  temp: 1.0000  drop: 0.2226  len_batches: 11.02  len_gen_batches: 18.97
+
+[iter 2455] d_adv_loss: 0.7134  f_slf_loss: 3.2630  f_cyc_loss: 5.4414  f_adv_loss: 2.5804  temp: 1.0000  drop: 0.2226  len_batches: 10.97  len_gen_batches: 19.62
+
+[iter 2460] d_adv_loss: 0.7109  f_slf_loss: 3.2977  f_cyc_loss: 5.4850  f_adv_loss: 2.5797  temp: 1.0000  drop: 0.2227  len_batches: 11.04  len_gen_batches: 19.54
+
+[iter 2465] d_adv_loss: 0.7044  f_slf_loss: 3.2845  f_cyc_loss: 5.4573  f_adv_loss: 2.5842  temp: 1.0000  drop: 0.2227  len_batches: 11.02  len_gen_batches: 19.34
+
+[iter 2470] d_adv_loss: 0.6994  f_slf_loss: 3.2989  f_cyc_loss: 5.4776  f_adv_loss: 2.5887  temp: 1.0000  drop: 0.2228  len_batches: 11.05  len_gen_batches: 19.48
+
+[iter 2475] d_adv_loss: 0.6981  f_slf_loss: 3.2775  f_cyc_loss: 5.4426  f_adv_loss: 2.5719  temp: 1.0000  drop: 0.2228  len_batches: 11.00  len_gen_batches: 19.72
+
+[iter 2480] d_adv_loss: 0.7002  f_slf_loss: 3.2773  f_cyc_loss: 5.4409  f_adv_loss: 2.5624  temp: 1.0000  drop: 0.2229  len_batches: 11.00  len_gen_batches: 19.98
+
+[iter 2485] d_adv_loss: 0.6972  f_slf_loss: 3.2704  f_cyc_loss: 5.4146  f_adv_loss: 2.5659  temp: 1.0000  drop: 0.2229  len_batches: 10.98  len_gen_batches: 19.88
+
+[iter 2490] d_adv_loss: 0.6982  f_slf_loss: 3.2899  f_cyc_loss: 5.4494  f_adv_loss: 2.5698  temp: 1.0000  drop: 0.2230  len_batches: 11.02  len_gen_batches: 19.71
+
+[iter 2495] d_adv_loss: 0.6924  f_slf_loss: 3.2721  f_cyc_loss: 5.4244  f_adv_loss: 2.5850  temp: 1.0000  drop: 0.2230  len_batches: 10.98  len_gen_batches: 19.42
+
+[iter 2500] d_adv_loss: 0.6938  f_slf_loss: 3.2675  f_cyc_loss: 5.4134  f_adv_loss: 2.5837  temp: 1.0000  drop: 0.2231  len_batches: 10.96  len_gen_batches: 19.14
+
+[iter 2505] d_adv_loss: 0.6885  f_slf_loss: 3.2620  f_cyc_loss: 5.3984  f_adv_loss: 2.5856  temp: 1.0000  drop: 0.2231  len_batches: 10.95  len_gen_batches: 18.92
+
+[iter 2510] d_adv_loss: 0.6844  f_slf_loss: 3.2610  f_cyc_loss: 5.3976  f_adv_loss: 2.5971  temp: 1.0000  drop: 0.2232  len_batches: 10.96  len_gen_batches: 18.93
+
+[iter 2515] d_adv_loss: 0.6823  f_slf_loss: 3.2642  f_cyc_loss: 5.3979  f_adv_loss: 2.6106  temp: 1.0000  drop: 0.2232  len_batches: 10.97  len_gen_batches: 18.79
+
+[iter 2520] d_adv_loss: 0.6804  f_slf_loss: 3.2498  f_cyc_loss: 5.3751  f_adv_loss: 2.6131  temp: 1.0000  drop: 0.2233  len_batches: 10.94  len_gen_batches: 18.64
+
+[iter 2525] d_adv_loss: 0.6794  f_slf_loss: 3.2534  f_cyc_loss: 5.3833  f_adv_loss: 2.6178  temp: 1.0000  drop: 0.2233  len_batches: 10.96  len_gen_batches: 18.73
+
+[iter 2530] d_adv_loss: 0.6775  f_slf_loss: 3.2482  f_cyc_loss: 5.3751  f_adv_loss: 2.6167  temp: 1.0000  drop: 0.2234  len_batches: 10.95  len_gen_batches: 18.79
+
+[iter 2535] d_adv_loss: 0.6791  f_slf_loss: 3.2369  f_cyc_loss: 5.3570  f_adv_loss: 2.6087  temp: 1.0000  drop: 0.2234  len_batches: 10.93  len_gen_batches: 18.84
+
+[iter 2540] d_adv_loss: 0.6773  f_slf_loss: 3.2310  f_cyc_loss: 5.3479  f_adv_loss: 2.6094  temp: 1.0000  drop: 0.2235  len_batches: 10.92  len_gen_batches: 18.72
+
+[iter 2545] d_adv_loss: 0.6765  f_slf_loss: 3.2327  f_cyc_loss: 5.3509  f_adv_loss: 2.6141  temp: 1.0000  drop: 0.2235  len_batches: 10.93  len_gen_batches: 18.51
+
+[iter 2550] d_adv_loss: 0.6755  f_slf_loss: 3.2268  f_cyc_loss: 5.3471  f_adv_loss: 2.6093  temp: 1.0000  drop: 0.2236  len_batches: 10.93  len_gen_batches: 18.40
+
+[iter 2555] d_adv_loss: 0.6746  f_slf_loss: 3.2232  f_cyc_loss: 5.3409  f_adv_loss: 2.6129  temp: 1.0000  drop: 0.2236  len_batches: 10.92  len_gen_batches: 18.31
+
+[iter 2560] d_adv_loss: 0.6713  f_slf_loss: 3.2241  f_cyc_loss: 5.3437  f_adv_loss: 2.6117  temp: 1.0000  drop: 0.2237  len_batches: 10.93  len_gen_batches: 18.20
+
+[iter 2565] d_adv_loss: 0.6703  f_slf_loss: 3.2312  f_cyc_loss: 5.3601  f_adv_loss: 2.6242  temp: 1.0000  drop: 0.2237  len_batches: 10.95  len_gen_batches: 18.20
+
+[iter 2570] d_adv_loss: 0.6689  f_slf_loss: 3.2289  f_cyc_loss: 5.3573  f_adv_loss: 2.6302  temp: 1.0000  drop: 0.2238  len_batches: 10.95  len_gen_batches: 18.12
+
+[iter 2575] d_adv_loss: 0.6673  f_slf_loss: 3.2235  f_cyc_loss: 5.3613  f_adv_loss: 2.6360  temp: 1.0000  drop: 0.2238  len_batches: 10.94  len_gen_batches: 18.12
+
+[iter 2580] d_adv_loss: 0.6661  f_slf_loss: 3.2291  f_cyc_loss: 5.3753  f_adv_loss: 2.6414  temp: 1.0000  drop: 0.2239  len_batches: 10.95  len_gen_batches: 18.06
+
+[iter 2585] d_adv_loss: 0.6632  f_slf_loss: 3.2106  f_cyc_loss: 5.3496  f_adv_loss: 2.6483  temp: 1.0000  drop: 0.2239  len_batches: 10.91  len_gen_batches: 17.86
+
+[iter 2590] d_adv_loss: 0.6624  f_slf_loss: 3.2061  f_cyc_loss: 5.3402  f_adv_loss: 2.6479  temp: 1.0000  drop: 0.2240  len_batches: 10.89  len_gen_batches: 17.73
+
+[iter 2595] d_adv_loss: 0.6610  f_slf_loss: 3.2048  f_cyc_loss: 5.3374  f_adv_loss: 2.6427  temp: 1.0000  drop: 0.2240  len_batches: 10.89  len_gen_batches: 17.76
+
+[iter 2600] d_adv_loss: 0.6594  f_slf_loss: 3.1976  f_cyc_loss: 5.3306  f_adv_loss: 2.6379  temp: 1.0000  drop: 0.2241  len_batches: 10.87  len_gen_batches: 17.75
+
+[iter 2605] d_adv_loss: 0.6712  f_slf_loss: 3.2487  f_cyc_loss: 5.3123  f_adv_loss: 2.7957  temp: 1.0000  drop: 0.2241  len_batches: 10.85  len_gen_batches: 15.73
+
+[iter 2610] d_adv_loss: 0.7135  f_slf_loss: 3.1170  f_cyc_loss: 5.1921  f_adv_loss: 2.5823  temp: 1.0000  drop: 0.2242  len_batches: 10.56  len_gen_batches: 17.44
+
+[iter 2615] d_adv_loss: 0.6814  f_slf_loss: 3.1545  f_cyc_loss: 5.2499  f_adv_loss: 2.5700  temp: 1.0000  drop: 0.2242  len_batches: 10.62  len_gen_batches: 17.75
+
+[iter 2620] d_adv_loss: 0.6943  f_slf_loss: 3.1118  f_cyc_loss: 5.1551  f_adv_loss: 2.5418  temp: 1.0000  drop: 0.2243  len_batches: 10.49  len_gen_batches: 16.32
+
+[iter 2625] d_adv_loss: 0.6857  f_slf_loss: 3.1903  f_cyc_loss: 5.2370  f_adv_loss: 2.6596  temp: 1.0000  drop: 0.2243  len_batches: 10.69  len_gen_batches: 15.80
+
+[iter 2630] d_adv_loss: 0.6758  f_slf_loss: 3.2423  f_cyc_loss: 5.3341  f_adv_loss: 2.7030  temp: 1.0000  drop: 0.2244  len_batches: 10.86  len_gen_batches: 16.00
+
+[iter 2635] d_adv_loss: 0.6687  f_slf_loss: 3.2204  f_cyc_loss: 5.2940  f_adv_loss: 2.6779  temp: 1.0000  drop: 0.2245  len_batches: 10.84  len_gen_batches: 16.26
+
+[iter 2640] d_adv_loss: 0.6701  f_slf_loss: 3.2097  f_cyc_loss: 5.2728  f_adv_loss: 2.6842  temp: 1.0000  drop: 0.2245  len_batches: 10.83  len_gen_batches: 17.10
+
+[iter 2645] d_adv_loss: 0.6714  f_slf_loss: 3.1994  f_cyc_loss: 5.2486  f_adv_loss: 2.6465  temp: 1.0000  drop: 0.2246  len_batches: 10.81  len_gen_batches: 17.44
+
+[iter 2650] d_adv_loss: 0.6721  f_slf_loss: 3.2209  f_cyc_loss: 5.2730  f_adv_loss: 2.6689  temp: 1.0000  drop: 0.2246  len_batches: 10.88  len_gen_batches: 16.99
+
+[iter 2655] d_adv_loss: 0.6666  f_slf_loss: 3.2220  f_cyc_loss: 5.2868  f_adv_loss: 2.6876  temp: 1.0000  drop: 0.2247  len_batches: 10.88  len_gen_batches: 16.50
+
+[iter 2660] d_adv_loss: 0.6581  f_slf_loss: 3.2194  f_cyc_loss: 5.3135  f_adv_loss: 2.6960  temp: 1.0000  drop: 0.2247  len_batches: 10.89  len_gen_batches: 16.08
+
+[iter 2665] d_adv_loss: 0.6526  f_slf_loss: 3.2471  f_cyc_loss: 5.3576  f_adv_loss: 2.7158  temp: 1.0000  drop: 0.2248  len_batches: 10.95  len_gen_batches: 15.81
+
+[iter 2670] d_adv_loss: 0.6526  f_slf_loss: 3.2547  f_cyc_loss: 5.3949  f_adv_loss: 2.7041  temp: 1.0000  drop: 0.2248  len_batches: 10.97  len_gen_batches: 15.49
+
+[iter 2675] d_adv_loss: 0.6521  f_slf_loss: 3.2676  f_cyc_loss: 5.4139  f_adv_loss: 2.7088  temp: 1.0000  drop: 0.2249  len_batches: 11.01  len_gen_batches: 15.31
+
+[iter 2680] d_adv_loss: 0.6492  f_slf_loss: 3.2452  f_cyc_loss: 5.3796  f_adv_loss: 2.7007  temp: 1.0000  drop: 0.2249  len_batches: 10.97  len_gen_batches: 15.09
+
+[iter 2685] d_adv_loss: 0.6489  f_slf_loss: 3.2507  f_cyc_loss: 5.4051  f_adv_loss: 2.7005  temp: 1.0000  drop: 0.2250  len_batches: 10.97  len_gen_batches: 15.14
+
+[iter 2690] d_adv_loss: 0.6510  f_slf_loss: 3.2371  f_cyc_loss: 5.3989  f_adv_loss: 2.6778  temp: 1.0000  drop: 0.2250  len_batches: 10.92  len_gen_batches: 15.11
+
+[iter 2695] d_adv_loss: 0.6494  f_slf_loss: 3.2216  f_cyc_loss: 5.3797  f_adv_loss: 2.6821  temp: 1.0000  drop: 0.2251  len_batches: 10.89  len_gen_batches: 15.24
+
+[iter 2700] d_adv_loss: 0.6459  f_slf_loss: 3.2351  f_cyc_loss: 5.4020  f_adv_loss: 2.6937  temp: 1.0000  drop: 0.2251  len_batches: 10.94  len_gen_batches: 15.33
+
+[iter 2705] d_adv_loss: 0.6430  f_slf_loss: 3.2504  f_cyc_loss: 5.4205  f_adv_loss: 2.7118  temp: 1.0000  drop: 0.2252  len_batches: 10.99  len_gen_batches: 15.42
+
+[iter 2710] d_adv_loss: 0.6399  f_slf_loss: 3.2389  f_cyc_loss: 5.4083  f_adv_loss: 2.7230  temp: 1.0000  drop: 0.2252  len_batches: 10.97  len_gen_batches: 15.54
+
+[iter 2715] d_adv_loss: 0.6393  f_slf_loss: 3.2512  f_cyc_loss: 5.4305  f_adv_loss: 2.7240  temp: 1.0000  drop: 0.2253  len_batches: 11.02  len_gen_batches: 15.84
+
+[iter 2720] d_adv_loss: 0.6396  f_slf_loss: 3.2551  f_cyc_loss: 5.4342  f_adv_loss: 2.7205  temp: 1.0000  drop: 0.2253  len_batches: 11.04  len_gen_batches: 16.04
+
+[iter 2725] d_adv_loss: 0.6380  f_slf_loss: 3.2539  f_cyc_loss: 5.4317  f_adv_loss: 2.7255  temp: 1.0000  drop: 0.2254  len_batches: 11.03  len_gen_batches: 16.19
+
+[iter 2730] d_adv_loss: 0.6373  f_slf_loss: 3.2550  f_cyc_loss: 5.4297  f_adv_loss: 2.7331  temp: 1.0000  drop: 0.2254  len_batches: 11.03  len_gen_batches: 16.19
+
+[iter 2735] d_adv_loss: 0.6338  f_slf_loss: 3.2746  f_cyc_loss: 5.4631  f_adv_loss: 2.7473  temp: 1.0000  drop: 0.2255  len_batches: 11.08  len_gen_batches: 16.17
+
+[iter 2740] d_adv_loss: 0.6311  f_slf_loss: 3.2663  f_cyc_loss: 5.4597  f_adv_loss: 2.7467  temp: 1.0000  drop: 0.2255  len_batches: 11.06  len_gen_batches: 16.09
+
+[iter 2745] d_adv_loss: 0.6283  f_slf_loss: 3.2557  f_cyc_loss: 5.4436  f_adv_loss: 2.7489  temp: 1.0000  drop: 0.2256  len_batches: 11.03  len_gen_batches: 15.99
+
+[iter 2750] d_adv_loss: 0.6261  f_slf_loss: 3.2397  f_cyc_loss: 5.4205  f_adv_loss: 2.7521  temp: 1.0000  drop: 0.2256  len_batches: 11.00  len_gen_batches: 16.00
+
+[iter 2755] d_adv_loss: 0.6229  f_slf_loss: 3.2460  f_cyc_loss: 5.4300  f_adv_loss: 2.7600  temp: 1.0000  drop: 0.2257  len_batches: 11.02  len_gen_batches: 16.08
+
+[iter 2760] d_adv_loss: 0.6221  f_slf_loss: 3.2392  f_cyc_loss: 5.4235  f_adv_loss: 2.7689  temp: 1.0000  drop: 0.2257  len_batches: 11.00  len_gen_batches: 16.10
+
+[iter 2765] d_adv_loss: 0.6239  f_slf_loss: 3.2556  f_cyc_loss: 5.4499  f_adv_loss: 2.7703  temp: 1.0000  drop: 0.2258  len_batches: 11.04  len_gen_batches: 16.25
+
+[iter 2770] d_adv_loss: 0.6231  f_slf_loss: 3.2531  f_cyc_loss: 5.4468  f_adv_loss: 2.7692  temp: 1.0000  drop: 0.2258  len_batches: 11.04  len_gen_batches: 16.28
+
+[iter 2775] d_adv_loss: 0.6219  f_slf_loss: 3.2508  f_cyc_loss: 5.4444  f_adv_loss: 2.7735  temp: 1.0000  drop: 0.2259  len_batches: 11.04  len_gen_batches: 16.16
+
+[iter 2780] d_adv_loss: 0.6211  f_slf_loss: 3.2526  f_cyc_loss: 5.4473  f_adv_loss: 2.7715  temp: 1.0000  drop: 0.2259  len_batches: 11.04  len_gen_batches: 16.06
+
+[iter 2785] d_adv_loss: 0.6200  f_slf_loss: 3.2490  f_cyc_loss: 5.4407  f_adv_loss: 2.7703  temp: 1.0000  drop: 0.2260  len_batches: 11.04  len_gen_batches: 16.09
+
+[iter 2790] d_adv_loss: 0.6190  f_slf_loss: 3.2470  f_cyc_loss: 5.4356  f_adv_loss: 2.7747  temp: 1.0000  drop: 0.2260  len_batches: 11.03  len_gen_batches: 16.10
+
+[iter 2795] d_adv_loss: 0.6174  f_slf_loss: 3.2349  f_cyc_loss: 5.4159  f_adv_loss: 2.7779  temp: 1.0000  drop: 0.2261  len_batches: 11.01  len_gen_batches: 16.08
+
+[iter 2800] d_adv_loss: 0.6159  f_slf_loss: 3.2302  f_cyc_loss: 5.4062  f_adv_loss: 2.7867  temp: 1.0000  drop: 0.2261  len_batches: 11.00  len_gen_batches: 16.07
+
+[iter 2805] d_adv_loss: 0.5863  f_slf_loss: 3.5737  f_cyc_loss: 5.9392  f_adv_loss: 2.9698  temp: 1.0000  drop: 0.2262  len_batches: 11.88  len_gen_batches: 21.01
+
+[iter 2810] d_adv_loss: 0.5743  f_slf_loss: 3.2300  f_cyc_loss: 5.4477  f_adv_loss: 3.0543  temp: 1.0000  drop: 0.2262  len_batches: 11.05  len_gen_batches: 19.39
+
+[iter 2815] d_adv_loss: 0.5684  f_slf_loss: 3.2729  f_cyc_loss: 5.5193  f_adv_loss: 2.9783  temp: 1.0000  drop: 0.2263  len_batches: 11.16  len_gen_batches: 18.91
+
+[iter 2820] d_adv_loss: 0.5731  f_slf_loss: 3.1951  f_cyc_loss: 5.3806  f_adv_loss: 2.9396  temp: 1.0000  drop: 0.2263  len_batches: 10.98  len_gen_batches: 20.22
+
+[iter 2825] d_adv_loss: 0.5710  f_slf_loss: 3.1418  f_cyc_loss: 5.2763  f_adv_loss: 2.8883  temp: 1.0000  drop: 0.2264  len_batches: 10.85  len_gen_batches: 19.31
+
+[iter 2830] d_adv_loss: 0.5723  f_slf_loss: 3.1246  f_cyc_loss: 5.2432  f_adv_loss: 2.8904  temp: 1.0000  drop: 0.2265  len_batches: 10.81  len_gen_batches: 18.67
+
+[iter 2835] d_adv_loss: 0.5844  f_slf_loss: 3.0983  f_cyc_loss: 5.2271  f_adv_loss: 2.8463  temp: 1.0000  drop: 0.2265  len_batches: 10.76  len_gen_batches: 18.29
+
+[iter 2840] d_adv_loss: 0.5766  f_slf_loss: 3.1411  f_cyc_loss: 5.3096  f_adv_loss: 2.8551  temp: 1.0000  drop: 0.2266  len_batches: 10.88  len_gen_batches: 18.19
+
+[iter 2845] d_adv_loss: 0.5754  f_slf_loss: 3.1515  f_cyc_loss: 5.3238  f_adv_loss: 2.8720  temp: 1.0000  drop: 0.2266  len_batches: 10.89  len_gen_batches: 17.82
+
+[iter 2850] d_adv_loss: 0.5825  f_slf_loss: 3.1743  f_cyc_loss: 5.3500  f_adv_loss: 2.8587  temp: 1.0000  drop: 0.2267  len_batches: 10.92  len_gen_batches: 17.92
+
+[iter 2855] d_adv_loss: 0.5781  f_slf_loss: 3.1351  f_cyc_loss: 5.3020  f_adv_loss: 2.8445  temp: 1.0000  drop: 0.2267  len_batches: 10.84  len_gen_batches: 17.72
+
+[iter 2860] d_adv_loss: 0.5782  f_slf_loss: 3.1166  f_cyc_loss: 5.2698  f_adv_loss: 2.8408  temp: 1.0000  drop: 0.2268  len_batches: 10.79  len_gen_batches: 17.39
+
+[iter 2865] d_adv_loss: 0.5742  f_slf_loss: 3.1326  f_cyc_loss: 5.2749  f_adv_loss: 2.8462  temp: 1.0000  drop: 0.2268  len_batches: 10.82  len_gen_batches: 17.11
+
+[iter 2870] d_adv_loss: 0.5706  f_slf_loss: 3.1524  f_cyc_loss: 5.3028  f_adv_loss: 2.8602  temp: 1.0000  drop: 0.2269  len_batches: 10.88  len_gen_batches: 17.11
+
+[iter 2875] d_adv_loss: 0.5696  f_slf_loss: 3.1591  f_cyc_loss: 5.3025  f_adv_loss: 2.8576  temp: 1.0000  drop: 0.2269  len_batches: 10.90  len_gen_batches: 17.01
+
+[iter 2880] d_adv_loss: 0.5697  f_slf_loss: 3.1352  f_cyc_loss: 5.2689  f_adv_loss: 2.8638  temp: 1.0000  drop: 0.2270  len_batches: 10.85  len_gen_batches: 16.76
+
+[iter 2885] d_adv_loss: 0.5696  f_slf_loss: 3.1411  f_cyc_loss: 5.2785  f_adv_loss: 2.8681  temp: 1.0000  drop: 0.2270  len_batches: 10.87  len_gen_batches: 16.61
+
+[iter 2890] d_adv_loss: 0.5697  f_slf_loss: 3.1223  f_cyc_loss: 5.2481  f_adv_loss: 2.8712  temp: 1.0000  drop: 0.2271  len_batches: 10.83  len_gen_batches: 16.47
+
+[iter 2895] d_adv_loss: 0.5714  f_slf_loss: 3.1229  f_cyc_loss: 5.2466  f_adv_loss: 2.8749  temp: 1.0000  drop: 0.2271  len_batches: 10.84  len_gen_batches: 16.47
+
+[iter 2900] d_adv_loss: 0.5721  f_slf_loss: 3.1196  f_cyc_loss: 5.2396  f_adv_loss: 2.8717  temp: 1.0000  drop: 0.2272  len_batches: 10.83  len_gen_batches: 16.39
+
+[iter 2905] d_adv_loss: 0.5771  f_slf_loss: 3.1038  f_cyc_loss: 5.2227  f_adv_loss: 2.8572  temp: 1.0000  drop: 0.2272  len_batches: 10.79  len_gen_batches: 16.48
+
+[iter 2910] d_adv_loss: 0.5778  f_slf_loss: 3.0957  f_cyc_loss: 5.2082  f_adv_loss: 2.8609  temp: 1.0000  drop: 0.2273  len_batches: 10.77  len_gen_batches: 16.37
+
+[iter 2915] d_adv_loss: 0.5783  f_slf_loss: 3.0856  f_cyc_loss: 5.1940  f_adv_loss: 2.8489  temp: 1.0000  drop: 0.2273  len_batches: 10.74  len_gen_batches: 16.39
+
+[iter 2920] d_adv_loss: 0.5774  f_slf_loss: 3.0791  f_cyc_loss: 5.1836  f_adv_loss: 2.8399  temp: 1.0000  drop: 0.2274  len_batches: 10.73  len_gen_batches: 16.36
+
+[iter 2925] d_adv_loss: 0.5768  f_slf_loss: 3.0787  f_cyc_loss: 5.1814  f_adv_loss: 2.8424  temp: 1.0000  drop: 0.2274  len_batches: 10.73  len_gen_batches: 16.40
+
+[iter 2930] d_adv_loss: 0.5772  f_slf_loss: 3.0909  f_cyc_loss: 5.2009  f_adv_loss: 2.8443  temp: 1.0000  drop: 0.2275  len_batches: 10.77  len_gen_batches: 16.53
+
+[iter 2935] d_adv_loss: 0.5778  f_slf_loss: 3.0794  f_cyc_loss: 5.1793  f_adv_loss: 2.8361  temp: 1.0000  drop: 0.2275  len_batches: 10.74  len_gen_batches: 16.59
+
+[iter 2940] d_adv_loss: 0.5766  f_slf_loss: 3.0802  f_cyc_loss: 5.1792  f_adv_loss: 2.8354  temp: 1.0000  drop: 0.2276  len_batches: 10.75  len_gen_batches: 16.59
+
+[iter 2945] d_adv_loss: 0.5753  f_slf_loss: 3.0872  f_cyc_loss: 5.1924  f_adv_loss: 2.8352  temp: 1.0000  drop: 0.2276  len_batches: 10.77  len_gen_batches: 16.68
+
+[iter 2950] d_adv_loss: 0.5750  f_slf_loss: 3.0774  f_cyc_loss: 5.1775  f_adv_loss: 2.8349  temp: 1.0000  drop: 0.2277  len_batches: 10.75  len_gen_batches: 16.55
+
+[iter 2955] d_adv_loss: 0.5748  f_slf_loss: 3.0736  f_cyc_loss: 5.1787  f_adv_loss: 2.8404  temp: 1.0000  drop: 0.2277  len_batches: 10.75  len_gen_batches: 16.45
+
+[iter 2960] d_adv_loss: 0.5727  f_slf_loss: 3.0779  f_cyc_loss: 5.1851  f_adv_loss: 2.8479  temp: 1.0000  drop: 0.2278  len_batches: 10.77  len_gen_batches: 16.36
+
+[iter 2965] d_adv_loss: 0.5745  f_slf_loss: 3.0839  f_cyc_loss: 5.1936  f_adv_loss: 2.8450  temp: 1.0000  drop: 0.2278  len_batches: 10.79  len_gen_batches: 16.46
+
+[iter 2970] d_adv_loss: 0.5746  f_slf_loss: 3.0749  f_cyc_loss: 5.1810  f_adv_loss: 2.8453  temp: 1.0000  drop: 0.2279  len_batches: 10.77  len_gen_batches: 16.46
+
+[iter 2975] d_adv_loss: 0.5747  f_slf_loss: 3.0679  f_cyc_loss: 5.1696  f_adv_loss: 2.8381  temp: 1.0000  drop: 0.2279  len_batches: 10.75  len_gen_batches: 16.52
+
+[iter 2980] d_adv_loss: 0.5728  f_slf_loss: 3.0720  f_cyc_loss: 5.1760  f_adv_loss: 2.8455  temp: 1.0000  drop: 0.2280  len_batches: 10.77  len_gen_batches: 16.63
+
+[iter 2985] d_adv_loss: 0.5714  f_slf_loss: 3.0674  f_cyc_loss: 5.1761  f_adv_loss: 2.8492  temp: 1.0000  drop: 0.2280  len_batches: 10.76  len_gen_batches: 16.63
+
+[iter 2990] d_adv_loss: 0.5717  f_slf_loss: 3.0630  f_cyc_loss: 5.1666  f_adv_loss: 2.8483  temp: 1.0000  drop: 0.2281  len_batches: 10.75  len_gen_batches: 16.60
+
+[iter 2995] d_adv_loss: 0.5715  f_slf_loss: 3.0656  f_cyc_loss: 5.1653  f_adv_loss: 2.8439  temp: 1.0000  drop: 0.2281  len_batches: 10.75  len_gen_batches: 16.74
+
+[iter 3000] d_adv_loss: 0.5715  f_slf_loss: 3.0615  f_cyc_loss: 5.1594  f_adv_loss: 2.8435  temp: 1.0000  drop: 0.2282  len_batches: 10.75  len_gen_batches: 16.82
+
+[iter 3005] d_adv_loss: 0.5449  f_slf_loss: 3.0787  f_cyc_loss: 5.3134  f_adv_loss: 2.9343  temp: 1.0000  drop: 0.2282  len_batches: 10.96  len_gen_batches: 19.26
+
+[iter 3010] d_adv_loss: 0.6364  f_slf_loss: 3.1388  f_cyc_loss: 5.2856  f_adv_loss: 2.8926  temp: 1.0000  drop: 0.2283  len_batches: 11.14  len_gen_batches: 19.48
+
+[iter 3015] d_adv_loss: 0.6143  f_slf_loss: 3.1922  f_cyc_loss: 5.3508  f_adv_loss: 2.9251  temp: 1.0000  drop: 0.2283  len_batches: 11.27  len_gen_batches: 19.57
+
+[iter 3020] d_adv_loss: 0.6131  f_slf_loss: 3.2500  f_cyc_loss: 5.4409  f_adv_loss: 2.9012  temp: 1.0000  drop: 0.2284  len_batches: 11.44  len_gen_batches: 20.24
+
+[iter 3025] d_adv_loss: 0.6011  f_slf_loss: 3.2068  f_cyc_loss: 5.3562  f_adv_loss: 2.8643  temp: 1.0000  drop: 0.2285  len_batches: 11.31  len_gen_batches: 20.94
+
+[iter 3030] d_adv_loss: 0.6079  f_slf_loss: 3.1957  f_cyc_loss: 5.3477  f_adv_loss: 2.8501  temp: 1.0000  drop: 0.2285  len_batches: 11.22  len_gen_batches: 20.65
+
+[iter 3035] d_adv_loss: 0.6023  f_slf_loss: 3.1760  f_cyc_loss: 5.3249  f_adv_loss: 2.8246  temp: 1.0000  drop: 0.2286  len_batches: 11.13  len_gen_batches: 19.98
+
+[iter 3040] d_adv_loss: 0.6024  f_slf_loss: 3.2037  f_cyc_loss: 5.3335  f_adv_loss: 2.8636  temp: 1.0000  drop: 0.2286  len_batches: 11.18  len_gen_batches: 19.47
+
+[iter 3045] d_adv_loss: 0.6033  f_slf_loss: 3.1777  f_cyc_loss: 5.2870  f_adv_loss: 2.8355  temp: 1.0000  drop: 0.2287  len_batches: 11.11  len_gen_batches: 18.88
+
+[iter 3050] d_adv_loss: 0.5958  f_slf_loss: 3.1762  f_cyc_loss: 5.2833  f_adv_loss: 2.8544  temp: 1.0000  drop: 0.2287  len_batches: 11.11  len_gen_batches: 18.37
+
+[iter 3055] d_adv_loss: 0.5954  f_slf_loss: 3.1455  f_cyc_loss: 5.2342  f_adv_loss: 2.8410  temp: 1.0000  drop: 0.2288  len_batches: 11.02  len_gen_batches: 17.80
+
+[iter 3060] d_adv_loss: 0.5930  f_slf_loss: 3.1655  f_cyc_loss: 5.2729  f_adv_loss: 2.8609  temp: 1.0000  drop: 0.2288  len_batches: 11.08  len_gen_batches: 17.33
+
+[iter 3065] d_adv_loss: 0.5921  f_slf_loss: 3.1552  f_cyc_loss: 5.2555  f_adv_loss: 2.8582  temp: 1.0000  drop: 0.2289  len_batches: 11.05  len_gen_batches: 16.89
+
+[iter 3070] d_adv_loss: 0.5876  f_slf_loss: 3.1432  f_cyc_loss: 5.2420  f_adv_loss: 2.8716  temp: 1.0000  drop: 0.2289  len_batches: 11.04  len_gen_batches: 16.56
+
+[iter 3075] d_adv_loss: 0.5850  f_slf_loss: 3.1472  f_cyc_loss: 5.2453  f_adv_loss: 2.8788  temp: 1.0000  drop: 0.2290  len_batches: 11.04  len_gen_batches: 16.24
+
+[iter 3080] d_adv_loss: 0.5846  f_slf_loss: 3.1484  f_cyc_loss: 5.2498  f_adv_loss: 2.8667  temp: 1.0000  drop: 0.2290  len_batches: 11.04  len_gen_batches: 15.95
+
+[iter 3085] d_adv_loss: 0.5883  f_slf_loss: 3.1312  f_cyc_loss: 5.2235  f_adv_loss: 2.8648  temp: 1.0000  drop: 0.2291  len_batches: 11.00  len_gen_batches: 15.64
+
+[iter 3090] d_adv_loss: 0.5847  f_slf_loss: 3.1042  f_cyc_loss: 5.1908  f_adv_loss: 2.8512  temp: 1.0000  drop: 0.2291  len_batches: 10.93  len_gen_batches: 15.33
+
+[iter 3095] d_adv_loss: 0.5853  f_slf_loss: 3.1064  f_cyc_loss: 5.1946  f_adv_loss: 2.8506  temp: 1.0000  drop: 0.2292  len_batches: 10.95  len_gen_batches: 15.18
+
+[iter 3100] d_adv_loss: 0.5841  f_slf_loss: 3.1061  f_cyc_loss: 5.1906  f_adv_loss: 2.8411  temp: 1.0000  drop: 0.2292  len_batches: 10.95  len_gen_batches: 15.02
+
+[iter 3105] d_adv_loss: 0.5835  f_slf_loss: 3.0905  f_cyc_loss: 5.1701  f_adv_loss: 2.8333  temp: 1.0000  drop: 0.2293  len_batches: 10.90  len_gen_batches: 14.81
+
+[iter 3110] d_adv_loss: 0.5798  f_slf_loss: 3.0997  f_cyc_loss: 5.1856  f_adv_loss: 2.8433  temp: 1.0000  drop: 0.2293  len_batches: 10.93  len_gen_batches: 14.68
+
+[iter 3115] d_adv_loss: 0.5771  f_slf_loss: 3.0974  f_cyc_loss: 5.1857  f_adv_loss: 2.8470  temp: 1.0000  drop: 0.2294  len_batches: 10.91  len_gen_batches: 14.56
+
+[iter 3120] d_adv_loss: 0.5769  f_slf_loss: 3.0910  f_cyc_loss: 5.1721  f_adv_loss: 2.8326  temp: 1.0000  drop: 0.2294  len_batches: 10.88  len_gen_batches: 14.66
+
+[iter 3125] d_adv_loss: 0.5774  f_slf_loss: 3.0902  f_cyc_loss: 5.1719  f_adv_loss: 2.8306  temp: 1.0000  drop: 0.2295  len_batches: 10.88  len_gen_batches: 14.78
+
+[iter 3130] d_adv_loss: 0.5760  f_slf_loss: 3.0897  f_cyc_loss: 5.1694  f_adv_loss: 2.8363  temp: 1.0000  drop: 0.2295  len_batches: 10.88  len_gen_batches: 15.02
+
+[iter 3135] d_adv_loss: 0.5738  f_slf_loss: 3.0857  f_cyc_loss: 5.1669  f_adv_loss: 2.8416  temp: 1.0000  drop: 0.2296  len_batches: 10.87  len_gen_batches: 15.08
+
+[iter 3140] d_adv_loss: 0.5779  f_slf_loss: 3.0840  f_cyc_loss: 5.1706  f_adv_loss: 2.8374  temp: 1.0000  drop: 0.2296  len_batches: 10.86  len_gen_batches: 15.21
+
+[iter 3145] d_adv_loss: 0.5767  f_slf_loss: 3.0900  f_cyc_loss: 5.1807  f_adv_loss: 2.8435  temp: 1.0000  drop: 0.2297  len_batches: 10.87  len_gen_batches: 15.32
+
+[iter 3150] d_adv_loss: 0.5767  f_slf_loss: 3.0997  f_cyc_loss: 5.2030  f_adv_loss: 2.8455  temp: 1.0000  drop: 0.2297  len_batches: 10.90  len_gen_batches: 15.58
+
+[iter 3155] d_adv_loss: 0.5739  f_slf_loss: 3.1122  f_cyc_loss: 5.2337  f_adv_loss: 2.8598  temp: 1.0000  drop: 0.2298  len_batches: 10.93  len_gen_batches: 15.72
+
+[iter 3160] d_adv_loss: 0.5719  f_slf_loss: 3.1100  f_cyc_loss: 5.2272  f_adv_loss: 2.8692  temp: 1.0000  drop: 0.2298  len_batches: 10.93  len_gen_batches: 15.95
+
+[iter 3165] d_adv_loss: 0.5733  f_slf_loss: 3.1085  f_cyc_loss: 5.2247  f_adv_loss: 2.8765  temp: 1.0000  drop: 0.2299  len_batches: 10.92  len_gen_batches: 16.10
+
+[iter 3170] d_adv_loss: 0.5724  f_slf_loss: 3.1026  f_cyc_loss: 5.2148  f_adv_loss: 2.8773  temp: 1.0000  drop: 0.2299  len_batches: 10.90  len_gen_batches: 16.17
+
+[iter 3175] d_adv_loss: 0.5725  f_slf_loss: 3.1016  f_cyc_loss: 5.2108  f_adv_loss: 2.8771  temp: 1.0000  drop: 0.2300  len_batches: 10.90  len_gen_batches: 16.08
+
+[iter 3180] d_adv_loss: 0.5703  f_slf_loss: 3.0945  f_cyc_loss: 5.1964  f_adv_loss: 2.8786  temp: 1.0000  drop: 0.2300  len_batches: 10.88  len_gen_batches: 16.00
+
+[iter 3185] d_adv_loss: 0.5697  f_slf_loss: 3.0919  f_cyc_loss: 5.1924  f_adv_loss: 2.8822  temp: 1.0000  drop: 0.2301  len_batches: 10.87  len_gen_batches: 16.08
+
+[iter 3190] d_adv_loss: 0.5683  f_slf_loss: 3.0887  f_cyc_loss: 5.1854  f_adv_loss: 2.8864  temp: 1.0000  drop: 0.2301  len_batches: 10.87  len_gen_batches: 16.11
+
+[iter 3195] d_adv_loss: 0.5678  f_slf_loss: 3.0883  f_cyc_loss: 5.1834  f_adv_loss: 2.8903  temp: 1.0000  drop: 0.2302  len_batches: 10.87  len_gen_batches: 16.13
+
+[iter 3200] d_adv_loss: 0.5678  f_slf_loss: 3.0889  f_cyc_loss: 5.1890  f_adv_loss: 2.8952  temp: 1.0000  drop: 0.2302  len_batches: 10.87  len_gen_batches: 16.19
+

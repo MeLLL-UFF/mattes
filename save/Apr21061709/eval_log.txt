@@ -1,0 +1,36 @@
+iter  200:  acc_cla: 0.8943 acc_mod: 0.9294 bleu_cla: 3.2797 bleu_mod: 3.4064 ppl_cla: 18.6495 ppl_mod: 17.0892
+
+iter  400:  acc_cla: 0.8943 acc_mod: 0.7467 bleu_cla: 8.5830 bleu_mod: 9.9371 ppl_cla: 27.8694 ppl_mod: 30.4819
+
+iter  600:  acc_cla: 0.6463 acc_mod: 0.6295 bleu_cla: 26.3408 bleu_mod: 21.0723 ppl_cla: 39.4367 ppl_mod: 48.1849
+
+iter  800:  acc_cla: 0.7306 acc_mod: 0.5614 bleu_cla: 31.9850 bleu_mod: 36.9373 ppl_cla: 54.4900 ppl_mod: 65.1260
+
+iter 1000:  acc_cla: 0.7758 acc_mod: 0.5195 bleu_cla: 38.8427 bleu_mod: 50.4159 ppl_cla: 59.8840 ppl_mod: 76.6732
+
+iter 1200:  acc_cla: 0.8659 acc_mod: 0.5727 bleu_cla: 40.5482 bleu_mod: 51.3037 ppl_cla: 60.1734 ppl_mod: 86.5703
+
+iter 1400:  acc_cla: 0.9286 acc_mod: 0.6723 bleu_cla: 39.5576 bleu_mod: 47.7357 ppl_cla: 59.6839 ppl_mod: 88.6088
+
+iter 1600:  acc_cla: 0.9052 acc_mod: 0.8031 bleu_cla: 37.9812 bleu_mod: 39.9122 ppl_cla: 63.2898 ppl_mod: 97.0775
+
+iter 1800:  acc_cla: 0.9594 acc_mod: 0.8161 bleu_cla: 38.0680 bleu_mod: 44.5744 ppl_cla: 76.6691 ppl_mod: 102.1766
+
+iter 2000:  acc_cla: 0.9527 acc_mod: 0.8277 bleu_cla: 34.5701 bleu_mod: 43.1535 ppl_cla: 81.6394 ppl_mod: 92.5820
+
+iter 2200:  acc_cla: 0.9528 acc_mod: 0.8148 bleu_cla: 35.3853 bleu_mod: 42.9282 ppl_cla: 68.1995 ppl_mod: 92.2243
+
+iter 2400:  acc_cla: 0.9549 acc_mod: 0.8787 bleu_cla: 35.4508 bleu_mod: 39.6912 ppl_cla: 65.2913 ppl_mod: 102.6391
+
+iter 2600:  acc_cla: 0.9752 acc_mod: 0.8669 bleu_cla: 29.2726 bleu_mod: 39.6684 ppl_cla: 68.3127 ppl_mod: 87.2145
+
+iter 2800:  acc_cla: 0.9716 acc_mod: 0.8412 bleu_cla: 29.3390 bleu_mod: 44.3111 ppl_cla: 70.2207 ppl_mod: 90.1894
+
+iter 3000:  acc_cla: 0.9554 acc_mod: 0.7274 bleu_cla: 31.3514 bleu_mod: 34.2139 ppl_cla: 67.7052 ppl_mod: 94.1307
+
+iter 3200:  acc_cla: 0.9715 acc_mod: 0.8352 bleu_cla: 38.7636 bleu_mod: 41.2290 ppl_cla: 58.0969 ppl_mod: 92.1815
+
+iter 3400:  acc_cla: 0.9584 acc_mod: 0.8465 bleu_cla: 35.7183 bleu_mod: 39.8151 ppl_cla: 61.6919 ppl_mod: 88.0544
+
+iter 3600:  acc_cla: 0.9653 acc_mod: 0.7123 bleu_cla: 25.2763 bleu_mod: 24.4700 ppl_cla: 67.5232 ppl_mod: 115.0105
+
