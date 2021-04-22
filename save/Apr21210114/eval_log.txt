@@ -1,0 +1,22 @@
+iter  200:  acc_cla: 0.8776 acc_mod: 0.9256 bleu_cla: 2.6078 bleu_mod: 2.9655 ppl_cla: 18.6074 ppl_mod: 16.5463
+
+iter  400:  acc_cla: 0.8811 acc_mod: 0.8800 bleu_cla: 5.7062 bleu_mod: 5.3237 ppl_cla: 26.0298 ppl_mod: 25.5507
+
+iter  600:  acc_cla: 0.7417 acc_mod: 0.7153 bleu_cla: 18.4343 bleu_mod: 15.5411 ppl_cla: 32.8563 ppl_mod: 39.0662
+
+iter  800:  acc_cla: 0.7611 acc_mod: 0.7544 bleu_cla: 22.9799 bleu_mod: 22.9937 ppl_cla: 44.9034 ppl_mod: 55.0924
+
+iter 1000:  acc_cla: 0.7980 acc_mod: 0.7475 bleu_cla: 29.6776 bleu_mod: 27.6920 ppl_cla: 62.7284 ppl_mod: 60.8571
+
+iter 1200:  acc_cla: 0.9010 acc_mod: 0.7559 bleu_cla: 36.7550 bleu_mod: 42.4348 ppl_cla: 58.8011 ppl_mod: 92.9692
+
+iter 1400:  acc_cla: 0.9157 acc_mod: 0.7182 bleu_cla: 35.3390 bleu_mod: 39.2163 ppl_cla: 79.2895 ppl_mod: 70.3679
+
+iter 1600:  acc_cla: 0.9286 acc_mod: 0.7565 bleu_cla: 39.9134 bleu_mod: 44.6878 ppl_cla: 57.0652 ppl_mod: 76.8863
+
+iter 1800:  acc_cla: 0.9583 acc_mod: 0.7543 bleu_cla: 37.7088 bleu_mod: 45.5731 ppl_cla: 64.9625 ppl_mod: 96.4518
+
+iter 2000:  acc_cla: 0.9451 acc_mod: 0.7746 bleu_cla: 38.0364 bleu_mod: 45.1904 ppl_cla: 65.8129 ppl_mod: 86.9990
+
+iter 2200:  acc_cla: 0.9386 acc_mod: 0.8815 bleu_cla: 35.1453 bleu_mod: 33.4744 ppl_cla: 69.1075 ppl_mod: 112.2926
+
