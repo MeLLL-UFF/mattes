@@ -37,7 +37,7 @@ class Config():
     num_styles = 2
     num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
-    batch_size = 16
+    batch_size = 32
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
@@ -71,12 +71,12 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = True
-    ckpt = 'save/Apr11003034/ckpts/2200_F.pth'
-    model_name = 'Apr11003034_new2200'
-    beam_size = 4
-    valid_file_0 = False #'baseline_outputs/yelp/style_transformer/cleaned_output0to1_multi'  #'save/Mar26002743/ckpts/6200_0'  
-    valid_file_1 = False #'baseline_outputs/yelp/style_transformer/cleaned_output1to0_multi'#  'save/Mar26002743/ckpts/6200_1' 
+    translate = False
+    ckpt = 'save/Apr08012320/ckpts/1600_F.pth'
+    model_name = 'Apr22205848_acc2b5_2'
+    beam_size = 1
+    valid_file_0 = 'save/Apr22205848_acc2b5/Apr22205848_acc2b5_0'#False #'baseline_outputs/yelp/style_transformer/cleaned_output0to1_multi'    
+    valid_file_1 = 'save/Apr22205848_acc2b5/Apr22205848_acc2b5_1'#False #'baseline_outputs/yelp/style_transformer/cleaned_output1to0_multi' 
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -239,9 +239,9 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
         rev_output = []
         while True:
             if raw_style == 0:
-                inp_tokens, _ , eop = data.next_dev0()
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 256, sort = False)
             else:
-                inp_tokens, _ , eop = data.next_dev1()
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 256, sort = False)
 
             inp_lengths = get_lengths(inp_tokens, eos_idx)
             raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
@@ -274,10 +274,11 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
     out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
     for i in range(len(rev_output[0])):
         line_0 = rev_output[0][i].strip()
-        line_1 = rev_output[1][i].strip()
         out_file_0.write(line_0 + '\n')
-        out_file_1.write(line_1 + '\n')
         out_file_0.flush()
+    for i in range(len(rev_output[1])):
+        line_1 = rev_output[1][i].strip()
+        out_file_1.write(line_1 + '\n')
         out_file_1.flush()
     out_file_0.close()
     out_file_1.close()

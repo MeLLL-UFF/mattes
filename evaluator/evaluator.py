@@ -1,7 +1,6 @@
 from nltk.tokenize import word_tokenize
 from nltk.translate.bleu_score import sentence_bleu
 
-import fasttext
 import pkg_resources
 from transformers import AlbertTokenizer
 import math
@@ -73,7 +72,7 @@ class Evaluator(object):
 
     def nltk_bleu(self, texts_origin, text_transfered):
         texts_origin = [self.tokenizer.tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
-        text_transfered = self.tokenizer.tokenize(text_transfered.lower().strip())
+        text_transfered = self.tokenizer.tokenize(text_transfered.lower().strip().replace("<unk>","_"))
         #print(texts_origin, text_transfered)
         return sentence_bleu(texts_origin, text_transfered) * 100
 
