@@ -1,0 +1,5 @@
+best_yelp         :  acc_cla: 0.9440 acc_mod: 0.8340 bleu_cla: 19.9022 bleu_mod: 20.4094 ppl_cla: 65.1810 ppl_mod: 71.1707
+
+0to1 roberta-large_L17_no-idf_version=0.3.9(hug_trans=4.5.1) P: 0.908691 R: 0.919045 F1: 0.913716
+
+1to0 roberta-large_L17_no-idf_version=0.3.9(hug_trans=4.5.1) P: 0.918261 R: 0.924044 F1: 0.920951

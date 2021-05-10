@@ -1,0 +1,5 @@
+best_shake_no_kd  :  acc_cla: 0.6122 acc_mod: 0.6163 bleu_cla: 11.1874 bleu_mod: 11.4154 ppl_cla: 79.2560 ppl_mod: 102.3143
+
+0to1 roberta-large_L17_no-idf_version=0.3.9(hug_trans=4.5.1) P: 0.884271 R: 0.897465 F1: 0.890642
+
+1to0 roberta-large_L17_no-idf_version=0.3.9(hug_trans=4.5.1) P: 0.889755 R: 0.888099 F1: 0.888678
