@@ -1,2 +1,0 @@
-best_model2       :  acc_cla: 0.7476 acc_mod: 0.6628 bleu_cla: 10.3166 bleu_mod: 11.8437 ppl_cla: 96.8328 ppl_mod: 106.5113
-

@@ -1,2 +1,0 @@
-best2_yelp        :  acc_cla: 0.9580 acc_mod: 0.8240 bleu_cla: 18.7651 bleu_mod: 18.6264 ppl_cla: 51.6697 ppl_mod: 73.6145
-
