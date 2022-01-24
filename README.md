@@ -19,15 +19,17 @@ pip3 install -r requirements.txt
 ## Setting Up
 For training our model, it's necessary a pre-trained masked languagel. More specifically, we adopted [Albert](https://arxiv.org/abs/1909.11942) for all experiments.
 
-1. Preprocessing 
+1. Preprocessing
 
-Run the following command for preprocess our training data. You must specify dataset in the script file.
-```
-bash scripts/prepare_deen.sh
-```
+    Run the following command for preprocess our training data. You must specify dataset in the script file.
+    ```
+    bash scripts/prepare_deen.sh
+    ```
 
 2. Extract teacher soft label
+
     We first precompute hidden states (logits) of MLM teacher to speedup KD training ant then pre-compute the top-K logits to save memory
+
         ```bash
         # extract hidden states of teacher
         python dump_teacher_hiddens.py \
