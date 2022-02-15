@@ -35,7 +35,7 @@ For training our model, it's necessary a pre-trained masked languagel. More spec
         python dump_teacher_hiddens.py \
             --output ~/nlp/mattes/data/targets/teacher0 \
             --ckpt /home/ascalercio/nlp/mattes/masked_lm/lm0-large/pytorch_model.bin \
-            --db ~/nlp/mattes/data/dump/DEEN.db --style classic
+            --db ~/nlp/mattes/data/dump/NEGA.db
 
         # extract top-k logits
         python dump_teacher_topk.py --topk 64 --bert_hidden ~/nlp/mattes/data/targets/teacher0

@@ -5,9 +5,9 @@ set -x
 set -e
 export PYTHONUNBUFFERED=1
 
-TMP=$(pwd)/data/tmp_yelp
-DUMP=$(pwd)/data/dump_yelp
-RAW=$(pwd)/data/yelp
+TMP=$(pwd)/data/tmp
+DUMP=$(pwd)/data/dump
+RAW=$(pwd)/data/shakespeare
 
 mkdir -p $TMP
 
