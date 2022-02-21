@@ -28,17 +28,26 @@ For training our model, it's necessary a pre-trained masked languagel. More spec
 
 2. Extract teacher soft label
 
-    We first precompute hidden states (logits) of MLM teacher to speedup KD training ant then pre-compute the top-K logits to save memory
+    We first precompute hidden states (logits) of MLM teacher, for each domain, to speedup KD training ant then pre-compute the top-K logits to save memory
 
-        ```bash
-        # extract hidden states of teacher
+        ```
+        # extract hidden states of teacher (domain 0)
         python dump_teacher_hiddens.py \
             --output ~/nlp/mattes/data/targets/teacher0 \
-            --ckpt /home/ascalercio/nlp/mattes/masked_lm/lm0-large/pytorch_model.bin \
+            --ckpt ~/nlp/mattes/masked_lm/lm0-large/pytorch_model.bin \
             --db ~/nlp/mattes/data/dump/NEGA.db
 
-        # extract top-k logits
+        # extract top-k logits (domain 0)
         python dump_teacher_topk.py --topk 64 --bert_hidden ~/nlp/mattes/data/targets/teacher0
+
+        # extract hidden states of teacher (domain 1)
+        python dump_teacher_hiddens.py \
+            --output ~/nlp/mattes/data/targets/teacher1 \
+            --ckpt ~/nlp/mattes/masked_lm/lm1-large/pytorch_model.bin \
+            --db ~/nlp/mattes/data/dump/POSI.db
+
+        # extract top-k logits (domain 1)
+        python dump_teacher_topk.py --topk 64 --bert_hidden ~/nlp/mattes/data/targets/teacher1
         ```
 
 
