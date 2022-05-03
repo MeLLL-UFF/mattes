@@ -6,6 +6,10 @@ outputs/*
 save/*
 !archived_exp/*
 .pth
+data/dump*
+data/tmp*
+data/targets*
+pretrained_classifer*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
