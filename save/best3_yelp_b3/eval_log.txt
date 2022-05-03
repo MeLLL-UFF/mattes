@@ -1,2 +1,0 @@
-iterbest3_yelp_b3     :  acc_cla: 0.9260 acc_mod: 0.7980 bleu_cla: 21.1107 bleu_mod: 21.1202 ppl_cla: 55.1137 ppl_mod: 91.9423
-
