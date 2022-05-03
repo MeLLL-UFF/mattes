@@ -23,7 +23,7 @@ class Config():
     save_path = './save'
     pretrained_embed_path = './embedding/'
     device = torch.device('cuda' if True and torch.cuda.is_available() else 'cpu')
-    discriminator_method = 'Multi' # 'Multi' or 'Cond'
+    discriminator_method = 'Cond' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
     max_length = 64
@@ -41,14 +41,14 @@ class Config():
     iter_F = 5
     F_pretrain_iter = 500#57500
     log_steps = 5
-    eval_steps = 100
+    eval_steps = 200
     learned_pos_embed = True
     dropout = 0
     drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 5000)]
-    temperature_config = [(1, 0)]
+    temperature_config = [(1, 0), (1 ,575), (0.8, 2300)]
 
-    slf_factor = 0.15
-    cyc_factor = 0.3
+    slf_factor = 0.2
+    cyc_factor = 0.5
     adv_factor = 1
 
     inp_shuffle_len = 0
@@ -63,8 +63,8 @@ class Config():
     word_keep = 0.1
     word_rand = 0.1
     albert_kd = True
-    kd_alpha = 0.1
-    kd_temperature = 1
+    kd_alpha = 0.5
+    kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
     load_ckpt = False

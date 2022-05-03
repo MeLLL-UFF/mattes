@@ -87,20 +87,26 @@ class Evaluator(object):
     def yelp_ref_bleu_0(self, texts_neg2pos):
         #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = len(texts_neg2pos)
+        n = len(texts_neg2pos)-1
         print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
+            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
+            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+            #    ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
     def yelp_ref_bleu_1(self, texts_pos2neg):
         #assert len(texts_pos2neg) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = len(texts_pos2neg)
+        n = len(texts_pos2neg)-1
         print(n)
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
             #print(x,y)
             #print(self.nltk_bleu([x], y))
+            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
+            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+            #    ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
