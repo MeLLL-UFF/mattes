@@ -19,7 +19,7 @@ class DataUtil(object):
     self.hparams.eos_id = self.tokenizer.sep_token_id
     self.hparams.mask_id = self.tokenizer.mask_token_id
     self.hparams.pred_probs = torch.FloatTensor([hparams.word_mask, hparams.word_keep, hparams.word_rand])
-    if k > 1:
+    if self.hparams.albert_kd and k > 1:
         self.topk_db0 = shelve.open(f'{hparams.bert_dump0}/topk', 'r')
         self.topk_db1 = shelve.open(f'{hparams.bert_dump1}/topk', 'r')
     self.k = k
@@ -53,11 +53,14 @@ class DataUtil(object):
     else:
       #test_src_file = os.path.join(self.hparams.data_path, self.hparams.test_src_file)
       #test_trg_file = os.path.join(self.hparams.data_path, self.hparams.test_trg_file)
+      '''
       test_src_file = self.hparams.test_src_file
       test_trg_file = self.hparams.test_trg_file
       self.test_x, self.test_y, _ , _ = self._build_parallel(test_src_file, test_trg_file, is_train=False)
       self.test_size = len(self.test_x)
       self.test_index = 0
+      '''
+      print("Classe DataUtil não será usada como iterator")
 
   def load_pretrained(self, pretrained_emb_file):
     f = open(pretrained_emb_file, 'r', encoding='utf-8')

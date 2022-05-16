@@ -22,7 +22,7 @@ class BartDataset(torch.utils.data.Dataset):
         return self.src_inst[idx], self.tgt_inst[idx]
 
 
-class BartIterator(object):
+class MattesIterator(object):
     """ Data iterator for fine-tuning BART """
 
     def __init__(self, tokenizer, opt):
@@ -64,6 +64,8 @@ class BartIterator(object):
             for i in range(len(f1)):
                 s = self.tokenizer.encode(f1[i].strip()[:150])
                 t = self.tokenizer.encode(f2[i].strip()[:150])
+                s=s[1:]
+                t=t[1:]
                 src_seq.append(s)
                 tgt_seq.append(t)
 

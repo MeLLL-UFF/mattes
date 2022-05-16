@@ -20,9 +20,11 @@ from transformers import GPT2LMHeadModel
 from model import BartModel
 from model import BartForMaskedLM
 from utils.helper import optimize
-from utils.dataset import BartIterator
+from utils.dataset import MattesIterator
 from classifier.textcnn import TextCNN
 from utils.optim import ScheduledOptim
+from main import Config
+from data_utils_yelp import DataUtil
 
 device = 'cuda' if cuda.is_available() else 'cpu'
 
@@ -56,6 +58,8 @@ def evaluate(model, valid_loader, tokenizer, step):
 
 
 def main():
+    config = Config()
+    data = DataUtil(config)
     parser = argparse.ArgumentParser('Supervised training with sentence-pair')
     parser.add_argument('-seed', default=42, type=int, help='the random seed')
     parser.add_argument('-lr', default=1e-5, type=float, help='the learning rate')
@@ -77,16 +81,23 @@ def main():
     print('[Info]', opt)
     torch.manual_seed(opt.seed)
 
-    base = BartModel.from_pretrained("facebook/bart-base")
-    model = BartForMaskedLM.from_pretrained('facebook/bart-base',
-                                             config=base.config)
+    #base = BartModel.from_pretrained("facebook/bart-base")
+    #model = BartForMaskedLM.from_pretrained('facebook/bart-base',
+    #                                         config=base.config)
+    if config.load_ckpt:
+        state_dict = torch.load(config.f_ckpt)
+        model = StyleTransformer(config, data)
+        model.load_state_dict(state_dict)
+    else:
+        model = StyleTransformer(config, data)
+
     model.to(device).train()
 
-    tokenizer = BartTokenizer.from_pretrained('facebook/bart-large')
+    tokenizer = data.tokenizer
     eos_token_id = tokenizer.eos_token_id
 
     # load data for training
-    data_iter = BartIterator(tokenizer, opt)
+    data_iter = MattesIterator(tokenizer, opt)
     train_loader, valid_loader = data_iter.loader
 
     optimizer = ScheduledOptim(
