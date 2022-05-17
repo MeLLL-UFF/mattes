@@ -60,7 +60,7 @@ class DataUtil(object):
       self.test_size = len(self.test_x)
       self.test_index = 0
       '''
-      print("Classe DataUtil não será usada como iterator")
+      print("Class DataUtil will not be used as iterator")
 
   def load_pretrained(self, pretrained_emb_file):
     f = open(pretrained_emb_file, 'r', encoding='utf-8')

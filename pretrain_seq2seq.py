@@ -6,7 +6,7 @@ import time
 import argparse
 import numpy as np
 
-from bleurt import score
+#from bleurt import score
 import tensorflow as tf
 
 import torch
@@ -17,12 +17,11 @@ from torch.nn import CrossEntropyLoss
 from transformers import BartTokenizer
 from transformers import GPT2LMHeadModel
 
-from model import BartModel
-from model import BartForMaskedLM
-from utils.helper import optimize
-from utils.dataset import MattesIterator
-from classifier.textcnn import TextCNN
-from utils.optim import ScheduledOptim
+from models import StyleTransformer
+from util.helper import optimize
+from util.dataset import MattesIterator
+#from classifier.textcnn import TextCNN
+from util.optim import ScheduledOptim
 from main import Config
 from data_utils_yelp import DataUtil
 
@@ -109,19 +108,26 @@ def main():
     loss_list = []
     start = time.time()
     train_iter = iter(iter(train_loader))
+    print("Start Training")
         
     for step in range(1, opt.steps):
 
         try:
             batch = next(train_iter)
+            print(batch[0].size(),batch[0].size())
         except:
             train_iter = iter(train_loader)
             batch = next(train_iter)
 
         src_seq, tgt_seq = map(lambda x: x.to(device), batch)
+        styles = torch.ones_like(src_seq[:, 0])*2
+        batch_size = src_seq.size(0)
+        loss_fn = nn.NLLLoss(reduction='none')
 
-        mask = src_seq.ne(tokenizer.pad_token_id).long()
-        loss = model(src_seq, mask, lm_labels=tgt_seq)[0]
+        mask = src_seq.ne(tokenizer.pad_token_id).float()
+        para_log_probs = model(src_seq, tgt_seq, inp_lengths, styles)
+        loss = loss_fn(para_log_probs.transpose(1, 2), tgt_seq) * mask
+        loss = loss.sum() / batch_size
         loss_list.append(loss.item())
         optimize(optimizer, loss)
 

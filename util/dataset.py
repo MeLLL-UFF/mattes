@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import random
+import time
 import numpy as np
 
 import torch
 import torch.utils.data
 
 
-class BartDataset(torch.utils.data.Dataset):
+class MattesDataset(torch.utils.data.Dataset):
     """ Seq2Seq Dataset """
 
     def __init__(self, src_inst, tgt_inst):
@@ -31,7 +32,7 @@ class MattesIterator(object):
         self.opt = opt
 
         self.train_src, self.train_tgt = self.read_insts('train', opt.shuffle, opt)
-        self.valid_src, self.valid_tgt = self.read_insts('valid', False, opt)
+        #self.valid_src, self.valid_tgt = self.read_insts('valid', False, opt)
         print('[Info] {} instances from train set'.format(len(self.train_src)))
         print('[Info] {} instances from valid set'.format(len(self.valid_src)))
 
@@ -55,6 +56,8 @@ class MattesIterator(object):
 
         src_seq, tgt_seq = [], []
         with open(src_dir, 'r') as f1, open(tgt_dir, 'r') as f2:
+            start = time.time()
+            
             f1 = f1.readlines()
             f2 = f2.readlines()
             if shuffle:
@@ -62,12 +65,19 @@ class MattesIterator(object):
                 random.shuffle(f1)
                 random.shuffle(f2)
             for i in range(len(f1)):
+            #for (i, (line1, line2)) in enumerate(zip(f1, f2)):
+                print(i)
+                #print(line1,"\n", line2)
                 s = self.tokenizer.encode(f1[i].strip()[:150])
                 t = self.tokenizer.encode(f2[i].strip()[:150])
                 s=s[1:]
                 t=t[1:]
                 src_seq.append(s)
                 tgt_seq.append(t)
+                if i==4000:
+                    break
+            end = time.time()
+            print("Execution time in seconds: ",(end-start))
 
             return src_seq, tgt_seq
 
@@ -76,7 +86,7 @@ class MattesIterator(object):
         """Generate pytorch DataLoader."""
 
         train_loader = torch.utils.data.DataLoader(
-            BartDataset(
+            MattesDataset(
                 src_inst=train_src,
                 tgt_inst=train_tgt),
             num_workers=2,
@@ -85,7 +95,7 @@ class MattesIterator(object):
             shuffle=True)
 
         valid_loader = torch.utils.data.DataLoader(
-            BartDataset(
+            MattesDataset(
                 src_inst=valid_src,
                 tgt_inst=valid_tgt),
             num_workers=2,
