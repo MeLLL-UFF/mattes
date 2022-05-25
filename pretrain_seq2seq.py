@@ -7,7 +7,7 @@ import argparse
 import numpy as np
 
 #from bleurt import score
-import tensorflow as tf
+#import tensorflow as tf
 
 import torch
 import torch.nn as nn
@@ -28,6 +28,12 @@ from data_utils_yelp import DataUtil
 device = 'cuda' if cuda.is_available() else 'cpu'
 
 
+def get_lengths(tokens, eos_idx):
+    lengths = torch.cumsum(tokens == eos_idx, 1)
+    lengths = (lengths == 0).long().sum(-1)
+    lengths = lengths + 1 # +1 for <eos> token
+    return lengths
+
 def evaluate(model, valid_loader, tokenizer, step):
     """
     Evaluation function for fine-tuning BART
@@ -42,18 +48,27 @@ def evaluate(model, valid_loader, tokenizer, step):
         the average cross-entropy loss
     """
     
-    loss_list=[]
     with torch.no_grad():
         model.eval()
+        report_tokens = report_loss = report_sents = 0
         for batch in valid_loader:
             src, tgt = map(lambda x: x.to(device), batch)
-            mask = src.ne(tokenizer.pad_token_id).long()
-            loss = model(src, mask, lm_labels=tgt)[0]
-            loss_list.append(loss.item())
+            inp_lengths = get_lengths(src, tokenizer.eos_token_id)
+            styles = torch.ones_like(src[:, 0])*2
+            batch_size = src.size(0)
+            report_sents += batch_size
+            report_tokens += inp_lengths.sum().item()
+            loss_fn = nn.NLLLoss(reduction='none')
+            mask = tgt.ne(tokenizer.pad_token_id).float()
+            para_log_probs = model(src, tgt, inp_lengths, styles)
+            loss = loss_fn(para_log_probs.transpose(1, 2), tgt) * mask
+            loss = loss.sum().item()
+            report_loss += loss
         model.train()
-    print('[Info] valid {:05d} | loss {:.4f}'.format(step, np.mean(loss_list)))
+    print('[Info] valid {:05d} | loss {:.4f}'.format(step, report_loss / report_sents))
+    print('[Info] valid {:05d} | ppl {:.4f}'.format(step, np.exp(report_loss / report_tokens)))
 
-    return np.mean(loss_list)
+    return report_loss / report_sents
 
 
 def main():
@@ -67,12 +82,13 @@ def main():
     parser.add_argument('-model', default='bart', type=str, help='the name of model')
     parser.add_argument('-dataset', default='ye', type=str, help='the name of dataset')
     parser.add_argument('-task', default='ye', type=str, help='a specific target task')
-    parser.add_argument('-shuffle', default=False, type=bool, help='shuffle train data')
+    parser.add_argument('-shuffle', default=False, type=bool, help='sort train data by xlen')
     parser.add_argument('-steps', default=10001, type=int, help='force stop at x steps')
     parser.add_argument('-batch_size', default=32, type=int, help='the size in a batch')
     parser.add_argument('-patience', default=3, type=int, help='early stopping fine-tune')
     parser.add_argument('-eval_step', default=1000, type=int, help='evaluate every x step')
     parser.add_argument('-log_step', default=100, type=int, help='print logs every x step')
+    parser.add_argument('-max_length', default=64, type=int, help='max lenght of sequences')
 
     opt = parser.parse_args()
     if opt.task=='fr':
@@ -114,17 +130,18 @@ def main():
 
         try:
             batch = next(train_iter)
-            print(batch[0].size(),batch[0].size())
         except:
             train_iter = iter(train_loader)
             batch = next(train_iter)
 
+        #print(batch[0][0],batch[1][0])
         src_seq, tgt_seq = map(lambda x: x.to(device), batch)
+        inp_lengths = get_lengths(src_seq, eos_token_id)
         styles = torch.ones_like(src_seq[:, 0])*2
         batch_size = src_seq.size(0)
         loss_fn = nn.NLLLoss(reduction='none')
 
-        mask = src_seq.ne(tokenizer.pad_token_id).float()
+        mask = tgt_seq.ne(tokenizer.pad_token_id).float()
         para_log_probs = model(src_seq, tgt_seq, inp_lengths, styles)
         loss = loss_fn(para_log_probs.transpose(1, 2), tgt_seq) * mask
         loss = loss.sum() / batch_size

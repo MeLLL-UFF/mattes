@@ -30,7 +30,7 @@ class Config():
     embed_size = 256
     d_model = 256
     h = 4
-    num_styles = 2
+    num_styles = 3
     num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
     batch_size = 32
@@ -55,7 +55,7 @@ class Config():
     inp_unk_drop_fac = 0
     inp_rand_drop_fac = 0
     inp_drop_prob = 1
-    decode = False
+    decode = True
     #max_len = 10000
     lambda_span = 10000
     word_mass = 0.5
