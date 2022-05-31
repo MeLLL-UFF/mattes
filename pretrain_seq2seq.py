@@ -34,7 +34,7 @@ def get_lengths(tokens, eos_idx):
     lengths = lengths + 1 # +1 for <eos> token
     return lengths
 
-def evaluate(model, valid_loader, tokenizer, step):
+def evaluate(model, valid_loader, tokenizer, step, train_log_file):
     """
     Evaluation function for fine-tuning BART
 
@@ -65,8 +65,11 @@ def evaluate(model, valid_loader, tokenizer, step):
             loss = loss.sum().item()
             report_loss += loss
         model.train()
-    print('[Info] valid {:05d} | loss {:.4f}'.format(step, report_loss / report_sents))
-    print('[Info] valid {:05d} | ppl {:.4f}'.format(step, np.exp(report_loss / report_tokens)))
+    with open(train_log_file, 'a') as fl:
+        print('[Info] valid {:05d} | loss {:.4f} | '
+              'ppl {:.4f}'.format(step, report_loss / report_sents, np.exp(report_loss / report_tokens)
+        ), file=fl)
+        #print('[Info] valid {:05d} | ppl {:.4f}'.format(step, np.exp(report_loss / report_tokens)))
 
     return report_loss / report_sents
 
@@ -86,9 +89,10 @@ def main():
     parser.add_argument('-steps', default=10001, type=int, help='force stop at x steps')
     parser.add_argument('-batch_size', default=32, type=int, help='the size in a batch')
     parser.add_argument('-patience', default=3, type=int, help='early stopping fine-tune')
-    parser.add_argument('-eval_step', default=1000, type=int, help='evaluate every x step')
-    parser.add_argument('-log_step', default=100, type=int, help='print logs every x step')
+    parser.add_argument('-eval_step', default=10, type=int, help='evaluate every x step')
+    parser.add_argument('-log_step', default=1, type=int, help='print logs every x step')
     parser.add_argument('-max_length', default=64, type=int, help='max lenght of sequences')
+    parser.add_argument('-train_log_file', default='checkpoints', type=str, help='path to log file')
 
     opt = parser.parse_args()
     if opt.task=='fr':
@@ -117,13 +121,14 @@ def main():
 
     optimizer = ScheduledOptim(
         torch.optim.Adam(filter(lambda x: x.requires_grad, model.parameters()),
-                         betas=(0.9, 0.98), eps=1e-09), opt.lr, len(train_loader))
+                         betas=(0.9, 0.98), eps=1e-09), opt.lr, config.d_model, len(train_loader))
 
     tab = 0
     avg_loss = 1e9
     loss_list = []
     start = time.time()
     train_iter = iter(iter(train_loader))
+    train_log_file = opt.train_log_file + '/train_log.txt'
     print("Start Training")
         
     for step in range(1, opt.steps):
@@ -150,14 +155,16 @@ def main():
 
         if step % opt.log_step == 0:
             lr = optimizer._optimizer.param_groups[0]['lr']
-            print('[Info] steps {:05d} | loss {:.4f} | '
-                  'lr {:.6f} | second {:.2f}'.format(
-                step, np.mean(loss_list), lr, time.time() - start))
+            with open(train_log_file, 'a') as fl:
+                print('[Info] steps {:05d} | loss {:.4f} | '
+                      'lr {:.6f} | second {:.2f}'.format(
+                    step, np.mean(loss_list), lr, time.time() - start
+                ), file=fl)
             loss_cen_list = []
             start = time.time()
 
         if step % opt.eval_step == 0:
-            eval_loss = evaluate(model, valid_loader, tokenizer, step)
+            eval_loss = evaluate(model, valid_loader, tokenizer, step, train_log_file)
             if avg_loss >= eval_loss:
                 model_dir ='checkpoints/{}_{}_{}_{}.chkpt'.format(
                             opt.model, 'fur', opt.task, opt.style)
