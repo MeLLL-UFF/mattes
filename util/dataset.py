@@ -85,8 +85,8 @@ class MattesIterator(object):
                     t[self.opt.max_length-1] = self.tokenizer.sep_token_id
                 src_seq.append(s)
                 tgt_seq.append(t)
-                if i==320:
-                    break
+                #if i==320000:
+                #    break
             end = time.time()
             print("Execution time in seconds: ",(end-start))
             if shuffle:
