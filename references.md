@@ -13,6 +13,7 @@
 12. Counterfactuals to Control Latent Disentangled Text Representations for Style Transfer. ACL, 2021. 
 13. NAST: A Non-Autoregressive Generator with Word Alignment for Unsupervised Text Style Transfer. ACL findings, 2021. (https://arxiv.org/abs/2106.02210)
 14. LEWIS: Levenshtein Editing for Unsupervised Text Style Transfer. ACL findings, 2021. (https://arxiv.org/abs/2105.08206)
+15. Deep Learning for Text Style Transfer: A Survey. Computational Linguistics, 2022. (https://direct.mit.edu/coli/article/48/1/155/108845/Deep-Learning-for-Text-Style-Transfer-A-Survey)
 
 List of papers: 
 https://github.com/fuzhenxin/Style-Transfer-in-Text
