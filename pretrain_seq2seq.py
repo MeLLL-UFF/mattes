@@ -87,7 +87,7 @@ def main():
     parser.add_argument('-task', default='ye', type=str, help='a specific target task')
     parser.add_argument('-shuffle', default=False, type=bool, help='sort train data by xlen')
     parser.add_argument('-steps', default=300001, type=int, help='force stop at x steps')
-    parser.add_argument('-batch_size', default=256, type=int, help='the size in a batch')
+    parser.add_argument('-batch_size', default=192, type=int, help='the size in a batch')
     parser.add_argument('-patience', default=3, type=int, help='early stopping fine-tune')
     parser.add_argument('-eval_step', default=10000, type=int, help='evaluate every x step')
     parser.add_argument('-log_step', default=100, type=int, help='print logs every x step')
