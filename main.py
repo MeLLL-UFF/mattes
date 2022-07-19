@@ -30,7 +30,7 @@ class Config():
     embed_size = 256
     d_model = 256
     h = 4
-    num_styles = 2
+    num_styles = 3
     num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
     batch_size = 32
@@ -43,7 +43,7 @@ class Config():
     log_steps = 5
     eval_steps = 200
     learned_pos_embed = True
-    dropout = 0
+    dropout = 0.1
     drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 5000)]
     temperature_config = [(1, 0), (1 ,575), (0.8, 2300)]
 
@@ -55,14 +55,14 @@ class Config():
     inp_unk_drop_fac = 0
     inp_rand_drop_fac = 0
     inp_drop_prob = 1
-    decode = False
+    decode = True
     #max_len = 10000
     lambda_span = 10000
     word_mass = 0.5
     word_mask = 0.8
     word_keep = 0.1
     word_rand = 0.1
-    albert_kd = True
+    albert_kd = False
     kd_alpha = 0.5
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'

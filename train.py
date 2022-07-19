@@ -249,11 +249,13 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
 
     # style consistency loss
 
-    adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
     if config.discriminator_method == 'Multi':
         adv_labels = rev_styles + 1
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths)
     else:
         adv_labels = torch.ones_like(rev_styles)
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
+        
     adv_loss = loss_fn(adv_log_porbs, adv_labels)
     adv_loss = adv_loss.sum() / batch_size
     adv_loss *= config.adv_factor

@@ -223,9 +223,9 @@ class DataUtil2(object):
       if is_train and not src_tokens or not trg_tokens:
         skip_line_count += 1
         continue
-      if is_train and not self.hparams.decode and self.hparams.max_len and (len(src_tokens) > self.hparams.max_len or len(trg_tokens) > self.hparams.max_len):
-        skip_line_count += 1
-        continue
+      #if is_train and not self.hparams.decode and self.hparams.max_len and (len(src_tokens) > self.hparams.max_len or len(trg_tokens) > self.hparams.max_len):
+      #  skip_line_count += 1
+      #  continue
 
       src_lens.append(len(src_tokens))
       src_indices, trg_indices = [self.hparams.bos_id], []
