@@ -8,6 +8,7 @@ from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import LSTM_LM
 import os
 import torch
+import numpy as np
 
 class Evaluator(object):
 
@@ -16,8 +17,8 @@ class Evaluator(object):
 
         #yelp_acc_path = 'acc_yelp.bin'
         #yelp_ppl_path = 'ppl_yelp.binary'
-        yelp_ref0_path = 'cleaned_dev_1.txt'
-        yelp_ref1_path = 'cleaned_dev_0.txt'
+        yelp_ref0_path = 'cleaned_test_1.txt'
+        yelp_ref1_path = 'cleaned_test_0.txt'
         classifier_dir = "pretrained_classifer/shakespeare2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
@@ -43,8 +44,7 @@ class Evaluator(object):
             self.yelp_ref.append(fin.readlines())
         with open(yelp_ref1_file.name, 'r') as fin:
             self.yelp_ref.append(fin.readlines())
-        #self.classifier_yelp = fasttext.load_model(yelp_acc_file.name)
-        #self.yelp_ppl_model = kenlm.Model(yelp_ppl_file.name)
+        self.path_to_similarity_script = "/home/scalercio/nlp/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
         
     def yelp_style_check(self, text_transfered, style_origin):
         text_transfered = ' '.join(word_tokenize(text_transfered.lower().strip()))
@@ -109,6 +109,29 @@ class Evaluator(object):
             #    ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
+
+    def ref_similarity_0(self, path_texts_neg2pos, model_name):
+        #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
+        command = "python " + self.path_to_similarity_script +\
+                  " --generated_path " + path_texts_neg2pos   +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_test_1.txt " +\
+                  "--output_path ~/nlp/mattes/save/" + model_name + "/0to1_sim.txt " +\
+                  "--store_scores"
+        print(command)
+        os.system(command)
+        sim_file = np.loadtxt(path_texts_neg2pos + ".pp_scores")
+        return sim_file.mean()
+
+    def ref_similarity_1(self, path_texts_pos2neg, model_name):
+        command = "python " + self.path_to_similarity_script +\
+                  " --generated_path " + path_texts_pos2neg  +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_test_0.txt " +\
+                  "--output_path ~/nlp/mattes/save/" + model_name + "/1to0_sim.txt " +\
+                  "--store_scores"
+        print(command)
+        os.system(command)
+        sim_file = np.loadtxt(path_texts_pos2neg + ".pp_scores")
+        return sim_file.mean()
 
     def yelp_ref_bleu(self, texts_neg2pos, texts_pos2neg):
         assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
