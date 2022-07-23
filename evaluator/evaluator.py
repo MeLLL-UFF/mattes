@@ -9,6 +9,9 @@ from lm_lstm import LSTM_LM
 import os
 import torch
 import numpy as np
+import sys
+sys.path.insert(2,'/home/scalercio/nlp/BARTScore')
+from bart_score import BARTScorer
 
 class Evaluator(object):
 
@@ -45,30 +48,8 @@ class Evaluator(object):
         with open(yelp_ref1_file.name, 'r') as fin:
             self.yelp_ref.append(fin.readlines())
         self.path_to_similarity_script = "/home/scalercio/nlp/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
-        
-    def yelp_style_check(self, text_transfered, style_origin):
-        text_transfered = ' '.join(word_tokenize(text_transfered.lower().strip()))
-        if text_transfered == '':
-            return False
-        label = self.classifier_yelp.predict([text_transfered])
-        style_transfered = label[0][0] == '__label__positive'
-        return (style_transfered != style_origin)
-
-    def yelp_acc_b(self, texts, styles_origin):
-        assert len(texts) == len(styles_origin), 'Size of inputs does not match!'
-        count = 0
-        for text, style in zip(texts, styles_origin):
-            if self.yelp_style_check(text, style):
-                count += 1
-        return count / len(texts)
-
-    def yelp_acc_0(self, texts):
-        styles_origin = [0] * len(texts)
-        return self.yelp_acc_b(texts, styles_origin)
-
-    def yelp_acc_1(self, texts):
-        styles_origin = [1] * len(texts)
-        return self.yelp_acc_b(texts, styles_origin)
+        self.bart_scorer = BARTScorer(device=torch.device('cuda' if True and torch.cuda.is_available() else 'cpu'), checkpoint='facebook/bart-large-cnn')
+        self.bart_scorer.load(path='bart.pth')
 
     def nltk_bleu(self, texts_origin, text_transfered):
         texts_origin = [self.tokenizer.tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
@@ -87,7 +68,10 @@ class Evaluator(object):
     def yelp_ref_bleu_0(self, texts_neg2pos):
         #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = len(texts_neg2pos)-1
+        if texts_neg2pos[-1] == '':
+            n = len(texts_neg2pos)-1
+        else:
+            n = len(texts_neg2pos)
         print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
             #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
@@ -99,7 +83,10 @@ class Evaluator(object):
     def yelp_ref_bleu_1(self, texts_pos2neg):
         #assert len(texts_pos2neg) == 500, 'Size of input differs from human reference file(500)!'
         sum = 0
-        n = len(texts_pos2neg)-1
+        if texts_pos2neg[-1] == '':
+            n = len(texts_pos2neg)-1
+        else:
+            n = len(texts_pos2neg)
         print(n)
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
             #print(x,y)
@@ -133,6 +120,34 @@ class Evaluator(object):
         sim_file = np.loadtxt(path_texts_pos2neg + ".pp_scores")
         return sim_file.mean()
 
+    def ref_bartscore_0(self, texts_neg2pos):
+        if texts_neg2pos[-1] == '':
+            texts_neg2pos = texts_neg2pos[:-1]
+        print(len(texts_neg2pos))
+        assert len(texts_neg2pos) == (len(self.yelp_ref[0]))
+        self.yelp_ref[0] = [text.lower().strip() for text in self.yelp_ref[0]]
+        print(self.yelp_ref[0][-1:])
+        print(texts_neg2pos[-1:])
+        bart_score = self.bart_scorer.score(texts_neg2pos, self.yelp_ref[0])
+        bart_score  = sum(bart_score) / len(bart_score)
+        print(bart_score)
+
+        return bart_score
+
+    def ref_bartscore_1(self, texts_pos2neg):
+        if texts_pos2neg[-1] == '':
+            texts_pos2neg = texts_pos2neg[:-1]
+        print(len(texts_pos2neg))
+        assert len(texts_pos2neg) == (len(self.yelp_ref[1]))
+        self.yelp_ref[1] = [text.lower().strip() for text in self.yelp_ref[1]]
+        print(self.yelp_ref[1][-1:])
+        print(texts_pos2neg[-1:])
+        bart_score = self.bart_scorer.score(texts_pos2neg, self.yelp_ref[1])
+        bart_score  = sum(bart_score) / len(bart_score)
+        print(bart_score)
+
+        return bart_score
+
     def yelp_ref_bleu(self, texts_neg2pos, texts_pos2neg):
         assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         assert len(texts_pos2neg) == 500, 'Size of input differs from human reference file(500)!'
@@ -141,18 +156,3 @@ class Evaluator(object):
         for x, y in zip(self.yelp_ref[0] + self.yelp_ref[1], texts_neg2pos + texts_pos2neg):
             sum += self.nltk_bleu([x], y)
         return sum / n
-
-    
-    def yelp_ppl(self, texts_transfered):
-        texts_transfered = [' '.join(word_tokenize(itm.lower().strip())) for itm in texts_transfered]
-        sum = 0
-        words = []
-        length = 0
-        for i, line in enumerate(texts_transfered):
-            words += [word for word in line.split()]
-            length += len(line.split())
-            score = self.yelp_ppl_model.score(line)
-            sum += score
-        return math.pow(10, -sum / length)
-
-    

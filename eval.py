@@ -15,8 +15,8 @@ class Config():
     train_src_file0 = 'data/shakespeare/cleaned_train_0.txt'
     train_src_file1 = 'data/shakespeare/cleaned_train_1.txt'
     train_trg_file = 'data/shakespeare/train.attr'
-    dev_src_file0 = 'data/shakespeare/cleaned_dev_0.txt'
-    dev_src_file1 = 'data/shakespeare/cleaned_dev_1.txt'
+    dev_src_file0 = 'data/shakespeare/cleaned_test_0.txt'
+    dev_src_file1 = 'data/shakespeare/cleaned_test_1.txt'
     dev_trg_file = 'data/shakespeare/dev.attr'
     dev_trg_file0 = 'data/shakespeare/test_0.attr'
     dev_trg_file1 = 'data/shakespeare/test_1.attr'
@@ -71,12 +71,12 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = False
-    ckpt = '2200_F.pth'
-    model_name = 'best_modelllllll'
+    translate = True
+    ckpt = '2000_F.pth'
+    model_name = 'baseline_ST_shake'
     beam_size = 1
-    valid_file_0 = 'save/best_model_b3/best_model_b3_0'#False #'baseline_outputs/yelp/style_transformer/cleaned_output0to1_multi'    
-    valid_file_1 = 'save/best_model_b3/best_model_b3_1'#False #'baseline_outputs/yelp/style_transformer/cleaned_output1to0_multi' 
+    valid_file_0 = False#'save/best_model_b3/best_model_b3_0'#'baseline_outputs/shakespeare/strap/cleaned_0to1'    
+    valid_file_1 = False#'save/best_model_b3/best_model_b3_1'#'baseline_outputs/shakespeare/strap/cleaned_1to0' 
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -184,12 +184,15 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
     _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
     sim_mod = evaluator.ref_similarity_0(valid_file_0, str(model_name))
     sim_cla = evaluator.ref_similarity_1(valid_file_1, str(model_name))
+    bartscore_mod = evaluator.ref_bartscore_0(rev_output[0])
+    bartscore_cla = evaluator.ref_bartscore_1(rev_output[1])
 
     print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
           'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
           'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
           'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, ppl_cla, ppl_mod,
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
     ))
 
     # save output
@@ -199,8 +202,9 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         print(('{:18s}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
                'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, ppl_cla, ppl_mod
+            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
         ), file=fl)
 
     if config.translate == True:
@@ -208,8 +212,10 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         with open(save_file, 'w') as fw:
             print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                 'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+                'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+                'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                 'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-                acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+                acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
             ), file=fw)
 
             for idx in range(len(rev_output[0])):
@@ -300,6 +306,10 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
     _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
     _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(model_name))
+    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(model_name))
+    bartscore_mod = evaluator.ref_bartscore_0(rev_output[0])
+    bartscore_cla = evaluator.ref_bartscore_1(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[0]))
@@ -322,8 +332,10 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
 
     print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
           'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
           'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-              acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
     ))
 
     # save output
@@ -331,8 +343,10 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
     with open(eval_log_file, 'a') as fl:
         print(('iter{:18s}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
+            model_name, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
         ), file=fl)
 
 def main():
