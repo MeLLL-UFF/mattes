@@ -88,6 +88,7 @@ def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
 
     inp_tokens, inp_lengths, raw_styles, _ , _ = batch_preprocess(batch, pad_idx, eos_idx)
     rev_styles = 1 - raw_styles
+    rev_styles = torch.ones_like(rev_styles)*2
     batch_size = inp_tokens.size(0)
 
     with torch.no_grad():
@@ -175,6 +176,7 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
 
     inp_tokens, inp_lengths, raw_styles, topk_logit, topk_index = batch_preprocess(batch, pad_idx, eos_idx)
     rev_styles = 1 - raw_styles
+    para_styles = torch.ones_like(rev_styles)*2
     batch_size = inp_tokens.size(0)
     token_mask = (inp_tokens != pad_idx).float()
 
@@ -216,7 +218,7 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
         inp_tokens,
         None,
         inp_lengths,
-        rev_styles,
+        para_styles,
         generate=True,
         differentiable_decode=True,
         temperature=temperature,
@@ -551,14 +553,15 @@ def train(config, data, model_F, model_D):
     batches_gen_len = []
     
     #writer = SummaryWriter(config.log_dir)
-    if config.load_ckpt:
+    if config.load_ckpt and config.d_ckpt:
         global_step = int(config.d_ckpt.split("/")[-1].split("_")[0])
     else:
         global_step = 0
     model_F.train()
     model_D.train()
 
-    config.save_folder = config.save_path + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
+    config.model_name = str(time.strftime('%b%d%H%M%S', time.localtime()))
+    config.save_folder = config.save_path + '/' + config.model_name
     os.makedirs(config.save_folder)
     os.makedirs(config.save_folder + '/ckpts')
     print('Save Path:', config.save_folder)
@@ -663,7 +666,11 @@ def train(config, data, model_F, model_D):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            auto_eval(config, data, model_F, model_D, global_step, temperature)
+            if config.load_ckpt and not config.d_ckpt:
+                auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature)
+            else:
+                auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature)
+
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
 
@@ -814,6 +821,176 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
             acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+        ), file=fw)
+
+        for idx in range(len(rev_output0)):
+            print('*' * 20, 'classic sample', '*' * 20, file=fw)
+            print('[gold]', gold_text0[idx], file=fw)
+            print('[raw ]', raw_output0[idx], file=fw)
+            print('[rev ]', rev_output0[idx], file=fw)
+            print('[ref ]', ref_text[0][idx], file=fw)
+
+        print('*' * 20, '********', '*' * 20, file=fw)
+
+        for idx in range(len(rev_output1)):
+            print('*' * 20, 'modern sample', '*' * 20, file=fw)
+            print('[gold]', gold_text1[idx], file=fw)
+            print('[raw ]', raw_output1[idx], file=fw)
+            print('[rev ]', rev_output1[idx], file=fw)
+            print('[ref ]', ref_text[1][idx], file=fw)
+
+        print('*' * 20, '********', '*' * 20, file=fw)
+
+    model_F.train()
+
+def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature):
+    model_F.eval()
+    vocab_size = len(data.tokenizer)
+    eos_idx = config.eos_id
+
+    def inference(data, raw_style):
+        gold_text = []
+        raw_output = []
+        rev_output = []
+        while True:
+            if raw_style == 0:
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
+            else:
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
+
+            inp_lengths = get_lengths(inp_tokens, eos_idx)
+            raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
+            rev_styles = 1 - raw_styles
+            para_styles = torch.ones_like(rev_styles) * 2
+        
+            with torch.no_grad():
+                raw_log_probs = model_F(
+                    inp_tokens,
+                    None,
+                    inp_lengths,
+                    raw_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+            
+            with torch.no_grad():
+                gen_log_probs = model_F(
+                    inp_tokens, 
+                    None,
+                    inp_lengths,
+                    para_styles,
+                    generate=True,
+                    differentiable_decode=True,
+                    temperature=temperature,
+                )
+                
+                gen_soft_tokens = gen_log_probs.exp()
+                gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+                rev_log_probs = model_F(
+                    gen_soft_tokens,
+                    inp_tokens,
+                    gen_lengths,
+                    rev_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+
+
+                
+            gold_text += tensor2text(data, inp_tokens.cpu())
+            raw_output += tensor2text(data, raw_log_probs.argmax(-1).cpu())
+            rev_output += tensor2text(data, rev_log_probs.argmax(-1).cpu())
+            if eop: break
+
+        return gold_text, raw_output, rev_output
+    
+    gold_text0, raw_output0, rev_output0 = inference(data, 0)
+    gold_text1, raw_output1, rev_output1 = inference(data, 1)
+
+    valid_file_0 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_0')
+    valid_file_1 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_1')
+    out_file_0 = open(valid_file_0, 'w', encoding='utf-8')
+    out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
+    for i in range(len(rev_output0)):
+        line_0 = rev_output0[i].strip()
+        out_file_0.write(line_0 + '\n')
+        out_file_0.flush()
+
+    for i in range(len(rev_output1)):
+        line_1 = rev_output1[i].strip()
+        out_file_1.write(line_1 + '\n')
+        out_file_1.flush()
+
+    out_file_0.close()
+    out_file_1.close()
+
+
+    evaluator = Evaluator()
+    ref_text = evaluator.yelp_ref
+
+    
+    #acc_neg = evaluator.yelp_acc_0(rev_output[0])
+    acc_mod, _ = test(evaluator.classifier, data, 128, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_cla, _ = test(evaluator.classifier, data, 128, valid_file_1, config.dev_trg_file1, negate = True)
+    #acc_pos = evaluator.yelp_acc_1(rev_output[1])
+    bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
+    bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
+    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = evaluator.ref_bartscore_1(rev_output1)
+
+    for k in range(5):
+        idx = np.random.randint(len(rev_output0))
+        print('*' * 20, 'classic sample', '*' * 20)
+        print('[gold]', gold_text0[idx])
+        print('[raw ]', raw_output0[idx])
+        print('[rev ]', rev_output0[idx])
+        print('[ref ]', ref_text[0][idx])
+
+    print('*' * 20, '********', '*' * 20)
+    
+
+    for k in range(5):
+        idx = np.random.randint(len(rev_output1))
+        print('*' * 20, 'modern sample', '*' * 20)
+        print('[gold]', gold_text1[idx])
+        print('[raw ]', raw_output1[idx])
+        print('[rev ]', rev_output1[idx])
+        print('[ref ]', ref_text[1][idx])
+
+    print('*' * 20, '********', '*' * 20)
+
+    print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+          'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+          'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
+    ))
+    # save output
+    save_file = config.save_folder + '/' + str(global_step) + '.txt'
+    eval_log_file = config.save_folder + '/eval_log.txt'
+    with open(eval_log_file, 'a') as fl:
+        print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
+        ), file=fl)
+    with open(save_file, 'w') as fw:
+        print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
         ), file=fw)
 
         for idx in range(len(rev_output0)):
