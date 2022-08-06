@@ -6,7 +6,7 @@ from torch import nn, optim
 #from tensorboardX import SummaryWriter
 from torch.nn.utils import clip_grad_norm_
 
-from evaluator import Evaluator
+from evaluator import Evaluator, EvaluatorYelp
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop, kd_loss
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import lm_ppl
@@ -743,7 +743,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     out_file_1.close()
 
 
-    evaluator = Evaluator()
+    if "shakespeare" in config.data_path:
+        evaluator = Evaluator()
+    else:
+        evaluator = EvaluatorYelp()
     ref_text = evaluator.yelp_ref
 
     
@@ -928,7 +931,10 @@ def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperatur
     out_file_1.close()
 
 
-    evaluator = Evaluator()
+    if "shakespeare" in config.data_path:
+        evaluator = Evaluator()
+    else:
+        evaluator = EvaluatorYelp()
     ref_text = evaluator.yelp_ref
 
     

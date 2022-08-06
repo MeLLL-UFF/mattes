@@ -170,8 +170,8 @@ class EvaluatorYelp(object):
 
         #yelp_acc_path = 'acc_yelp.bin'
         #yelp_ppl_path = 'ppl_yelp.binary'
-        yelp_ref0_path = 'cleaned_yelp.refs.0'
-        yelp_ref1_path = 'cleaned_yelp.refs.1'
+        yelp_ref0_path = 'cleaned_dev0_yelp.txt'
+        yelp_ref1_path = 'cleaned_dev1_yelp.txt'
         classifier_dir = "pretrained_classifer/yelp2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
@@ -251,7 +251,7 @@ class EvaluatorYelp(object):
         #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         command = "python " + self.path_to_similarity_script +\
                   " --generated_path " + path_texts_neg2pos   +\
-                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_yelp.refs.0" +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_dev0_yelp.txt " +\
                   "--output_path ~/nlp/mattes/save/" + model_name + "/0to1_sim.txt " +\
                   "--store_scores"
         print(command)
@@ -265,7 +265,7 @@ class EvaluatorYelp(object):
     def ref_similarity_1(self, path_texts_pos2neg, model_name):
         command = "python " + self.path_to_similarity_script +\
                   " --generated_path " + path_texts_pos2neg  +\
-                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_yelp.refs.1" +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_dev1_yelp.txt " +\
                   "--output_path ~/nlp/mattes/save/" + model_name + "/1to0_sim.txt " +\
                   "--store_scores"
         print(command)
