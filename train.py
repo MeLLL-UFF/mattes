@@ -758,6 +758,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
     _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
     _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = evaluator.ref_bartscore_1(rev_output1)
 
     for k in range(5):
         idx = np.random.randint(len(rev_output0))
@@ -782,8 +786,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
 
     print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
           'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
           'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-              acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
     ))
     '''
     his_f_slf_loss = []
@@ -816,14 +822,18 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     with open(eval_log_file, 'a') as fl:
         print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
         ), file=fl)
     with open(save_file, 'w') as fw:
         print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+            acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
         ), file=fw)
 
         for idx in range(len(rev_output0)):
