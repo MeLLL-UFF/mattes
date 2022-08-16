@@ -2,7 +2,7 @@ import torch
 import time
 from data_utils_yelp import DataUtil
 from models import StyleTransformer
-#from train import train, auto_eval
+from train import get_lengths
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import LSTM_LM, lm_ppl
 import os
@@ -27,15 +27,15 @@ class Config():
     save_path = './save'
     pretrained_embed_path = './embedding/'
     device = torch.device('cuda' if True and torch.cuda.is_available() else 'cpu')
-    discriminator_method = 'Cond' # 'Multi' or 'Cond'
+    discriminator_method = 'Multi' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
     max_length = 64
     embed_size = 256
     d_model = 256
     h = 4
-    num_styles = 2
-    num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
+    num_styles = 3
+    num_classes = 3#num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
     batch_size = 32
     lr_F = 0.0001
@@ -72,11 +72,12 @@ class Config():
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
     translate = True
-    ckpt = '2000_F.pth'
-    model_name = 'baseline_ST_shake'
-    beam_size = 1
+    ckpt = 'save/Aug16022220/ckpts/2955_F.pth'
+    model_name = 'besthm0_2955_testset-b3'
+    beam_size = 3
     valid_file_0 = False#'save/best_model_b3/best_model_b3_0'#'baseline_outputs/shakespeare/strap/cleaned_0to1'    
-    valid_file_1 = False#'save/best_model_b3/best_model_b3_1'#'baseline_outputs/shakespeare/strap/cleaned_1to0' 
+    valid_file_1 = False#'save/best_model_b3/best_model_b3_1'#'baseline_outputs/shakespeare/strap/cleaned_1to0'
+    paraphrase = True
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -135,9 +136,70 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
 
         return gold_text, raw_output, rev_output
 
+    def inference_paraphrase(data, raw_style):
+        gold_text = []
+        raw_output = []
+        rev_output = []
+        while True:
+            if raw_style == 0:
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
+            else:
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
+
+            inp_lengths = get_lengths(inp_tokens, eos_idx)
+            raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
+            rev_styles = 1 - raw_styles
+            para_styles = torch.ones_like(rev_styles) * 2
+        
+            with torch.no_grad():
+                raw_log_probs = model_F(
+                    inp_tokens,
+                    None,
+                    inp_lengths,
+                    raw_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+            
+            with torch.no_grad():
+                gen_log_probs = model_F(
+                    inp_tokens, 
+                    None,
+                    inp_lengths,
+                    para_styles,
+                    generate=True,
+                    differentiable_decode=True,
+                    temperature=temperature,
+                )
+
+                gen_soft_tokens = gen_log_probs.exp()
+                gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+                rev_log_probs = model_F(
+                    gen_soft_tokens,
+                    inp_tokens,
+                    gen_lengths,
+                    rev_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+                
+            gold_text += tensor2text(data, inp_tokens.cpu())
+            raw_output += tensor2text(data, raw_log_probs.argmax(-1).cpu())
+            rev_output += tensor2text(data, rev_log_probs.argmax(-1).cpu())
+            if eop: break
+
+        return gold_text, raw_output, rev_output
+
     if config.translate == True:
-        gold_text0, raw_output0, rev_output0 = inference(data, 0)
-        gold_text1, raw_output1, rev_output1 = inference(data, 1)
+        if config.paraphrase == True:
+            gold_text0, raw_output0, rev_output0 = inference_paraphrase(data, 0)
+            gold_text1, raw_output1, rev_output1 = inference_paraphrase(data, 1)
+        else:
+            gold_text0, raw_output0, rev_output0 = inference(data, 0)
+            gold_text1, raw_output1, rev_output1 = inference(data, 1)
         gold_text = (gold_text0, gold_text1)
         raw_output = (raw_output0,raw_output1)
         rev_output = (rev_output0, rev_output1)
@@ -263,8 +325,24 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
             for i in range(batch_size):
                 x = inp_tokens[i,:].unsqueeze(0)
                 inp_length = inp_lengths[i].unsqueeze(0)
-                rev_style = rev_styles[i].unsqueeze(0)      
-                hyp = model_F.translate_sent(x, inp_length, rev_style, temperature, max_len=config.max_length, beam_size=config.beam_size, poly_norm_m=1)[0]
+                rev_style = rev_styles[i].unsqueeze(0)     
+                if config.paraphrase:
+                    para_style = torch.ones_like(rev_style)*2
+                    gen_log_probs = model_F(
+                        x,
+                        None,
+                        inp_length,
+                        para_style,
+                        generate=True,
+                        differentiable_decode=True,
+                        temperature=1,
+                    )
+                    gen_soft_tokens = gen_log_probs.exp()
+                    gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), config.eos_id)
+                    hyp = model_F.translate_sent(gen_soft_tokens, gen_lengths, rev_style, temperature, max_len=config.max_length, beam_size=config.beam_size, poly_norm_m=1)[0]
+
+                else:
+                    hyp = model_F.translate_sent(x, inp_length, rev_style, temperature, max_len=config.max_length, beam_size=config.beam_size, poly_norm_m=1)[0]
                 hyps.append(hyp.y)
                 
             gold_text += tensor2text(data, inp_tokens.cpu())
