@@ -53,7 +53,7 @@ class Evaluator(object):
 
     def nltk_bleu(self, texts_origin, text_transfered):
         texts_origin = [self.tokenizer.tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
-        text_transfered = self.tokenizer.tokenize(text_transfered.lower().strip().replace("<unk>","_"))
+        text_transfered = self.tokenizer.tokenize(text_transfered.lower().strip())
         #print(texts_origin, text_transfered)
         return sentence_bleu(texts_origin, text_transfered) * 100
 
@@ -74,9 +74,9 @@ class Evaluator(object):
             n = len(texts_neg2pos)
         print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
-            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
+            with open('/home/scalercio/nlp/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+                print(('{:.4f}').format(self.nltk_bleu([x], y)
+                ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
@@ -91,9 +91,9 @@ class Evaluator(object):
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
             #print(x,y)
             #print(self.nltk_bleu([x], y))
-            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
+            with open('/home/scalercio/nlp/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+                print(('{:.4f}').format(self.nltk_bleu([x], y)
+                ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
@@ -135,6 +135,10 @@ class Evaluator(object):
         #print(self.yelp_ref[0][-1:])
         #print(texts_neg2pos[-1:])
         bart_score = self.bart_scorer.score(texts_neg2pos, self.yelp_ref[0])
+        with open('/home/scalercio/nlp/mattes/metricas/ablat_shake_no_para_and_kd_2000_bscore.txt', 'a+') as fl:
+            for i in range(len(bart_score)):
+                print(('{:.10f}').format(bart_score[i]
+                ), file=fl)
         bart_score  = sum(bart_score) / len(bart_score)
         print(bart_score)
 
@@ -149,6 +153,10 @@ class Evaluator(object):
         #print(self.yelp_ref[1][-1:])
         #print(texts_pos2neg[-1:])
         bart_score = self.bart_scorer.score(texts_pos2neg, self.yelp_ref[1])
+        with open('/home/scalercio/nlp/mattes/metricas/ablat_shake_no_para_and_kd_2000_bscore.txt', 'a+') as fl:
+            for i in range(len(bart_score)):
+                print(('{:.10f}').format(bart_score[i]
+                ), file=fl)
         bart_score  = sum(bart_score) / len(bart_score)
         print(bart_score)
 
@@ -170,8 +178,8 @@ class EvaluatorYelp(object):
 
         #yelp_acc_path = 'acc_yelp.bin'
         #yelp_ppl_path = 'ppl_yelp.binary'
-        yelp_ref0_path = 'cleaned_dev0_yelp.txt'
-        yelp_ref1_path = 'cleaned_dev1_yelp.txt'
+        yelp_ref0_path = 'cleaned_yelp.refs.0'
+        yelp_ref1_path = 'cleaned_yelp.refs.1'
         classifier_dir = "pretrained_classifer/yelp2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
@@ -224,9 +232,9 @@ class EvaluatorYelp(object):
             n = len(texts_neg2pos)
         print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
-            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
+            with open('/home/scalercio/nlp/mattes/metricas/ablat_yelp_references_bleu.txt', 'a+') as fl:
+                print(('{:.10f}').format(self.nltk_bleu([x], y)
+                ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
@@ -241,9 +249,9 @@ class EvaluatorYelp(object):
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
             #print(x,y)
             #print(self.nltk_bleu([x], y))
-            #with open('/home/ascalercio/nlp/language-transfer-style-portuguese/deep_yelp_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
+            with open('/home/scalercio/nlp/mattes/metricas/ablat_yelp_references_bleu.txt', 'a+') as fl:
+                print(('{:.10f}').format(self.nltk_bleu([x], y)
+                ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
@@ -251,7 +259,7 @@ class EvaluatorYelp(object):
         #assert len(texts_neg2pos) == 500, 'Size of input differs from human reference file(500)!'
         command = "python " + self.path_to_similarity_script +\
                   " --generated_path " + path_texts_neg2pos   +\
-                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_dev0_yelp.txt " +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_yelp.refs.0 " +\
                   "--output_path ~/nlp/mattes/save/" + model_name + "/0to1_sim.txt " +\
                   "--store_scores"
         print(command)
@@ -265,7 +273,7 @@ class EvaluatorYelp(object):
     def ref_similarity_1(self, path_texts_pos2neg, model_name):
         command = "python " + self.path_to_similarity_script +\
                   " --generated_path " + path_texts_pos2neg  +\
-                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_dev1_yelp.txt " +\
+                  " --reference_strs reference --reference_paths ~/nlp/mattes/evaluator/cleaned_yelp.refs.1 " +\
                   "--output_path ~/nlp/mattes/save/" + model_name + "/1to0_sim.txt " +\
                   "--store_scores"
         print(command)
@@ -285,6 +293,10 @@ class EvaluatorYelp(object):
         #print(self.yelp_ref[0][-1:])
         #print(texts_neg2pos[-1:])
         bart_score = self.bart_scorer.score(texts_neg2pos, self.yelp_ref[0])
+        with open('/home/scalercio/nlp/mattes/metricas/ablat_yelp_references_bscore.txt', 'a+') as fl:
+            for i in range(len(bart_score)):
+                print(('{:.10f}').format(bart_score[i]
+                ), file=fl)
         bart_score  = sum(bart_score) / len(bart_score)
         print(bart_score)
 
@@ -299,6 +311,10 @@ class EvaluatorYelp(object):
         #print(self.yelp_ref[1][-1:])
         #print(texts_pos2neg[-1:])
         bart_score = self.bart_scorer.score(texts_pos2neg, self.yelp_ref[1])
+        with open('/home/scalercio/nlp/mattes/metricas/ablat_yelp_references_bscore.txt', 'a+') as fl:
+            for i in range(len(bart_score)):
+                print(('{:.10f}').format(bart_score[i]
+                ), file=fl)
         bart_score  = sum(bart_score) / len(bart_score)
         print(bart_score)
 
