@@ -10,7 +10,7 @@ import os
 import torch
 import numpy as np
 import sys
-sys.path.insert(2,'/home/scalercio/nlp/BARTScore')
+sys.path.insert(2,'/home/arthur/learning/ml_and_dataScience/nlp/repo/BARTScore')
 from bart_score import BARTScorer
 
 class Evaluator(object):
@@ -25,15 +25,15 @@ class Evaluator(object):
         classifier_dir = "pretrained_classifer/shakespeare2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
-        self.classifier = torch.load(classifier_file_name)
+        self.classifier = torch.load(classifier_file_name, map_location=torch.device('cpu'))
 
         lm0_dir = "pretrained_lm/shakespeare_style0"
         lm1_dir = "pretrained_lm/shakespeare_style1"
         lm0_file_name = os.path.join(lm0_dir, "model.pt")
         lm1_file_name = os.path.join(lm1_dir, "model.pt")
         print("Loading language models from '{0}' and {1}".format(lm0_file_name,lm1_file_name))
-        self.lm0 = torch.load(lm0_file_name)
-        self.lm1 = torch.load(lm1_file_name)
+        self.lm0 = torch.load(lm0_file_name, map_location=torch.device('cpu'))
+        self.lm1 = torch.load(lm1_file_name, map_location=torch.device('cpu'))
         self.tokenizer = AlbertTokenizer.from_pretrained('albert-large-v2')
         
         #yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
@@ -183,15 +183,15 @@ class EvaluatorYelp(object):
         classifier_dir = "pretrained_classifer/yelp2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
-        self.classifier = torch.load(classifier_file_name)
+        self.classifier = torch.load(classifier_file_name, map_location=torch.device('cpu'))
 
         lm0_dir = "pretrained_lm/yelp_style0"
         lm1_dir = "pretrained_lm/yelp_style1"
         lm0_file_name = os.path.join(lm0_dir, "model.pt")
         lm1_file_name = os.path.join(lm1_dir, "model.pt")
         print("Loading language models from '{0}' and {1}".format(lm0_file_name,lm1_file_name))
-        self.lm0 = torch.load(lm0_file_name)
-        self.lm1 = torch.load(lm1_file_name)
+        self.lm0 = torch.load(lm0_file_name, map_location=torch.device('cpu'))
+        self.lm1 = torch.load(lm1_file_name, map_location=torch.device('cpu'))
         self.tokenizer = AlbertTokenizer.from_pretrained('albert-large-v2')
         
         #yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
@@ -205,7 +205,7 @@ class EvaluatorYelp(object):
             self.yelp_ref.append(fin.readlines())
         with open(yelp_ref1_file.name, 'r') as fin:
             self.yelp_ref.append(fin.readlines())
-        self.path_to_similarity_script = "/home/scalercio/nlp/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
+        self.path_to_similarity_script = "/home/arthur/learning/ml_and_dataScience/nlp/repo/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
         self.bart_scorer = BARTScorer(device=torch.device('cuda' if True and torch.cuda.is_available() else 'cpu'), checkpoint='facebook/bart-large-cnn')
         self.bart_scorer.load(path='bart.pth')
 
