@@ -6,7 +6,7 @@ from torch import nn, optim
 #from tensorboardX import SummaryWriter
 from torch.nn.utils import clip_grad_norm_
 
-from evaluator import Evaluator, EvaluatorYelp
+from evaluator import Evaluator, EvaluatorYelp, EvaluatorGyafc
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop, kd_loss
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import lm_ppl
@@ -745,6 +745,8 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
 
     if "shakespeare" in config.data_path:
         evaluator = Evaluator()
+    elif "gyafc" in config.data_path:
+        evaluator = EvaluatorGyafc()
     else:
         evaluator = EvaluatorYelp()
     ref_text = evaluator.yelp_ref
@@ -756,8 +758,8 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
     sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
     sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
     bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
@@ -943,6 +945,8 @@ def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperatur
 
     if "shakespeare" in config.data_path:
         evaluator = Evaluator()
+    elif "gyafc" in config.data_path:
+        evaluator = EvaluatorGyafc()
     else:
         evaluator = EvaluatorYelp()
     ref_text = evaluator.yelp_ref
@@ -954,8 +958,8 @@ def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperatur
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
     sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
     sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
     bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
