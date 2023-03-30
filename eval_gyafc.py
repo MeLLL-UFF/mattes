@@ -78,6 +78,7 @@ class Config():
     valid_file_0 = 'baseline_outputs/gyafc/generic/0to1'    
     valid_file_1 = 'baseline_outputs/gyafc/generic/1to0'
     paraphrase = True
+    direct_paraphrase = True
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -137,6 +138,49 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
 
         return gold_text, raw_output, rev_output
 
+    def inference_direct_paraphrase(data, raw_style):
+        gold_text = []
+        raw_output = []
+        rev_output = []
+        while True:
+            if raw_style == 0:
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
+            else:
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
+
+            inp_lengths = get_lengths(inp_tokens, eos_idx)
+            raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
+            para_styles = torch.ones_like(raw_styles) * 2
+        
+            with torch.no_grad():
+                raw_log_probs = model_F(
+                    inp_tokens,
+                    None,
+                    inp_lengths,
+                    raw_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+            
+            with torch.no_grad():
+                rev_log_probs = model_F(
+                    inp_tokens, 
+                    None,
+                    inp_lengths,
+                    para_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+                
+            gold_text += tensor2text(data, inp_tokens.cpu())
+            raw_output += tensor2text(data, raw_log_probs.argmax(-1).cpu())
+            rev_output += tensor2text(data, rev_log_probs.argmax(-1).cpu())
+            if eop: break
+
+        return gold_text, raw_output, rev_output
+    
     def inference_paraphrase(data, raw_style):
         gold_text = []
         raw_output = []
@@ -195,7 +239,10 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
         return gold_text, raw_output, rev_output
 
     if config.translate == True:
-        if config.paraphrase == True:
+        if config.direct_paraphrase:
+            gold_text0, raw_output0, rev_output0 = inference_direct_paraphrase(data, 0)
+            gold_text1, raw_output1, rev_output1 = inference_direct_paraphrase(data, 1)
+        elif config.paraphrase == True:
             gold_text0, raw_output0, rev_output0 = inference_paraphrase(data, 0)
             gold_text1, raw_output1, rev_output1 = inference_paraphrase(data, 1)
         else:
