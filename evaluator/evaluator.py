@@ -10,8 +10,8 @@ import os
 import torch
 import numpy as np
 import sys
-sys.path.insert(2,'/home/arthur/learning/nlp/repo/BARTScore')
-from bart_score import BARTScorer
+#sys.path.insert(2,'/home/arthur/learning/nlp/repo/BARTScore')
+#from bart_score import BARTScorer
 
 class Evaluator(object):
 
@@ -336,12 +336,12 @@ class EvaluatorGyafc(object):
 
         #yelp_acc_path = 'acc_yelp.bin'
         #yelp_ppl_path = 'ppl_yelp.binary'
-        yelp_ref0_path = 'cleaned_test_1_gyafc.txt'
-        yelp_ref1_path = 'cleaned_test_0_gyafc.txt'
+        yelp_ref0_path = 'dev_ref_0to1_gyafc.txt'
+        yelp_ref1_path = 'dev_ref_1to0_gyafc.txt'
         classifier_dir = "pretrained_classifer/gyafc2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
-        self.classifier = torch.load(classifier_file_name, map_location=torch.device('cpu'))
+        self.classifier = torch.load(classifier_file_name)
 
         #lm0_dir = "pretrained_lm/shakespeare_style0"
         #lm1_dir = "pretrained_lm/shakespeare_style1"
@@ -363,9 +363,9 @@ class EvaluatorGyafc(object):
             self.yelp_ref.append(fin.readlines())
         with open(yelp_ref1_file.name, 'r') as fin:
             self.yelp_ref.append(fin.readlines())
-        self.path_to_similarity_script = "/home/arthur/learning/nlp/repo/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
-        self.bart_scorer = BARTScorer(device=torch.device('cuda' if True and torch.cuda.is_available() else 'cpu'), checkpoint='facebook/bart-large-cnn')
-        self.bart_scorer.load(path='bart.pth')
+        #self.path_to_similarity_script = "/home/arthur/learning/nlp/repo/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
+        #self.bart_scorer = BARTScorer(device=torch.device('cuda' if True and torch.cuda.is_available() else 'cpu'), checkpoint='facebook/bart-large-cnn')
+        #self.bart_scorer.load(path='bart.pth')
 
     def nltk_bleu(self, texts_origin, text_transfered):
         texts_origin = [self.tokenizer.tokenize(text_origin.lower().strip()) for text_origin in texts_origin]
@@ -390,9 +390,9 @@ class EvaluatorGyafc(object):
             n = len(texts_neg2pos)
         print(n)
         for x, y in zip(self.yelp_ref[0], texts_neg2pos):
-            with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
-                print(('{:.4f}').format(self.nltk_bleu([x], y)
-                ), file=fl)
+            #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+            #    ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 
@@ -407,9 +407,9 @@ class EvaluatorGyafc(object):
         for x, y in zip(self.yelp_ref[1], texts_pos2neg):
             #print(x,y)
             #print(self.nltk_bleu([x], y))
-            with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
-                print(('{:.4f}').format(self.nltk_bleu([x], y)
-                ), file=fl)
+            #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+            #    ), file=fl)
             sum += self.nltk_bleu([x], y)
         return sum / n
 

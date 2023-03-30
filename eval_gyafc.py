@@ -18,8 +18,8 @@ class Config():
     dev_src_file0 = 'data/gyafc/cleaned_test_0.txt'
     dev_src_file1 = 'data/gyafc/cleaned_test_1.txt'
     dev_trg_file = 'data/gyafc/dev.attr'
-    dev_trg_file0 = 'data/gyafc/test_0.attr'
-    dev_trg_file1 = 'data/gyafc/test_1.attr'
+    dev_trg_file0 = 'data/gyafc/dev_0.attr'
+    dev_trg_file1 = 'data/gyafc/dev_1.attr'
     dev_trg_ref = 'data/gyafc/cleaned_dev_ref.txt'
     trg_vocab  = 'data/gyafc/attr.vocab'
     data_path = './data/gyafc/'
@@ -73,10 +73,10 @@ class Config():
     bert_dump1 = 'data/targets/teacher1'
     translate = False
     ckpt = 'save/Aug16022220/ckpts/2955_F.pth'
-    model_name = 'teste-gyafc'
+    model_name = 'baseline-generic-gyafc'
     beam_size = 1
-    valid_file_0 = 'save/best_model_b3/best_model_b3_0'#'baseline_outputs/shakespeare/strap/cleaned_0to1'    
-    valid_file_1 = 'save/best_model_b3/best_model_b3_1'#'baseline_outputs/shakespeare/strap/cleaned_1to0'
+    valid_file_0 = 'baseline_outputs/gyafc/generic/0to1'    
+    valid_file_1 = 'baseline_outputs/gyafc/generic/1to0'
     paraphrase = True
 
 def get_lengths(tokens, eos_idx):
@@ -243,10 +243,10 @@ def auto_eval(config, data, model_F, model_name, temperature=1):
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output[0])
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
-    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(model_name))
-    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(model_name))
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(model_name))
     bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output[0])
     bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output[1])
 

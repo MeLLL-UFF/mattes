@@ -7,7 +7,7 @@ export PYTHONUNBUFFERED=1
 
 TMP=$(pwd)/data/tmp
 DUMP=$(pwd)/data/dump
-RAW=$(pwd)/data/shakespeare
+RAW=$(pwd)/data/gyafc
 
 mkdir -p $TMP
 

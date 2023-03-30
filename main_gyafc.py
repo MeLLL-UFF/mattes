@@ -63,10 +63,10 @@ class Config():
     word_keep = 0.1
     word_rand = 0.1
     albert_kd = True
-    kd_alpha = 0.1
-    kd_temperature = 10
-    bert_dump0 = 'data/targets/teacher0_gyafc'
-    bert_dump1 = 'data/targets/teacher1_gyafc'
+    kd_alpha = 0.5
+    kd_temperature = 5
+    bert_dump0 = 'data/targets/gyafc-teacher0'
+    bert_dump1 = 'data/targets/gyafc-teacher1'
     load_ckpt = True
     d_ckpt = False#'save/Jul26173310/ckpts/1000_D.pth'
     f_ckpt = 'mattes_fur_paraphrases_0.chkpt'
