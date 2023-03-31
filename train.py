@@ -760,10 +760,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
     _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
     _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
-    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
-    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
-    bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
-    bartscore_cla = evaluator.ref_bartscore_1(rev_output1)
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output1)
 
     for k in range(5):
         idx = np.random.randint(len(rev_output0))
@@ -960,10 +960,10 @@ def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperatur
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
     _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
     _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
-    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
-    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
-    bartscore_mod = evaluator.ref_bartscore_0(rev_output0)
-    bartscore_cla = evaluator.ref_bartscore_1(rev_output1)
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output1)
 
     for k in range(5):
         idx = np.random.randint(len(rev_output0))
