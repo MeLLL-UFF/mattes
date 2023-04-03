@@ -80,6 +80,96 @@ def batch_preprocess_eval(batch, pad_idx, eos_idx, reverse=False):
     return tokens, lengths, styles     
 
 def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
+    if config.paraphrase_style_embed:
+        return d_step_para(config, data, model_F, model_D, optimizer_D, batch, temperature)
+    else:
+        return d_step_no_para(config, data, model_F, model_D, optimizer_D, batch, temperature)
+    
+def d_step_no_para(config, data, model_F, model_D, optimizer_D, batch, temperature):
+    model_F.eval()
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles, _ , _ = batch_preprocess(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    batch_size = inp_tokens.size(0)
+
+    with torch.no_grad():
+        raw_gen_log_probs = model_F(
+            inp_tokens, 
+            None,
+            inp_lengths,
+            raw_styles,
+            generate=True,
+            differentiable_decode=True,
+            temperature=temperature,
+        )
+        rev_gen_log_probs = model_F(
+            inp_tokens,
+            None,
+            inp_lengths,
+            rev_styles,
+            generate=True,
+            differentiable_decode=True,
+            temperature=temperature,
+        )
+
+    
+    raw_gen_soft_tokens = raw_gen_log_probs.exp()
+    raw_gen_lengths = get_lengths(raw_gen_soft_tokens.argmax(-1), eos_idx)
+
+    
+    rev_gen_soft_tokens = rev_gen_log_probs.exp()
+    rev_gen_lengths = get_lengths(rev_gen_soft_tokens.argmax(-1), eos_idx)
+
+        
+
+    if config.discriminator_method == 'Multi':
+        gold_log_probs = model_D(inp_tokens, inp_lengths)
+        gold_labels = raw_styles + 1
+
+        raw_gen_log_probs = model_D(raw_gen_soft_tokens, raw_gen_lengths)
+        rev_gen_log_probs = model_D(rev_gen_soft_tokens, rev_gen_lengths)
+        gen_log_probs = torch.cat((raw_gen_log_probs, rev_gen_log_probs), 0)
+        raw_gen_labels = raw_styles + 1
+        rev_gen_labels = torch.zeros_like(rev_styles)
+        gen_labels = torch.cat((raw_gen_labels, rev_gen_labels), 0)
+    else:
+        raw_gold_log_probs = model_D(inp_tokens, inp_lengths, raw_styles)
+        rev_gold_log_probs = model_D(inp_tokens, inp_lengths, rev_styles)
+        gold_log_probs = torch.cat((raw_gold_log_probs, rev_gold_log_probs), 0)
+        raw_gold_labels = torch.ones_like(raw_styles)
+        rev_gold_labels = torch.zeros_like(rev_styles)
+        gold_labels = torch.cat((raw_gold_labels, rev_gold_labels), 0)
+
+        
+        raw_gen_log_probs = model_D(raw_gen_soft_tokens, raw_gen_lengths, raw_styles)
+        rev_gen_log_probs = model_D(rev_gen_soft_tokens, rev_gen_lengths, rev_styles)
+        gen_log_probs = torch.cat((raw_gen_log_probs, rev_gen_log_probs), 0)
+        raw_gen_labels = torch.ones_like(raw_styles)
+        rev_gen_labels = torch.zeros_like(rev_styles)
+        gen_labels = torch.cat((raw_gen_labels, rev_gen_labels), 0)
+
+    
+    adv_log_probs = torch.cat((gold_log_probs, gen_log_probs), 0)
+    adv_labels = torch.cat((gold_labels, gen_labels), 0)
+    adv_loss = loss_fn(adv_log_probs, adv_labels)
+    assert len(adv_loss.size()) == 1
+    adv_loss = adv_loss.sum() / batch_size
+    loss = adv_loss
+    
+    optimizer_D.zero_grad()
+    loss.backward()
+    clip_grad_norm_(model_D.parameters(), 5)
+    optimizer_D.step()
+
+    model_F.train()
+
+    return adv_loss.item()
+
+def d_step_para(config, data, model_F, model_D, optimizer_D, batch, temperature):
     model_F.eval()
     pad_idx = config.pad_id
     eos_idx = config.eos_id
@@ -165,6 +255,122 @@ def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
     return adv_loss.item()
 
 def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
+           cyc_rec_enable=True):
+    if config.paraphrase_style_embed:
+        return f_step_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay, cyc_rec_enable)
+    else:
+        return f_step_no_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay, cyc_rec_enable)
+
+def f_step_no_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
+           cyc_rec_enable=True):
+    model_D.eval()
+    
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    unk_idx = config.unk_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles, topk_logit, topk_index = batch_preprocess(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    batch_size = inp_tokens.size(0)
+    token_mask = (inp_tokens != pad_idx).float()
+
+    optimizer_F.zero_grad()
+
+    # self reconstruction loss
+
+    noise_inp_tokens = word_drop(
+        inp_tokens,
+        inp_lengths, 
+        config.inp_drop_prob * drop_decay
+    )
+    noise_inp_lengths = get_lengths(noise_inp_tokens, eos_idx)
+
+    slf_log_probs = model_F(
+        noise_inp_tokens, 
+        inp_tokens, 
+        noise_inp_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    slf_rec_loss = loss_fn(slf_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    slf_rec_loss = slf_rec_loss.sum() / batch_size
+    slf_rec_loss *= config.slf_factor
+    
+    slf_rec_loss.backward()
+
+    # cycle consistency loss
+
+    if not cyc_rec_enable:
+        optimizer_F.step()
+        model_D.train()
+        return slf_rec_loss.item(), 0, 0, inp_lengths.float().mean().item(), 0
+    
+    gen_log_probs = model_F(
+        inp_tokens,
+        None,
+        inp_lengths,
+        rev_styles,
+        generate=True,
+        differentiable_decode=True,
+        temperature=temperature,
+    )
+
+    gen_soft_tokens = gen_log_probs.exp()
+    gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+    cyc_log_probs = model_F(
+        gen_soft_tokens,
+        inp_tokens,
+        gen_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    cyc_rec_loss = loss_fn(cyc_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    cyc_rec_loss = cyc_rec_loss.sum() / batch_size
+    token_mask = token_mask.view(-1)
+    if config.albert_kd and config.kd_alpha > 0:
+            cyc_log_probs = cyc_log_probs.view(-1,cyc_log_probs.size(2))
+            loss_kd = kd_loss(cyc_log_probs, (topk_logit, topk_index),
+                              config.kd_temperature, token_mask)
+            loss_kd /= batch_size
+            cyc_rec_loss = cyc_rec_loss * (1. - config.kd_alpha) + loss_kd * config.kd_alpha
+
+    cyc_rec_loss *= config.cyc_factor
+
+    # style consistency loss
+
+    if config.discriminator_method == 'Multi':
+        adv_labels = rev_styles + 1
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths)
+    else:
+        adv_labels = torch.ones_like(rev_styles)
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
+        
+    adv_loss = loss_fn(adv_log_porbs, adv_labels)
+    adv_loss = adv_loss.sum() / batch_size
+    adv_loss *= config.adv_factor
+        
+    (cyc_rec_loss + adv_loss).backward()
+        
+    # update parameters
+    
+    clip_grad_norm_(model_F.parameters(), 5)
+    optimizer_F.step()
+
+    model_D.train()
+
+    return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item(), inp_lengths.float().mean().item(), gen_lengths.float().mean().item()
+
+
+def f_step_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
            cyc_rec_enable=True):
     model_D.eval()
     
@@ -666,10 +872,10 @@ def train(config, data, model_F, model_D):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            if config.load_ckpt and not config.d_ckpt:
+            if config.paraphrase_style_embed:
                 auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature)
             else:
-                auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature)
+                auto_eval(config, data, model_F, model_D, global_step, temperature)
 
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
