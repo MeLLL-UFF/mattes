@@ -354,15 +354,31 @@ class EvaluatorGyafc(object):
         
         #yelp_acc_file = pkg_resources.resource_stream(resource_package, yelp_acc_path)
         #yelp_ppl_file = pkg_resources.resource_stream(resource_package, yelp_ppl_path)
-        yelp_ref0_file = pkg_resources.resource_stream(resource_package, yelp_ref0_path)
-        yelp_ref1_file = pkg_resources.resource_stream(resource_package, yelp_ref1_path)
+        if isinstance(yelp_ref0_path, str) and isinstance(yelp_ref1_path, str):
+            yelp_ref0_file = pkg_resources.resource_stream(resource_package, yelp_ref0_path)
+            yelp_ref1_file = pkg_resources.resource_stream(resource_package, yelp_ref1_path)
 
-        
-        self.yelp_ref = []
-        with open(yelp_ref0_file.name, 'r') as fin:
-            self.yelp_ref.append(fin.readlines())
-        with open(yelp_ref1_file.name, 'r') as fin:
-            self.yelp_ref.append(fin.readlines())
+
+            self.yelp_ref = []
+            with open(yelp_ref0_file.name, 'r') as fin:
+                self.yelp_ref.append(fin.readlines())
+            with open(yelp_ref1_file.name, 'r') as fin:
+                self.yelp_ref.append(fin.readlines())
+        else:
+            self.yelp_ref = [[],[]]
+            for i in range(len(yelp_ref0_path)):
+                yelp_ref0_file = pkg_resources.resource_stream(resource_package, yelp_ref0_path[i])
+                yelp_ref1_file = pkg_resources.resource_stream(resource_package, yelp_ref1_path[i])
+
+                with open(yelp_ref0_file.name, 'r') as fin:
+                    self.yelp_ref[0].append(fin.readlines())
+                with open(yelp_ref1_file.name, 'r') as fin:
+                    self.yelp_ref[1].append(fin.readlines())
+                
+            yelp_ref[0] = list(zip(*yelp_ref[0]))
+            yelp_ref[1] = list(zip(*yelp_ref[1]))
+            print('implementar múltiplos targets')
+            
         #self.path_to_similarity_script = "/home/arthur/learning/nlp/repo/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"
         #self.bart_scorer = BARTScorer(device=torch.device('cuda' if True and torch.cuda.is_available() else 'cpu'), checkpoint='facebook/bart-large-cnn')
         #self.bart_scorer.load(path='bart.pth')
@@ -389,11 +405,15 @@ class EvaluatorGyafc(object):
         else:
             n = len(texts_neg2pos)
         print(n)
-        for x, y in zip(self.yelp_ref[0], texts_neg2pos):
-            #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
-            sum += self.nltk_bleu([x], y)
+        if isinstance(self.yelp_ref[0][0], str):
+            for x, y in zip(self.yelp_ref[0], texts_neg2pos):
+                #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+                #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+                #    ), file=fl)
+                sum += self.nltk_bleu([x], y)
+        else:
+            for x, y in zip(self.yelp_ref[0], texts_neg2pos):
+                sum += self.nltk_bleu(list(x), y)
         return sum / n
 
     def yelp_ref_bleu_1(self, texts_pos2neg):
@@ -404,13 +424,17 @@ class EvaluatorGyafc(object):
         else:
             n = len(texts_pos2neg)
         print(n)
-        for x, y in zip(self.yelp_ref[1], texts_pos2neg):
-            #print(x,y)
-            #print(self.nltk_bleu([x], y))
-            #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
-            #    print(('{:.4f}').format(self.nltk_bleu([x], y)
-            #    ), file=fl)
-            sum += self.nltk_bleu([x], y)
+        if isinstance(self.yelp_ref[0][0], str):
+            for x, y in zip(self.yelp_ref[1], texts_pos2neg):
+                #print(x,y)
+                #print(self.nltk_bleu([x], y))
+                #with open('/home/arthur/learning/nlp/repo/mattes/metricas/ablat_shake_no_para_and_kd_2000_bleu.txt', 'a+') as fl:
+                #    print(('{:.4f}').format(self.nltk_bleu([x], y)
+                #    ), file=fl)
+                sum += self.nltk_bleu([x], y)
+        else:
+            for x, y in zip(self.yelp_ref[1], texts_pos2neg):
+                sum += self.nltk_bleu(list(x), y)
         return sum / n
 
     def ref_similarity_0(self, path_texts_neg2pos, model_name):
