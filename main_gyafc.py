@@ -26,14 +26,14 @@ class Config():
     discriminator_method = 'Multi' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
-    max_length = 64
+    max_length = 32
     embed_size = 256
     d_model = 256
     h = 4
     num_styles = 3
     num_classes = 3#num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
-    batch_size = 32
+    batch_size = 64
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
@@ -44,11 +44,11 @@ class Config():
     eval_steps = 100
     learned_pos_embed = True
     dropout = 0
-    drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 5000)]
-    temperature_config = [(1, 0)]#, (1 ,575), (0.8, 2300)]
+    drop_rate_config = [(0.2, 0), (0.2, 115), (0.3, 2500)]
+    temperature_config = [(1, 0)]#, (1, 575), (0.8, 2300)]
 
     slf_factor = 0.15
-    cyc_factor = 0.30
+    cyc_factor = 0.3
     adv_factor = 1
 
     inp_shuffle_len = 0
@@ -63,13 +63,14 @@ class Config():
     word_keep = 0.1
     word_rand = 0.1
     albert_kd = True
-    kd_alpha = 0.5
-    kd_temperature = 5
+    kd_alpha = 0.65
+    kd_temperature = 10
     bert_dump0 = 'data/targets/gyafc-teacher0'
     bert_dump1 = 'data/targets/gyafc-teacher1'
     load_ckpt = True
-    d_ckpt = False#'save/Jul26173310/ckpts/1000_D.pth'
-    f_ckpt = 'mattes_fur_paraphrases_0.chkpt'
+    d_ckpt = 'save/Apr01005941/ckpts/2100_D.pth'
+    f_ckpt = 'save/Apr01005941/ckpts/2100_F.pth'
+    paraphrase_style_embed  = True
 
 
 def main():

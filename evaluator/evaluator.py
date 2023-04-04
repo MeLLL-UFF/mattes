@@ -336,8 +336,8 @@ class EvaluatorGyafc(object):
 
         #yelp_acc_path = 'acc_yelp.bin'
         #yelp_ppl_path = 'ppl_yelp.binary'
-        yelp_ref0_path = 'dev_ref_0to1_gyafc.txt'
-        yelp_ref1_path = 'dev_ref_1to0_gyafc.txt'
+        yelp_ref0_path = ['test/formal.ref0', 'test/formal.ref1', 'test/formal.ref2', 'test/formal.ref3']#'dev_ref_0to1_gyafc.txt'
+        yelp_ref1_path = ['test/informal.ref0', 'test/informal.ref1', 'test/informal.ref2', 'test/informal.ref3']#'dev_ref_1to0_gyafc.txt'
         classifier_dir = "pretrained_classifer/gyafc2"
         classifier_file_name = os.path.join(classifier_dir, "model.pt")
         print("Loading model from '{0}'".format(classifier_file_name))
@@ -375,8 +375,8 @@ class EvaluatorGyafc(object):
                 with open(yelp_ref1_file.name, 'r') as fin:
                     self.yelp_ref[1].append(fin.readlines())
                 
-            yelp_ref[0] = list(zip(*yelp_ref[0]))
-            yelp_ref[1] = list(zip(*yelp_ref[1]))
+            self.yelp_ref[0] = list(zip(*self.yelp_ref[0]))
+            self.yelp_ref[1] = list(zip(*self.yelp_ref[1]))
             print('implementar múltiplos targets')
             
         #self.path_to_similarity_script = "/home/arthur/learning/nlp/repo/style-transfer-paraphrase/style_paraphrase/evaluation/scripts/get_paraphrase_similarity.py"

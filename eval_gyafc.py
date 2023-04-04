@@ -30,14 +30,14 @@ class Config():
     discriminator_method = 'Multi' # 'Multi' or 'Cond'
     load_pretrained_embed = False
     min_freq = 3
-    max_length = 64
+    max_length = 32
     embed_size = 256
     d_model = 256
     h = 4
-    num_styles = 3
-    num_classes = 3#num_styles + 1 if discriminator_method == 'Multi' else 2
+    num_styles = 2
+    num_classes = num_styles + 1 if discriminator_method == 'Multi' else 2
     num_layers = 4
-    batch_size = 32
+    batch_size = 64
     lr_F = 0.0001
     lr_D = 0.0001
     L2 = 0
@@ -71,14 +71,14 @@ class Config():
     kd_temperature = 5
     bert_dump0 = 'data/targets/teacher0'
     bert_dump1 = 'data/targets/teacher1'
-    translate = False
-    ckpt = 'save/Aug16022220/ckpts/2955_F.pth'
-    model_name = 'baseline-generic-gyafc'
+    translate = True
+    ckpt = 'save/Apr03055150/ckpts/1150_F.pth'
+    model_name = 'best-no-para-and-kd-hm1-Apr03055150-1150testset-4ref'
     beam_size = 1
-    valid_file_0 = 'baseline_outputs/gyafc/generic/0to1'    
-    valid_file_1 = 'baseline_outputs/gyafc/generic/1to0'
-    paraphrase = True
-    direct_paraphrase = True
+    valid_file_0 = False#'save/Mar31141244/ckpts/300_0'#'baseline_outputs/gyafc/styins/0to1'    
+    valid_file_1 = False#'save/Mar31141244/ckpts/300_1'#'baseline_outputs/gyafc/styins/1to0'
+    paraphrase = False
+    direct_paraphrase = False
 
 def get_lengths(tokens, eos_idx):
     lengths = torch.cumsum(tokens == eos_idx, 1)
@@ -430,12 +430,12 @@ def beam_eval(config, data, model_F, model_name, temperature=1):
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output[0])
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output[1])
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
-    sim_mod = evaluator.ref_similarity_0(valid_file_0, str(model_name))
-    sim_cla = evaluator.ref_similarity_1(valid_file_1, str(model_name))
-    bartscore_mod = evaluator.ref_bartscore_0(rev_output[0])
-    bartscore_cla = evaluator.ref_bartscore_1(rev_output[1])
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(model_name))
+    bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output[0])
+    bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output[1])
 
     for k in range(5):
         idx = np.random.randint(len(rev_output[0]))
