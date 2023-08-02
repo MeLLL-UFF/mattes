@@ -6,7 +6,7 @@ from torch import nn, optim
 #from tensorboardX import SummaryWriter
 from torch.nn.utils import clip_grad_norm_
 
-from evaluator import Evaluator
+from evaluator import Evaluator, EvaluatorYelp, EvaluatorGyafc
 from utils import tensor2text, calc_ppl, idx2onehot, add_noise, word_drop, kd_loss
 from cnn_classify import test, CNNClassify, BiLSTMClassify
 from lm_lstm import lm_ppl
@@ -80,6 +80,12 @@ def batch_preprocess_eval(batch, pad_idx, eos_idx, reverse=False):
     return tokens, lengths, styles     
 
 def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
+    if config.paraphrase_style_embed:
+        return d_step_para(config, data, model_F, model_D, optimizer_D, batch, temperature)
+    else:
+        return d_step_no_para(config, data, model_F, model_D, optimizer_D, batch, temperature)
+    
+def d_step_no_para(config, data, model_F, model_D, optimizer_D, batch, temperature):
     model_F.eval()
     pad_idx = config.pad_id
     eos_idx = config.eos_id
@@ -163,7 +169,99 @@ def d_step(config, data, model_F, model_D, optimizer_D, batch, temperature):
 
     return adv_loss.item()
 
+def d_step_para(config, data, model_F, model_D, optimizer_D, batch, temperature):
+    model_F.eval()
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles, _ , _ = batch_preprocess(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    rev_styles = torch.ones_like(rev_styles)*2
+    batch_size = inp_tokens.size(0)
+
+    with torch.no_grad():
+        raw_gen_log_probs = model_F(
+            inp_tokens, 
+            None,
+            inp_lengths,
+            raw_styles,
+            generate=True,
+            differentiable_decode=True,
+            temperature=temperature,
+        )
+        rev_gen_log_probs = model_F(
+            inp_tokens,
+            None,
+            inp_lengths,
+            rev_styles,
+            generate=True,
+            differentiable_decode=True,
+            temperature=temperature,
+        )
+
+    
+    raw_gen_soft_tokens = raw_gen_log_probs.exp()
+    raw_gen_lengths = get_lengths(raw_gen_soft_tokens.argmax(-1), eos_idx)
+
+    
+    rev_gen_soft_tokens = rev_gen_log_probs.exp()
+    rev_gen_lengths = get_lengths(rev_gen_soft_tokens.argmax(-1), eos_idx)
+
+        
+
+    if config.discriminator_method == 'Multi':
+        gold_log_probs = model_D(inp_tokens, inp_lengths)
+        gold_labels = raw_styles + 1
+
+        raw_gen_log_probs = model_D(raw_gen_soft_tokens, raw_gen_lengths)
+        rev_gen_log_probs = model_D(rev_gen_soft_tokens, rev_gen_lengths)
+        gen_log_probs = torch.cat((raw_gen_log_probs, rev_gen_log_probs), 0)
+        raw_gen_labels = raw_styles + 1
+        rev_gen_labels = torch.zeros_like(rev_styles)
+        gen_labels = torch.cat((raw_gen_labels, rev_gen_labels), 0)
+    else:
+        raw_gold_log_probs = model_D(inp_tokens, inp_lengths, raw_styles)
+        rev_gold_log_probs = model_D(inp_tokens, inp_lengths, rev_styles)
+        gold_log_probs = torch.cat((raw_gold_log_probs, rev_gold_log_probs), 0)
+        raw_gold_labels = torch.ones_like(raw_styles)
+        rev_gold_labels = torch.zeros_like(rev_styles)
+        gold_labels = torch.cat((raw_gold_labels, rev_gold_labels), 0)
+
+        
+        raw_gen_log_probs = model_D(raw_gen_soft_tokens, raw_gen_lengths, raw_styles)
+        rev_gen_log_probs = model_D(rev_gen_soft_tokens, rev_gen_lengths, rev_styles)
+        gen_log_probs = torch.cat((raw_gen_log_probs, rev_gen_log_probs), 0)
+        raw_gen_labels = torch.ones_like(raw_styles)
+        rev_gen_labels = torch.zeros_like(rev_styles)
+        gen_labels = torch.cat((raw_gen_labels, rev_gen_labels), 0)
+
+    
+    adv_log_probs = torch.cat((gold_log_probs, gen_log_probs), 0)
+    adv_labels = torch.cat((gold_labels, gen_labels), 0)
+    adv_loss = loss_fn(adv_log_probs, adv_labels)
+    assert len(adv_loss.size()) == 1
+    adv_loss = adv_loss.sum() / batch_size
+    loss = adv_loss
+    
+    optimizer_D.zero_grad()
+    loss.backward()
+    clip_grad_norm_(model_D.parameters(), 5)
+    optimizer_D.step()
+
+    model_F.train()
+
+    return adv_loss.item()
+
 def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
+           cyc_rec_enable=True):
+    if config.paraphrase_style_embed:
+        return f_step_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay, cyc_rec_enable)
+    else:
+        return f_step_no_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay, cyc_rec_enable)
+
+def f_step_no_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
            cyc_rec_enable=True):
     model_D.eval()
     
@@ -217,6 +315,116 @@ def f_step(config, data, model_F, model_D, optimizer_F, batch, temperature, drop
         None,
         inp_lengths,
         rev_styles,
+        generate=True,
+        differentiable_decode=True,
+        temperature=temperature,
+    )
+
+    gen_soft_tokens = gen_log_probs.exp()
+    gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+    cyc_log_probs = model_F(
+        gen_soft_tokens,
+        inp_tokens,
+        gen_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    cyc_rec_loss = loss_fn(cyc_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    cyc_rec_loss = cyc_rec_loss.sum() / batch_size
+    token_mask = token_mask.view(-1)
+    if config.albert_kd and config.kd_alpha > 0:
+            cyc_log_probs = cyc_log_probs.view(-1,cyc_log_probs.size(2))
+            loss_kd = kd_loss(cyc_log_probs, (topk_logit, topk_index),
+                              config.kd_temperature, token_mask)
+            loss_kd /= batch_size
+            cyc_rec_loss = cyc_rec_loss * (1. - config.kd_alpha) + loss_kd * config.kd_alpha
+
+    cyc_rec_loss *= config.cyc_factor
+
+    # style consistency loss
+
+    if config.discriminator_method == 'Multi':
+        adv_labels = rev_styles + 1
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths)
+    else:
+        adv_labels = torch.ones_like(rev_styles)
+        adv_log_porbs = model_D(gen_soft_tokens, gen_lengths, rev_styles)
+        
+    adv_loss = loss_fn(adv_log_porbs, adv_labels)
+    adv_loss = adv_loss.sum() / batch_size
+    adv_loss *= config.adv_factor
+        
+    (cyc_rec_loss + adv_loss).backward()
+        
+    # update parameters
+    
+    clip_grad_norm_(model_F.parameters(), 5)
+    optimizer_F.step()
+
+    model_D.train()
+
+    return slf_rec_loss.item(), cyc_rec_loss.item(), adv_loss.item(), inp_lengths.float().mean().item(), gen_lengths.float().mean().item()
+
+
+def f_step_para(config, data, model_F, model_D, optimizer_F, batch, temperature, drop_decay,
+           cyc_rec_enable=True):
+    model_D.eval()
+    
+    pad_idx = config.pad_id
+    eos_idx = config.eos_id
+    unk_idx = config.unk_id
+    vocab_size = len(data.tokenizer)
+    loss_fn = nn.NLLLoss(reduction='none')
+
+    inp_tokens, inp_lengths, raw_styles, topk_logit, topk_index = batch_preprocess(batch, pad_idx, eos_idx)
+    rev_styles = 1 - raw_styles
+    para_styles = torch.ones_like(rev_styles)*2
+    batch_size = inp_tokens.size(0)
+    token_mask = (inp_tokens != pad_idx).float()
+
+    optimizer_F.zero_grad()
+
+    # self reconstruction loss
+
+    noise_inp_tokens = word_drop(
+        inp_tokens,
+        inp_lengths, 
+        config.inp_drop_prob * drop_decay
+    )
+    noise_inp_lengths = get_lengths(noise_inp_tokens, eos_idx)
+
+    slf_log_probs = model_F(
+        noise_inp_tokens, 
+        inp_tokens, 
+        noise_inp_lengths,
+        raw_styles,
+        generate=False,
+        differentiable_decode=False,
+        temperature=temperature,
+    )
+
+    slf_rec_loss = loss_fn(slf_log_probs.transpose(1, 2), inp_tokens) * token_mask
+    slf_rec_loss = slf_rec_loss.sum() / batch_size
+    slf_rec_loss *= config.slf_factor
+    
+    slf_rec_loss.backward()
+
+    # cycle consistency loss
+
+    if not cyc_rec_enable:
+        optimizer_F.step()
+        model_D.train()
+        return slf_rec_loss.item(), 0, 0, inp_lengths.float().mean().item(), 0
+    
+    gen_log_probs = model_F(
+        inp_tokens,
+        None,
+        inp_lengths,
+        para_styles,
         generate=True,
         differentiable_decode=True,
         temperature=temperature,
@@ -551,14 +759,15 @@ def train(config, data, model_F, model_D):
     batches_gen_len = []
     
     #writer = SummaryWriter(config.log_dir)
-    if config.load_ckpt:
+    if config.load_ckpt and config.d_ckpt:
         global_step = int(config.d_ckpt.split("/")[-1].split("_")[0])
     else:
         global_step = 0
     model_F.train()
     model_D.train()
 
-    config.save_folder = config.save_path + '/' + str(time.strftime('%b%d%H%M%S', time.localtime()))
+    config.model_name = str(time.strftime('%b%d%H%M%S', time.localtime()))
+    config.save_folder = config.save_path + '/' + config.model_name
     os.makedirs(config.save_folder)
     os.makedirs(config.save_folder + '/ckpts')
     print('Save Path:', config.save_folder)
@@ -663,7 +872,11 @@ def train(config, data, model_F, model_D):
             #save model
             torch.save(model_F.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_F.pth')
             torch.save(model_D.state_dict(), config.save_folder + '/ckpts/' + str(global_step) + '_D.pth')
-            auto_eval(config, data, model_F, model_D, global_step, temperature)
+            if config.paraphrase_style_embed:
+                auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature)
+            else:
+                auto_eval(config, data, model_F, model_D, global_step, temperature)
+
             #for path, sub_writer in writer.all_writers.items():
             #    sub_writer.flush()
 
@@ -736,7 +949,12 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     out_file_1.close()
 
 
-    evaluator = Evaluator()
+    if "shakespeare" in config.data_path:
+        evaluator = Evaluator()
+    elif "gyafc" in config.data_path:
+        evaluator = EvaluatorGyafc()
+    else:
+        evaluator = EvaluatorYelp()
     ref_text = evaluator.yelp_ref
 
     
@@ -746,8 +964,12 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     #acc_pos = evaluator.yelp_acc_1(rev_output[1])
     bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
     bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
-    _ , ppl_mod = lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
-    _ , ppl_cla = lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output1)
 
     for k in range(5):
         idx = np.random.randint(len(rev_output0))
@@ -772,8 +994,10 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
 
     print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
           'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
           'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-              acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
     ))
     '''
     his_f_slf_loss = []
@@ -806,14 +1030,193 @@ def auto_eval(config, data, model_F, model_D, global_step, temperature):
     with open(eval_log_file, 'a') as fl:
         print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
         ), file=fl)
     with open(save_file, 'w') as fw:
         print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
                'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
                'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
-            acc_cla, acc_mod, bleu_cla, bleu_mod, ppl_cla, ppl_mod,
+            acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
+        ), file=fw)
+
+        for idx in range(len(rev_output0)):
+            print('*' * 20, 'classic sample', '*' * 20, file=fw)
+            print('[gold]', gold_text0[idx], file=fw)
+            print('[raw ]', raw_output0[idx], file=fw)
+            print('[rev ]', rev_output0[idx], file=fw)
+            print('[ref ]', ref_text[0][idx], file=fw)
+
+        print('*' * 20, '********', '*' * 20, file=fw)
+
+        for idx in range(len(rev_output1)):
+            print('*' * 20, 'modern sample', '*' * 20, file=fw)
+            print('[gold]', gold_text1[idx], file=fw)
+            print('[raw ]', raw_output1[idx], file=fw)
+            print('[rev ]', rev_output1[idx], file=fw)
+            print('[ref ]', ref_text[1][idx], file=fw)
+
+        print('*' * 20, '********', '*' * 20, file=fw)
+
+    model_F.train()
+
+def auto_eval_paraphrase(config, data, model_F, model_D, global_step, temperature):
+    model_F.eval()
+    vocab_size = len(data.tokenizer)
+    eos_idx = config.eos_id
+
+    def inference(data, raw_style):
+        gold_text = []
+        raw_output = []
+        rev_output = []
+        while True:
+            if raw_style == 0:
+                inp_tokens, _ , eop = data.next_dev0(dev_batch_size = 128, sort = False)
+            else:
+                inp_tokens, _ , eop = data.next_dev1(dev_batch_size = 128, sort = False)
+
+            inp_lengths = get_lengths(inp_tokens, eos_idx)
+            raw_styles = torch.full_like(inp_tokens[:, 0], raw_style)
+            rev_styles = 1 - raw_styles
+            para_styles = torch.ones_like(rev_styles) * 2
+        
+            with torch.no_grad():
+                raw_log_probs = model_F(
+                    inp_tokens,
+                    None,
+                    inp_lengths,
+                    raw_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+            
+            with torch.no_grad():
+                gen_log_probs = model_F(
+                    inp_tokens, 
+                    None,
+                    inp_lengths,
+                    para_styles,
+                    generate=True,
+                    differentiable_decode=True,
+                    temperature=temperature,
+                )
+                
+                gen_soft_tokens = gen_log_probs.exp()
+                gen_lengths = get_lengths(gen_soft_tokens.argmax(-1), eos_idx)
+
+                rev_log_probs = model_F(
+                    gen_soft_tokens,
+                    inp_tokens,
+                    gen_lengths,
+                    rev_styles,
+                    generate=True,
+                    differentiable_decode=False,
+                    temperature=temperature,
+                )
+
+
+                
+            gold_text += tensor2text(data, inp_tokens.cpu())
+            raw_output += tensor2text(data, raw_log_probs.argmax(-1).cpu())
+            rev_output += tensor2text(data, rev_log_probs.argmax(-1).cpu())
+            if eop: break
+
+        return gold_text, raw_output, rev_output
+    
+    gold_text0, raw_output0, rev_output0 = inference(data, 0)
+    gold_text1, raw_output1, rev_output1 = inference(data, 1)
+
+    valid_file_0 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_0')
+    valid_file_1 = os.path.join( config.save_folder + '/ckpts/' , str(global_step) + '_1')
+    out_file_0 = open(valid_file_0, 'w', encoding='utf-8')
+    out_file_1 = open(valid_file_1, 'w', encoding='utf-8')
+    for i in range(len(rev_output0)):
+        line_0 = rev_output0[i].strip()
+        out_file_0.write(line_0 + '\n')
+        out_file_0.flush()
+
+    for i in range(len(rev_output1)):
+        line_1 = rev_output1[i].strip()
+        out_file_1.write(line_1 + '\n')
+        out_file_1.flush()
+
+    out_file_0.close()
+    out_file_1.close()
+
+
+    if "shakespeare" in config.data_path:
+        evaluator = Evaluator()
+    elif "gyafc" in config.data_path:
+        evaluator = EvaluatorGyafc()
+    else:
+        evaluator = EvaluatorYelp()
+    ref_text = evaluator.yelp_ref
+
+    
+    #acc_neg = evaluator.yelp_acc_0(rev_output[0])
+    acc_mod, _ = test(evaluator.classifier, data, 128, valid_file_0, config.dev_trg_file0, negate = True)
+    acc_cla, _ = test(evaluator.classifier, data, 128, valid_file_1, config.dev_trg_file1, negate = True)
+    #acc_pos = evaluator.yelp_acc_1(rev_output[1])
+    bleu_mod = evaluator.yelp_ref_bleu_0(rev_output0)
+    bleu_cla = evaluator.yelp_ref_bleu_1(rev_output1)
+    _ , ppl_mod = 0, 0#lm_ppl(evaluator.lm1, data, 128, valid_file_0, config.dev_trg_file0) #evaluator.yelp_ppl(rev_output[0])
+    _ , ppl_cla = 0, 0#lm_ppl(evaluator.lm0, data, 128, valid_file_1, config.dev_trg_file1) #evaluator.yelp_ppl(rev_output[1])
+    sim_mod = 0#evaluator.ref_similarity_0(valid_file_0, str(config.model_name))
+    sim_cla = 0#evaluator.ref_similarity_1(valid_file_1, str(config.model_name))
+    bartscore_mod = 0#evaluator.ref_bartscore_0(rev_output0)
+    bartscore_cla = 0#evaluator.ref_bartscore_1(rev_output1)
+
+    for k in range(5):
+        idx = np.random.randint(len(rev_output0))
+        print('*' * 20, 'classic sample', '*' * 20)
+        print('[gold]', gold_text0[idx])
+        print('[raw ]', raw_output0[idx])
+        print('[rev ]', rev_output0[idx])
+        print('[ref ]', ref_text[0][idx])
+
+    print('*' * 20, '********', '*' * 20)
+    
+
+    for k in range(5):
+        idx = np.random.randint(len(rev_output1))
+        print('*' * 20, 'modern sample', '*' * 20)
+        print('[gold]', gold_text1[idx])
+        print('[raw ]', raw_output1[idx])
+        print('[rev ]', rev_output1[idx])
+        print('[ref ]', ref_text[1][idx])
+
+    print('*' * 20, '********', '*' * 20)
+
+    print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+          'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+          'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+          'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+          'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+              acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
+    ))
+    # save output
+    save_file = config.save_folder + '/' + str(global_step) + '.txt'
+    eval_log_file = config.save_folder + '/eval_log.txt'
+    with open(eval_log_file, 'a') as fl:
+        print(('iter{:5d}:  acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            global_step, acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod
+        ), file=fl)
+    with open(save_file, 'w') as fw:
+        print(('[auto_eval] acc_cla: {:.4f} acc_mod: {:.4f} ' + \
+               'bleu_cla: {:.4f} bleu_mod: {:.4f} ' + \
+               'sim_cla: {:.4f} sim_mod: {:.4f} ' + \
+               'bartscore_cla: {:.4f} bartscore_mod: {:.4f} ' + \
+               'ppl_cla: {:.4f} ppl_mod: {:.4f}\n').format(
+            acc_cla, acc_mod, bleu_cla, bleu_mod, sim_cla, sim_mod, bartscore_cla, bartscore_mod, ppl_cla, ppl_mod,
         ), file=fw)
 
         for idx in range(len(rev_output0)):

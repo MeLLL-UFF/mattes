@@ -7,16 +7,16 @@
 export PYTHONPATH="$(pwd)"
 
 python cnn_classify.py \
-  --dataset yelp \
-  --output_dir "pretrained_classifer/yelp2/" \
+  --dataset gyafc \
+  --output_dir "pretrained_classifer/gyafc2/" \
   --clean_mem_every 5 \
   --reset_output_dir \
-  --train_src_file data/yelp/cleaned_train.txt \
-  --train_trg_file data/yelp/train.attr \
-  --dev_src_file data/yelp/cleaned_dev.txt \
-  --dev_trg_file data/yelp/dev.attr \
-  --dev_trg_ref data/yelp/cleaned_dev.txt \
-  --trg_vocab  data/yelp/attr.vocab \
+  --train_src_file data/gyafc/cleaned_train.txt \
+  --train_trg_file data/gyafc/train.attr \
+  --dev_src_file data/gyafc/cleaned_dev.txt \
+  --dev_trg_file data/gyafc/dev.attr \
+  --dev_trg_ref data/gyafc/cleaned_dev.txt \
+  --trg_vocab  data/gyafc/attr.vocab \
   --d_word_vec=128 \
   --d_model=512 \
   --log_every=100 \

@@ -4,6 +4,7 @@
 outputs*
 outputs/*
 save/*
+save*
 !archived_exp/*
 .pth
 data/dump*

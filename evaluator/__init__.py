@@ -1,5 +1,5 @@
-from .evaluator import Evaluator
+from .evaluator import Evaluator, EvaluatorYelp, EvaluatorGyafc
 
 __all__ = [
-    'Evaluator'
+    'Evaluator', 'EvaluatorYelp', 'EvaluatorGyafc'
 ]
